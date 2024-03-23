@@ -6,6 +6,8 @@ const { checkValidity } = require("./middlewares");
 const { welcome } = require("./controllers");
 const app = express();
 
+const authRouter = require("./routes/authRouter");
+
 const PORT = process.env.NODE_DOCKER_PORT_BACKEND || 8000;
 var corsOptions = {
 	origin: "*",
@@ -27,6 +29,8 @@ app.get("/", checkValidity, async (req, res) => {
 		});
 	}
 });
+
+app.use("/auth", authRouter);
 
 app.get("/health", (req, res) => {
 	res.status(200).json({ status: "OK", message: "Server is healthy" });
