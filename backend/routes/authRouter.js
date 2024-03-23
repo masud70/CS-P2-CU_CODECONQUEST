@@ -1,8 +1,17 @@
 const express = require("express");
+const { createUser } = require("../controllers/userController");
 const router = express.Router();
 
-router.get("/create", (req, res) => {
-	res.json({ status: true, messsage: "Hello world!" });
+router.post("/create", async (req, res, next) => {
+	try {
+		const user = req.body;
+
+		const result = await createUser({ email: user.email });
+
+		res.json(result);
+	} catch (error) {
+		next(error.messsage);
+	}
 });
 
 router.get("/login", (req, res) => {

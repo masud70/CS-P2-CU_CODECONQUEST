@@ -37,7 +37,7 @@ app.get("/health", (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-	res.json({ message: err });
+	res.json({ success: false, message: err });
 });
 
 // listen for requests
