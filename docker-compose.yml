@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+    mlapp:
+        build: ./flaskApp
+        ports:
+            - "8080:8080"
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:80801/health"]
+            timeout: 10s
+            retries: 10
+
+    mysqldb:
+        image: mysql:8.0.36
+        restart: unless-stopped
+        container_name: "mysqldb"
+        environment:
+            - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+            - MYSQL_DATABASE=$MYSQLDB_DATABASE
+        ports:
+            - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+        volumes:
+            - db:/var/lib/mysql
+        depends_on:
+            mlapp:
+                condition: service_healthy
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            timeout: 10s
+            retries: 10
+
+    backend:
+        build: ./backend
+        restart: unless-stopped
+        env_file: ./.env
+        ports:
+            - $NODE_LOCAL_PORT_BACKEND:$NODE_DOCKER_PORT_BACKEND
+        environment:
+            - DB_HOST=mysqldb
+            - DB_USER=$MYSQLDB_USER
+            - DB_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+            - DB_NAME=$MYSQLDB_DATABASE
+            - DB_PORT=$MYSQLDB_DOCKER_PORT
+        depends_on:
+            mysqldb:
+                condition: service_healthy
+        stdin_open: true
+        tty: true
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+            timeout: 10s
+            retries: 10
+
+    frontend:
+        build: ./frontend
+        restart: unless-stopped
+        ports:
+            - $NODE_LOCAL_PORT_FRONTEND:$NODE_DOCKER_PORT_FRONTEND
+        depends_on:
+            backend:
+                condition: service_healthy
+volumes:
+    db:
