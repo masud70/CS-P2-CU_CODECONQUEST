@@ -1,17 +1,19 @@
 const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
 const transporter = nodemailer.createTransport({
 	service: "gmail",
 	host: "smtp.gmail.com",
 	port: 587,
 	secure: false,
 	auth: {
-		user: "cppvitamin@gmail.com",
-		pass: "wwzsfsrunzdosrew",
+		user: process.env.EMAIL,
+		pass: process.env.EMAIL_SECRET,
 	},
 });
 
 module.exports = {
-	getRandomChars: (string, length) => {
+	getRandomChars: (length) => {
+		const string = "QWERTYUIOPLKJHGFDSAZXCVBNM1209348756";
 		let result = "";
 		const stringLength = string.length;
 		for (let i = 0; i < length; i++) {
@@ -43,5 +45,19 @@ module.exports = {
 				error: error.message,
 			};
 		}
+	},
+
+	generateToken: ({ email, user_id }) => {
+		const token = jwt.sign(
+			{
+				user_id: user_id,
+				email: email,
+			},
+			process.env.JWT_SECRET,
+			{
+				expiresIn: "7d",
+			}
+		);
+		return token;
 	},
 };

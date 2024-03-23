@@ -5,6 +5,7 @@ const db = require("./models");
 const { checkValidity } = require("./middlewares");
 const { welcome } = require("./controllers");
 const app = express();
+require('dotenv').config()
 
 const authRouter = require("./routes/authRouter");
 
