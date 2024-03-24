@@ -9,6 +9,7 @@ require("dotenv").config();
 
 const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
+const profileRouter = require("./routes/profileRouter");
 
 const PORT = process.env.NODE_DOCKER_PORT_BACKEND || 8000;
 var corsOptions = {
@@ -34,6 +35,7 @@ app.get("/", checkValidity, async (req, res) => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
+app.use("/profile", profileRouter);
 
 app.get("/health", (req, res) => {
 	res.status(200).json({ status: "OK", message: "Server is healthy" });
