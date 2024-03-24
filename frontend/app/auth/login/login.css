@@ -1,0 +1,68 @@
+.inputDiv{
+    z-index: 2;
+    background-color: rgba(3, 143, 194, 0.436);
+    width: 50%;
+    height: auto;
+    padding: 15px;
+    border-radius: 10px;
+}
+.inputField{
+    margin-bottom: 20px;
+}
+.errorMessageDiv{
+    text-align: center;
+    width: 100%;
+}
+.errorMessageText{
+    color: rgb(147, 12, 12);
+    font-size: 14px;
+    font-weight: bold;
+}
+.forgotPasswordDiv{
+    width: 100%;
+}
+.forgotPasswordLink{
+    font-weight: bold;
+    color: wheat;
+    margin-left: 3px;
+}
+.DivTitle{
+    /* color: black; */
+    margin-bottom: 10px;
+    color: wheat;
+}
+.SubmitButtonDiv{
+    width: 100%;
+    text-align: center;
+}
+.SubmitButton{
+    width: 50%;
+    background-color: rgb(1, 153, 219);
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    border:2px solid transparent;
+}
+
+.SubmitButton:hover{
+    background-color: rgb(0, 94, 135);
+    border: 2px solid white;
+}
+
+
+
+
+.MuiFormControl-root,.MuiOutlinedInput-notchedOutline{
+    background-color: transparent !important;
+    border-color: wheat !important;
+}
+
+.MuiFormLabel-root.Mui-focused {
+    color: wheat !important;
+}
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: wheat !important;
+}
+.MuiCircularProgress-root{
+    color: white !important;
+}
