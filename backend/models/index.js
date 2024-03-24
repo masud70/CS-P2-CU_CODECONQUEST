@@ -44,8 +44,11 @@ Object.keys(db).forEach((modelName) => {
 	}
 });
 
-// db.Train.hasMany(db.Stop, { foreignKey: 'train_id' });
-// db.Stop.belongsTo(db.Train, { foreignKey: 'train_id' });
+db.User.belongsToMany(db.Role, { through: db.UserRole });
+db.Role.belongsToMany(db.User, { through: db.UserRole });
+
+db.Permission.belongsToMany(db.Role, { through: db.RolePermission });
+db.Role.belongsToMany(db.Permission, { through: db.RolePermission });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

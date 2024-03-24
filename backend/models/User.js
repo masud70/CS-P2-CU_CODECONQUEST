@@ -2,27 +2,21 @@ const Roles = require("../constants");
 
 module.exports = (sequelize, DataTypes) => {
 	const User = sequelize.define("User", {
-		user_id: {
+		id: {
 			type: DataTypes.INTEGER,
 			autoIncrement: true,
 			allowNull: false,
 			primaryKey: true,
 		},
-		user_name: {
+		name: {
 			type: DataTypes.TEXT,
 		},
 		email: {
 			type: DataTypes.TEXT,
 			allowNull: false,
 		},
-		role: {
-			type: DataTypes.ENUM(
-				Roles.SYSTEM_ADMIN,
-				Roles.STS_MANAGER,
-				Roles.LANDFILL_MANAGER,
-				Roles.UNASSIGNED
-			),
-			defaultValue: Roles.UNASSIGNED,
+		avatar: {
+			type: DataTypes.TEXT,
 		},
 		password: {
 			type: DataTypes.TEXT,

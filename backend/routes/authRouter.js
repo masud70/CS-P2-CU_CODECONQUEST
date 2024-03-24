@@ -45,10 +45,10 @@ router.post("/login", async (req, res) => {
 
 router.get("/logout", checkLogin, async (req, res) => {
 	try {
-		const user_id = req.user_id;
+		const userId = req.userId;
 
 		const result = await getLogout({
-			user_id: user_id,
+			userId: userId,
 		});
 
 		res.json(result);
@@ -56,6 +56,8 @@ router.get("/logout", checkLogin, async (req, res) => {
 		next(error.messsage);
 	}
 });
+
+
 
 router.post("/reset-password/initiate", async (req, res) => {
 	try {
@@ -88,12 +90,12 @@ router.post("/reset-password/confirm", async (req, res) => {
 
 router.post("/change-password", checkLogin, async (req, res) => {
 	try {
-		const user = req.body;
-		const user_id = req.user_id;
+		const { newPassword } = req.body;
+		const userId = req.userId;
 
 		const result = await changePassword({
-			user_id: user_id,
-			newPassword: user.newPassword,
+			userId: userId,
+			newPassword: newPassword,
 		});
 
 		res.json(result);

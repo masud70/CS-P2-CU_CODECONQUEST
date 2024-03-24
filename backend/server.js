@@ -10,6 +10,8 @@ require("dotenv").config();
 const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
 const profileRouter = require("./routes/profileRouter");
+const rbacRouter = require("./routes/rbacRouter");
+const { initializeDB } = require("./helper");
 
 const PORT = process.env.NODE_DOCKER_PORT_BACKEND || 8000;
 var corsOptions = {
@@ -36,6 +38,7 @@ app.get("/", checkValidity, async (req, res) => {
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/profile", profileRouter);
+app.use("/rbac", rbacRouter);
 
 app.get("/health", (req, res) => {
 	res.status(200).json({ status: "OK", message: "Server is healthy" });
@@ -49,8 +52,15 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
 	db.sequelize
 		.sync({ alter: true })
-		.then(() => {
-			console.log(`App listening to port ${PORT}`);
+		.then(async () => {
+			try {
+				await initializeDB();
+			} catch (error) {
+				console.log(error.message);
+			}
+			console.log(
+				`\n===========================\nApp listening to port ${PORT}\n===========================\n`
+			);
 		})
 		.catch((err) => {
 			console.log(err.message);

@@ -19,6 +19,14 @@ module.exports = {
 				});
 
 				if (createUser) {
+					const role = await db.Role.findOne({
+						where: { title: "unassigned" },
+					});
+					await db.UserRole.create({
+						UserId: createUser.id,
+						RoleId: role.id,
+					});
+
 					const body = {
 						text: "",
 						html: `<p>An admin has created a new account for you. Below is your account credentials.</p><h2>Email: ${email} <br>Password: ${password}</h2>`,
@@ -28,13 +36,12 @@ module.exports = {
 						email: email,
 						body: body,
 					});
-					console.log(emailResult);
 
 					if (emailResult.success) {
 						return {
 							success: true,
 							message:
-								"Registration successfully! Ask the user their check email.",
+								"Registration successfully! Ask the user to check their email.",
 						};
 					} else {
 						await createUser.destroy();
@@ -68,7 +75,7 @@ module.exports = {
 					await user.save();
 
 					const token = generateToken({
-						user_id: user.user_id,
+						userId: user.id,
 						email: email,
 					});
 					return {
@@ -80,7 +87,7 @@ module.exports = {
 					throw new Error("Authentication failed!");
 				}
 			} else {
-				throw new Error(`User ${email} not found`);
+				throw new Error(`User with email ${email} not found`);
 			}
 		} catch (error) {
 			return {
@@ -90,9 +97,9 @@ module.exports = {
 		}
 	},
 
-	getLogout: async ({ user_id }) => {
+	getLogout: async ({ userId }) => {
 		try {
-			const user = await db.User.findByPk(user_id);
+			const user = await db.User.findByPk(userId);
 			if (user) {
 				user.loginStatus = false;
 				await user.save();
@@ -100,7 +107,6 @@ module.exports = {
 				return {
 					success: true,
 					message: "Logout successful!",
-					token: token,
 				};
 			} else {
 				throw new Error(`User not found`);
@@ -164,7 +170,7 @@ module.exports = {
 
 				const token = generateToken({
 					email: email,
-					user_id: user.user_id,
+					userId: user.id,
 				});
 				return {
 					success: true,
@@ -182,9 +188,9 @@ module.exports = {
 		}
 	},
 
-	changePassword: async ({ user_id, newPassword }) => {
+	changePassword: async ({ userId, newPassword }) => {
 		try {
-			const user = await db.User.findByPk(user_id);
+			const user = await db.User.findByPk(userId);
 
 			if (user) {
 				user.password = await bcrypt.hash(newPassword, saltRounds);

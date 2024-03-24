@@ -7,12 +7,12 @@ module.exports = {
 			const { authorization } = req.headers;
 			const token = authorization.split(" ")[1];
 			const decoded = jwt.verify(token, process.env.JWT_SECRET);
-			const { email, user_id } = decoded;
+			const { email, userId } = decoded;
 
-			const user = await db.User.findByPk(user_id);
+			const user = await db.User.findByPk(userId);
 
 			if (user.loginStatus === true) {
-				req.user_id = user_id;
+				req.userId = userId;
 				req.email = email;
 				req.role = user.role;
 				next();
@@ -29,17 +29,21 @@ module.exports = {
 			const { authorization } = req.headers;
 			const token = authorization.split(" ")[1];
 			const decoded = jwt.verify(token, process.env.JWT_SECRET);
-			const { email, user_id } = decoded;
+			const { email, userId } = decoded;
 
-			const user = await db.User.findByPk(user_id);
+			const user = await db.User.findByPk(userId);
 
-			if (user.loginStatus === true && user.role === Roles.SYSTEM_ADMIN) {
-				req.user_id = user_id;
+			const userRoles = await user.getRoles();
+			const roles = userRoles.map((role) => role.title);
+			const isAdmin = roles.find((item) => item === "system_admin");
+
+			if (user.loginStatus === true && isAdmin) {
+				req.userId = userId;
 				req.email = email;
 				req.role = user.role;
 				next();
 			} else {
-				throw new Error("Invalid access!");
+				throw new Error("Access denied!");
 			}
 		} catch (error) {
 			next(error.message);
