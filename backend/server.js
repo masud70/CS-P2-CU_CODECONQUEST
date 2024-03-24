@@ -5,9 +5,10 @@ const db = require("./models");
 const { checkValidity } = require("./middlewares");
 const { welcome } = require("./controllers");
 const app = express();
-require('dotenv').config()
+require("dotenv").config();
 
 const authRouter = require("./routes/authRouter");
+const userRouter = require("./routes/userRouter");
 
 const PORT = process.env.NODE_DOCKER_PORT_BACKEND || 8000;
 var corsOptions = {
@@ -32,6 +33,7 @@ app.get("/", checkValidity, async (req, res) => {
 });
 
 app.use("/auth", authRouter);
+app.use("/users", userRouter);
 
 app.get("/health", (req, res) => {
 	res.status(200).json({ status: "OK", message: "Server is healthy" });

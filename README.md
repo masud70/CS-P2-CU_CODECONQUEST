@@ -37,3 +37,7 @@ If you need to stop and remove all containers, networks, and all images used by 
 ```bash
 docker compose down --rmi all
 ```
+
+## API Documentation
+
+Follow [this link](https://docs.google.com/spreadsheets/d/1fpi0ID4jHdol8GLWd4eI7VWFdAUKYX00ai9nGEgrBaE/edit?usp=sharing) to the API documentation.

@@ -1,15 +1,19 @@
 const express = require("express");
+const router = express.Router();
 const {
 	createUser,
 	getLogin,
 	initiateResetPassword,
 	confirmResetPassword,
 	changePassword,
-} = require("../controllers/userController");
-const { checkAuthToken } = require("../middlewares/authMiddleware");
-const router = express.Router();
+	getLogout,
+} = require("../controllers/authController");
+const {
+	systemAdminAccessCheck,
+	checkLogin,
+} = require("../middlewares/authMiddleware");
 
-router.post("/create", async (req, res, next) => {
+router.post("/create", systemAdminAccessCheck, async (req, res, next) => {
 	try {
 		const user = req.body;
 
@@ -39,8 +43,18 @@ router.post("/login", async (req, res) => {
 	}
 });
 
-router.get("/logout", (req, res) => {
-	res.json({ status: true, messsage: "Hello world!" });
+router.get("/logout", checkLogin, async (req, res) => {
+	try {
+		const user_id = req.user_id;
+
+		const result = await getLogout({
+			user_id: user_id,
+		});
+
+		res.json(result);
+	} catch (error) {
+		next(error.messsage);
+	}
 });
 
 router.post("/reset-password/initiate", async (req, res) => {
@@ -72,7 +86,7 @@ router.post("/reset-password/confirm", async (req, res) => {
 	}
 });
 
-router.post("/change-password", checkAuthToken, async (req, res) => {
+router.post("/change-password", checkLogin, async (req, res) => {
 	try {
 		const user = req.body;
 		const user_id = req.user_id;

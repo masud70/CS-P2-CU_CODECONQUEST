@@ -1,51 +1,14 @@
-const bcrypt = require("bcrypt");
-const { getRandomChars, sendMail, generateToken } = require("../helper");
+const Roles = require("../constants");
 const db = require("../models");
-const saltRounds = 10;
 
 module.exports = {
-	createUser: async ({ email, password }) => {
+	getAllUsers: async () => {
 		try {
-			if (!password) password = getRandomChars(6);
-
-			const user = await db.User.findAll({ where: { email: email } });
-
-			if (user.length == 0) {
-				const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-				const createUser = await db.User.create({
-					email: email,
-					password: hashedPassword,
-				});
-
-				if (createUser) {
-					const body = {
-						text: "",
-						html: `<p>An admin has created a new account for you. Below is your account credentials.</p><h2>Email: ${email} <br>Password: ${password}</h2>`,
-					};
-
-					const emailResult = await sendMail({
-						email: email,
-						body: body,
-					});
-					console.log(emailResult);
-
-					if (emailResult.success) {
-						return {
-							success: true,
-							message:
-								"User created successfully! Ask the user to check email.",
-						};
-					} else {
-						await createUser.destroy();
-						throw new Error(emailResult.message);
-					}
-				} else {
-					throw new Error("User creation failed!");
-				}
-			} else {
-				throw new Error("User already exists!");
-			}
+			const users = await db.User.findAll();
+			return {
+				success: true,
+				users: users,
+			};
 		} catch (error) {
 			return {
 				success: false,
@@ -54,56 +17,43 @@ module.exports = {
 		}
 	},
 
-	getLogin: async ({ email, password }) => {
-		try {
-			const user = await db.User.findOne({ where: { email: email } });
-			if (user) {
-				const isValidPassword = await bcrypt.compare(
-					password,
-					user.password
-				);
-
-				if (isValidPassword) {
-					user.loginStatus = true;
-					await user.save();
-
-					const token = generateToken({
-						user_id: user.user_id,
-						email: email,
-					});
-					return {
-						success: true,
-						message: "Login successful!",
-						token: token,
-					};
-				} else {
-					throw new Error("Authentication failed!");
-				}
-			} else {
-				throw new Error(`User ${email} not found`);
-			}
-		} catch (error) {
-			return {
-				success: false,
-				error: error.message,
-			};
-		}
-	},
-
-	getLogout: async ({ user_id }) => {
+	getUserById: async ({ user_id }) => {
 		try {
 			const user = await db.User.findByPk(user_id);
 			if (user) {
-				user.loginStatus = false;
+				return {
+					success: true,
+					user: user,
+				};
+			} else {
+				throw new Error(`User with ${user_id} not found!`);
+			}
+		} catch (error) {
+			return {
+				success: false,
+				error: error.message,
+			};
+		}
+	},
+
+	updateUser: async ({ user_id, data, role }) => {
+		try {
+			const user = await db.User.findByPk(user_id);
+			if (user) {
+				if (data.role && role === Roles.SYSTEM_ADMIN)
+					user.role = data.role;
+				if (data.user_name) user.user_name = data.user_name;
+
 				await user.save();
+				const updateUser = await db.User.findByPk(user_id);
 
 				return {
 					success: true,
-					message: "Logout successful!",
-					token: token,
+					message: "Update successful!",
+					user: updateUser,
 				};
 			} else {
-				throw new Error(`User not found`);
+				throw new Error(`User with ${user_id} not found!`);
 			}
 		} catch (error) {
 			return {
@@ -113,66 +63,19 @@ module.exports = {
 		}
 	},
 
-	initiateResetPassword: async ({ email }) => {
+	deleteUser: async ({ user_id }) => {
 		try {
-			const code = getRandomChars(6);
-			const user = await db.User.findOne({ where: { email: email } });
-
-			if (user) {
-				user.passwordResetCode = code;
-				await user.save();
-
-				const emailBody = {
-					text: "",
-					html: `Your password recovery code is: <h2>${code}</h2>`,
-				};
-
-				const result = await sendMail({
-					email: email,
-					body: emailBody,
-				});
-
-				if (result.success) {
-					return {
-						success: true,
-						message:
-							"An email is sent with your password recovery code.",
-					};
-				} else {
-					throw new Error(emailResult.message);
-				}
-			} else {
-				throw new Error("User not found!");
-			}
-		} catch (error) {
-			return {
-				success: false,
-				error: error.message,
-			};
-		}
-	},
-
-	confirmResetPassword: async ({ email, code }) => {
-		try {
-			const user = await db.User.findOne({
-				where: { email: email, passwordResetCode: code },
+			const deleteCount = await db.User.destroy({
+				where: { user_id: user_id },
 			});
-
-			if (user) {
-				user.loginStatus = true;
-				await user.save();
-
-				const token = generateToken({
-					email: email,
-					user_id: user.user_id,
-				});
+			console.log("Deleted: ", deleteCount);
+			if (deleteCount) {
 				return {
 					success: true,
-					message: "Correct password reset code!",
-					token: token,
+					message: "User deleted successfully!",
 				};
 			} else {
-				throw new Error("Invalid email or code!");
+				throw new Error(`User with ${user_id} not found!`);
 			}
 		} catch (error) {
 			return {
@@ -182,21 +85,32 @@ module.exports = {
 		}
 	},
 
-	changePassword: async ({ user_id, newPassword }) => {
+	getAllAvailableRoles: () => {
+		const rolesArray = Object.values(Roles);
+		return {
+			success: true,
+			available_roles: rolesArray,
+		};
+	},
+
+	updateRole: async ({ user_id, role }) => {
 		try {
+			const rolesArray = Object.values(Roles);
 			const user = await db.User.findByPk(user_id);
 
-			if (user) {
-				user.password = await bcrypt.hash(newPassword, saltRounds);
-				user.passwordResetCode = getRandomChars(5);
-				await user.save();
+			if (!rolesArray.find((item) => item === role)) {
+				throw new Error("Invalid role!");
+			}
 
+			if (user) {
+				user.role = role;
+				await user.save();
 				return {
 					success: true,
-					message: "Password changed successfully!",
+					message: "User role updated successfully!",
 				};
 			} else {
-				throw new Error("User not found!");
+				throw new Error(`User with ${user_id} not found!`);
 			}
 		} catch (error) {
 			return {
