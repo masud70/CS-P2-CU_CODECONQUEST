@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
 const db = require("../models");
 const transporter = nodemailer.createTransport({
 	service: "gmail",
@@ -60,6 +61,42 @@ module.exports = {
 			}
 		);
 		return token;
+	},
+
+	getDistanceAndDuration: async ({ origin, destination }) => {
+		try {
+			const API_KEY = process.env.API_KEY + "M";
+			const API_URL =
+				"https://maps.googleapis.com/maps/api/directions/json";
+
+			const originString = `${origin.lat},${origin.lng}`;
+			const destinationString = `${destination.lat},${destination.lng}`;
+
+			const url = `${API_URL}?origin=${originString}&destination=${destinationString}&key=${API_KEY}`;
+			const response = await axios.get(url);
+
+			const routes = response.data.routes;
+
+			if (routes.length > 0) {
+				const distance = Math.ceil(
+					routes[0].legs[0].distance.value / 1000.0
+				);
+				const duration = routes[0].legs[0].duration.value;
+
+				return {
+					success: true,
+					distance,
+					duration,
+				};
+			} else {
+				throw new Error("No routes found.");
+			}
+		} catch (error) {
+			return {
+				success: false,
+				error: error.message,
+			};
+		}
 	},
 
 	initializeDB: async () => {

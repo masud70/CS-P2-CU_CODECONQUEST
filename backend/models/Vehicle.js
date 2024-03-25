@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
+		capacity: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			defaultValue: 3,
+		},
 		costPerKiloLoaded: {
 			type: DataTypes.DOUBLE,
 			allowNull: false,
