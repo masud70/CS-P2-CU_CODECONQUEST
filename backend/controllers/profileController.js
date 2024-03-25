@@ -1,9 +1,9 @@
 const db = require("../models");
 
 module.exports = {
-	getUserData: async ({ user_id }) => {
+	getUserData: async ({ userId }) => {
 		try {
-			const user = await db.User.findByPk(user_id);
+			const user = await db.User.findByPk(userId);
 
 			return {
 				success: true,
@@ -17,14 +17,14 @@ module.exports = {
 		}
 	},
 
-	updateUserData: async ({ user_id, data }) => {
+	updateUserData: async ({ userId, data }) => {
 		try {
-			const user = await db.User.findByPk(user_id);
+			const user = await db.User.findByPk(userId);
 			if (user) {
-				if (data.user_name) user.user_name = data.user_name;
+				if (data.name) user.name = data.name;
 
 				await user.save();
-				const updateUser = await db.User.findByPk(user_id);
+				const updateUser = await db.User.findByPk(userId);
 
 				return {
 					success: true,
@@ -32,7 +32,7 @@ module.exports = {
 					user: updateUser,
 				};
 			} else {
-				throw new Error(`User with ${user_id} not found!`);
+				throw new Error(`User with ${userId} not found!`);
 			}
 		} catch (error) {
 			return {

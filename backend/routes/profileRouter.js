@@ -8,18 +8,19 @@ const router = express.Router();
 
 router.get("/", checkLogin, async (req, res, next) => {
 	try {
-		const result = await getUserData({ user_id: req.user_id });
+		const result = await getUserData({ userId: req.userId });
 
 		res.json(result);
 	} catch (error) {
 		next(error.message);
 	}
 });
+
 router.put("/", checkLogin, async (req, res, next) => {
 	try {
 		const data = req.body;
 		const result = await updateUserData({
-			user_id: req.user_id,
+			userId: req.userId,
 			data: data,
 		});
 
