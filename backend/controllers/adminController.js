@@ -72,7 +72,7 @@ module.exports = {
 				where: { id: managerId },
 				include: [
 					{
-						model: Role,
+						model: db.Role,
 						where: {
 							title: "sts_manager",
 						},
@@ -88,7 +88,7 @@ module.exports = {
 				);
 			}
 
-			await db.Sts.addUser(manager);
+			await sts.setUser(manager);
 
 			return {
 				success: true,
@@ -110,16 +110,16 @@ module.exports = {
 		departure,
 	}) => {
 		try {
-			const sts = db.Sts.findByPk(stsId);
-			const vehicle = db.Vehicle.findOne({
+			const sts = await db.Sts.findByPk(stsId);
+			const vehicle = await db.Vehicle.findOne({
 				where: { regNumber: vehicleNumber },
 			});
 
-			const departured = db.StsDeparture.create({
+			const departured = await db.StsDeparture.create({
 				volumeOfWaste,
 				arrival,
 				departure,
-				StsId: sts.id,
+				StId: sts.id,
 				VehicleId: vehicle.id,
 			});
 
@@ -136,18 +136,33 @@ module.exports = {
 		}
 	},
 
-	addDump: async ({ volumeOfWaste, arrival, departure }) => {
+	addDump: async ({
+		managerId,
+		vehicleNumber,
+		volumeOfWaste,
+		arrival,
+		departure,
+	}) => {
 		try {
+			const manager = await db.User.findByPk(managerId);
+			const vehicle = await db.Vehicle.findOne({
+				where: { regNumber: vehicleNumber },
+			});
+
 			const dump = await db.Dump.create({
 				volumeOfWaste,
 				arrival,
 				departure,
 			});
 
+			await manager.addDump(dump);
+			await vehicle.addDump(dump);
+			const updatedDump = await db.Dump.findByPk(dump.id);
+
 			return {
 				success: true,
 				message: "Dump inserted successfully!",
-				dump: dump,
+				dump: updatedDump,
 			};
 		} catch (error) {
 			return {

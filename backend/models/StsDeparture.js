@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 		},
 		arrival: {
-			type: DataTypes.STRING,
+			type: DataTypes.BIGINT,
 			allowNull: false,
 		},
 		departure: {
-			type: DataTypes.STRING,
+			type: DataTypes.BIGINT,
 			allowNull: false,
 		},
 	});

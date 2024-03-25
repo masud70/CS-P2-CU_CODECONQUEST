@@ -59,6 +59,12 @@ db.StsDeparture.belongsTo(db.Sts);
 db.Vehicle.hasMany(db.StsDeparture);
 db.StsDeparture.belongsTo(db.Vehicle);
 
+db.User.hasMany(db.Dump);
+db.Dump.belongsTo(db.User);
+
+db.Vehicle.hasMany(db.Dump);
+db.Dump.belongsTo(db.Vehicle);
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
