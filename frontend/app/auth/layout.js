@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
 			setbgImage("/assets/" + num + ".jpg");
 			num = num + 1;
 			if (num == 10) num = 1;
-		}, 3000);
+		}, 5000);
 	}, []);
 
 	return (

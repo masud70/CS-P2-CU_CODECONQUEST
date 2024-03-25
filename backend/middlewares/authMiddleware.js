@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const db = require("../models");
-const Roles = require("../constants");
 module.exports = {
 	checkLogin: async (req, res, next) => {
 		try {
@@ -32,12 +31,12 @@ module.exports = {
 			const { email, userId } = decoded;
 
 			const user = await db.User.findByPk(userId);
-
 			const userRoles = await user.getRoles();
-			const roles = userRoles.map((role) => role.title);
-			const isAdmin = roles.find((item) => item === "system_admin");
 
-			if (user.loginStatus === true && isAdmin) {
+			const roles = userRoles.map((role) => role.title);
+			const isSysAdmin = roles.find((item) => item === "system_admin");
+
+			if (user.loginStatus === true && isSysAdmin) {
 				req.userId = userId;
 				req.email = email;
 				req.role = user.role;

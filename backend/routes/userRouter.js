@@ -32,8 +32,8 @@ router.get("/roles", (req, res) => {
 
 router.get("/:userId", async (req, res) => {
 	try {
-		const user_id = req.params.userId;
-		const result = await getUserById({ user_id });
+		const userId = req.params.userId;
+		const result = await getUserById({ userId });
 
 		res.json(result);
 	} catch (error) {
@@ -59,10 +59,10 @@ router.post("/", systemAdminAccessCheck, async (req, res) => {
 router.put("/:userId/roles", systemAdminAccessCheck, async (req, res) => {
 	try {
 		const { role } = req.body;
-		const user_id = req.params.userId;
+		const userId = req.params.userId;
 
 		const result = await updateRole({
-			user_id: user_id,
+			userId: userId,
 			role: role,
 		});
 
@@ -72,14 +72,15 @@ router.put("/:userId/roles", systemAdminAccessCheck, async (req, res) => {
 	}
 });
 
-router.put("/:userId", checkLogin, async (req, res) => {
+router.put("/:userId", checkLogin, async (req, res, next) => {
 	try {
 		const user = req.body;
-		const user_id = req.params.userId;
+		const userId = req.params.userId;
 
-		if (req.user_id === user_id || req.role === Roles.SYSTEM_ADMIN) {
+		console.log(req.userId, userId);
+		if (req.userId == userId || req.role === Roles.SYSTEM_ADMIN) {
 			const result = await updateUser({
-				user_id: user_id,
+				userId: userId,
 				data: user,
 				role: req.role,
 			});
@@ -95,10 +96,10 @@ router.put("/:userId", checkLogin, async (req, res) => {
 
 router.delete("/:userId", systemAdminAccessCheck, async (req, res) => {
 	try {
-		const user_id = req.params.userId;
+		const userId = req.params.userId;
 
 		const result = await deleteUser({
-			user_id: user_id,
+			userId: userId,
 		});
 
 		res.json(result);

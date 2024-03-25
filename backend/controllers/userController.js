@@ -17,16 +17,16 @@ module.exports = {
 		}
 	},
 
-	getUserById: async ({ user_id }) => {
+	getUserById: async ({ userId }) => {
 		try {
-			const user = await db.User.findByPk(user_id);
+			const user = await db.User.findByPk(userId);
 			if (user) {
 				return {
 					success: true,
 					user: user,
 				};
 			} else {
-				throw new Error(`User with ${user_id} not found!`);
+				throw new Error(`User with ${userId} not found!`);
 			}
 		} catch (error) {
 			return {
@@ -36,16 +36,14 @@ module.exports = {
 		}
 	},
 
-	updateUser: async ({ user_id, data, role }) => {
+	updateUser: async ({ userId, data, role }) => {
 		try {
-			const user = await db.User.findByPk(user_id);
+			const user = await db.User.findByPk(userId);
 			if (user) {
-				if (data.role && role === Roles.SYSTEM_ADMIN)
-					user.role = data.role;
-				if (data.user_name) user.user_name = data.user_name;
+				if (data.name) user.name = data.name;
 
 				await user.save();
-				const updateUser = await db.User.findByPk(user_id);
+				const updateUser = await db.User.findByPk(userId);
 
 				return {
 					success: true,
@@ -53,7 +51,7 @@ module.exports = {
 					user: updateUser,
 				};
 			} else {
-				throw new Error(`User with ${user_id} not found!`);
+				throw new Error(`User with ${userId} not found!`);
 			}
 		} catch (error) {
 			return {
@@ -63,19 +61,19 @@ module.exports = {
 		}
 	},
 
-	deleteUser: async ({ user_id }) => {
+	deleteUser: async ({ userId }) => {
 		try {
 			const deleteCount = await db.User.destroy({
-				where: { user_id: user_id },
+				where: { id: userId },
 			});
-			console.log("Deleted: ", deleteCount);
+
 			if (deleteCount) {
 				return {
 					success: true,
 					message: "User deleted successfully!",
 				};
 			} else {
-				throw new Error(`User with ${user_id} not found!`);
+				throw new Error(`User with ${userId} not found!`);
 			}
 		} catch (error) {
 			return {
@@ -93,24 +91,27 @@ module.exports = {
 		};
 	},
 
-	updateRole: async ({ user_id, role }) => {
+	updateRole: async ({ userId, role }) => {
 		try {
-			const rolesArray = Object.values(Roles);
-			const user = await db.User.findByPk(user_id);
+			const user = await db.User.findByPk(userId);
+			const roleInstance = await db.Role.findOne({
+				where: { title: role },
+			});
 
-			if (!rolesArray.find((item) => item === role)) {
+			if (!roleInstance) {
 				throw new Error("Invalid role!");
 			}
 
 			if (user) {
-				user.role = role;
-				await user.save();
+				await db.UserRole.destroy({ where: { UserId: user.id } });
+				await user.addRole(roleInstance);
+
 				return {
 					success: true,
 					message: "User role updated successfully!",
 				};
 			} else {
-				throw new Error(`User with ${user_id} not found!`);
+				throw new Error(`User with ${userId} not found!`);
 			}
 		} catch (error) {
 			return {
