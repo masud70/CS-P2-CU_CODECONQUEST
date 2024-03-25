@@ -6,8 +6,9 @@ import Typography from '@mui/material/Typography'
 import React, { useState } from 'react'
 import './login.css'
 import Link from 'next/link'
-import CircularProgress from '@mui/material/CircularProgress';
 import ATextField from '../components/ATextField'
+
+import {CircularProgress} from "@nextui-org/react";
 
 export default function Login() {
 
@@ -34,8 +35,9 @@ export default function Login() {
             <Link href={'/auth/forgot-password'} className='forgotPasswordLink'>Forgot Password?</Link>
           </Box>
           <Box className='SubmitButtonDiv'>
-              <Button className='SubmitButton' disabled={mobileNumber.length<1 || password.length<1}>Submit</Button>
-              {/* <CircularProgress size={25} color={'error'} sx={{color:'white'}} /> */}
+              <Button className='SubmitButton' disabled={mobileNumber.length<1 || password.length<1}>Submit
+              {/* <CircularProgress color="primary" size="sm" aria-label="Loading..." /> */}
+              </Button>
           </Box>
 
         </Box>  

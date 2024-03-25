@@ -1,0 +1,12 @@
+.AdminPageDiv{
+    color:black;
+    padding: 5px;
+}
+.hamBar{
+    position: absolute;
+    color: white;
+    padding: 5px;
+    top: 12px;
+    left: 22px;
+    cursor: pointer;
+}
