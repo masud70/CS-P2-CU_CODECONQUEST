@@ -65,6 +65,9 @@ db.Dump.belongsTo(db.User);
 db.Vehicle.hasMany(db.Dump);
 db.Dump.belongsTo(db.Vehicle);
 
+db.User.hasMany(db.Otp);
+db.Otp.belongsTo(db.User);
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
