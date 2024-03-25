@@ -22,9 +22,6 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.TEXT,
 			allowNull: false,
 		},
-		passwordResetCode: {
-			type: DataTypes.TEXT,
-		},
 		loginStatus: {
 			type: DataTypes.BOOLEAN,
 			defaultValue: false,

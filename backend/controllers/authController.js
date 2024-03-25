@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const { getRandomChars, sendMail, generateToken } = require("../helper");
 const db = require("../models");
+const { where } = require("sequelize");
 const saltRounds = 10;
 
 module.exports = {
@@ -119,14 +120,18 @@ module.exports = {
 		}
 	},
 
-	initiateResetPassword: async ({ email }) => {
+	initiateResetPassword: async ({ email, validFor = 5 }) => {
 		try {
 			const code = getRandomChars(6);
 			const user = await db.User.findOne({ where: { email: email } });
 
 			if (user) {
-				user.passwordResetCode = code;
-				await user.save();
+				const otp = await db.Otp.create({
+					code: code,
+					generatedAt: Date.now(),
+					validFor,
+				});
+				await user.addOtp(otp);
 
 				const emailBody = {
 					text: "",
@@ -161,12 +166,24 @@ module.exports = {
 	confirmResetPassword: async ({ email, code }) => {
 		try {
 			const user = await db.User.findOne({
-				where: { email: email, passwordResetCode: code },
+				where: { email: email },
+				include: [
+					{
+						model: db.Otp,
+						where: {
+							code: code,
+						},
+					},
+				],
 			});
 
-			if (user) {
+			const notExpired = user.Otps[0].generatedAt + 300000 >= Date.now();
+
+			if (user && notExpired) {
 				user.loginStatus = true;
 				await user.save();
+
+				await db.Otp.destroy({ where: { id: user.Otps[0].id } });
 
 				const token = generateToken({
 					email: email,
@@ -194,7 +211,6 @@ module.exports = {
 
 			if (user) {
 				user.password = await bcrypt.hash(newPassword, saltRounds);
-				user.passwordResetCode = getRandomChars(5);
 				await user.save();
 
 				return {

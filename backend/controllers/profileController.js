@@ -22,6 +22,7 @@ module.exports = {
 			const user = await db.User.findByPk(userId);
 			if (user) {
 				if (data.name) user.name = data.name;
+				if (data.avatar) user.avatar = data.avatar;
 
 				await user.save();
 				const updateUser = await db.User.findByPk(userId);
