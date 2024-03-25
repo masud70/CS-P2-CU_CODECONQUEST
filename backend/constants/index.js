@@ -5,4 +5,17 @@ const Roles = {
 	UNASSIGNED: "unassigned",
 };
 
-module.exports = Roles;
+const VehicleType = {
+	OPEN: "Open Truck",
+	DUMP: "Dump Truck",
+	COMPACTOR: "Compactor",
+	CONTAINER_CARRIER: "Container Carrier",
+};
+
+const Capacity = {
+	THREE: 3,
+	FIVE: 5,
+	SEVEN: 7,
+};
+
+module.exports = { Roles, VehicleType, Capacity };

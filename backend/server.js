@@ -11,6 +11,7 @@ const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
 const profileRouter = require("./routes/profileRouter");
 const rbacRouter = require("./routes/rbacRouter");
+const adminRouter = require("./routes/adminRouter");
 const { initializeDB } = require("./helper");
 
 const PORT = process.env.NODE_DOCKER_PORT_BACKEND || 8000;
@@ -39,6 +40,7 @@ app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/profile", profileRouter);
 app.use("/rbac", rbacRouter);
+app.use('/admin', adminRouter);
 
 app.get("/health", (req, res) => {
 	res.status(200).json({ status: "OK", message: "Server is healthy" });

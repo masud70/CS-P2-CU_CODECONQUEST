@@ -50,6 +50,15 @@ db.Role.belongsToMany(db.User, { through: db.UserRole });
 db.Permission.belongsToMany(db.Role, { through: db.RolePermission });
 db.Role.belongsToMany(db.Permission, { through: db.RolePermission });
 
+db.Sts.hasOne(db.User);
+db.User.belongsTo(db.Sts);
+
+db.Sts.hasMany(db.StsDeparture);
+db.StsDeparture.belongsTo(db.Sts);
+
+db.Vehicle.hasMany(db.StsDeparture);
+db.StsDeparture.belongsTo(db.Vehicle);
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
