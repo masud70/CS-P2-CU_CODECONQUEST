@@ -10,6 +10,11 @@ import { MdDeleteForever } from "react-icons/md";
 import { PieChart } from '@mui/x-charts/PieChart';
 import ModalWithUserInfo from '../../Modal/ModalWithUserInfo';
 
+import { FaEye } from "react-icons/fa";
+import { RiDeleteBin5Line } from "react-icons/ri";
+
+
+
 
 export default function UserManagementTab() {
 
@@ -38,6 +43,19 @@ export default function UserManagementTab() {
   const columns = [
     { field: 'full_name', headerName: 'Full Name', width: 300 },
     { field: 'role', headerName: 'Role', width: 150 },
+    { field: 'actions', headerName: 'Actions', width: 150, sortable:false,
+    renderCell:(params)=>{
+      return 
+        <Box className="flex justify-between">
+          <Button isIconOnly color="primary" variant="faded" aria-label="See this User">
+              <FaEye color={'green'}/>
+
+          </Button>
+          <Button isIconOnly color="danger" variant="faded" aria-label="Delete this user">
+              <RiDeleteBin5Line />
+          </Button>
+        </Box>
+    } },
   ];
 
 
@@ -81,7 +99,7 @@ export default function UserManagementTab() {
                 }
             </Select>
             <Box className="mt-3 text-right">
-                  <Button color="danger" variant="bordered" startContent={<MdDeleteForever />}>Remove User</Button>
+                  <Button color="danger" variant="bordered" startContent={<MdDeleteForever />}>Remove Users</Button>
             </Box>
             <Box className="mt-3" sx={{minHeight:'500px'}}>
                 <DataGrid onSelectionModelChange={(ids)=>{setselectedUserType(ids); }} checkboxSelection disableRowSelectionOnClick rows={rows} columns={columns} />
