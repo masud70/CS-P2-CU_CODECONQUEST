@@ -28,7 +28,7 @@ router.post("/create", systemAdminAccessCheck, async (req, res, next) => {
 	}
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res, next) => {
 	try {
 		const user = req.body;
 

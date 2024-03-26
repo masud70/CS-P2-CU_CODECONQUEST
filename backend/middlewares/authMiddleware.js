@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const db = require("../models");
+
 module.exports = {
 	decodeToken: async ({ authorization }) => {
 		const token = authorization.split(" ")[1];

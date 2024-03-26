@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const { getRandomChars, sendMail, generateToken } = require("../helper");
 const db = require("../models");
-const { where } = require("sequelize");
 const saltRounds = 10;
 
 module.exports = {
@@ -57,7 +56,7 @@ module.exports = {
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},
@@ -107,7 +106,7 @@ module.exports = {
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},
@@ -129,7 +128,7 @@ module.exports = {
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},
@@ -172,7 +171,7 @@ module.exports = {
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},
@@ -214,7 +213,7 @@ module.exports = {
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},
@@ -237,7 +236,7 @@ module.exports = {
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},

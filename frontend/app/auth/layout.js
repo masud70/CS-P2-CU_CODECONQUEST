@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
 
 	useEffect(() => {
 		if (hasCookie(process.env.tokenKey)) {
-			router.push("/dashboard");
+			router.push("/");
 		}
 	}, [auth]);
 
