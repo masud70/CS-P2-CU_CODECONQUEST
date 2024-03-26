@@ -2,16 +2,17 @@
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./login.css";
 import Link from "next/link";
 import ATextField from "../components/ATextField";
 import { Button } from "@nextui-org/react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { login } from "@/redux/state/authSlice";
+import { hasCookie } from "cookies-next";
 
 export default function Login() {
 	const [emailOrMobile, setEmailOrMobile] = useState("");
@@ -20,6 +21,13 @@ export default function Login() {
 	const [isLoading, setIsLoading] = useState(false);
 	const dispatch = useDispatch();
 	const router = useRouter();
+	const auth = useSelector((st) => st.auth);
+
+	useEffect(() => {
+		if (hasCookie(process.env.tokenKey)) {
+			router.push("/");
+		}
+	}, [auth]);
 
 	const submitLogin = async () => {
 		try {

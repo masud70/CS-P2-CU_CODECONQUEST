@@ -88,6 +88,7 @@ router.post("/reset-password/confirm", async (req, res) => {
 
 router.post("/change-password", checkLogin, async (req, res) => {
 	try {
+        console.log(req.body);
 		const { newPassword } = req.body;
 		const userId = req.userId;
 
