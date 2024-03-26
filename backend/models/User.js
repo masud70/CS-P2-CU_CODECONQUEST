@@ -1,5 +1,3 @@
-const Roles = require("../constants");
-
 module.exports = (sequelize, DataTypes) => {
 	const User = sequelize.define("User", {
 		id: {
@@ -14,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
 		email: {
 			type: DataTypes.TEXT,
 			allowNull: false,
+		},
+		mobileNumber: {
+			type: DataTypes.STRING,
 		},
 		avatar: {
 			type: DataTypes.TEXT,

@@ -33,7 +33,7 @@ router.post("/login", async (req, res) => {
 		const user = req.body;
 
 		const result = await getLogin({
-			email: user.email,
+			emailOrMobileNumber: user.emailOrMobileNumber,
 			password: user.password,
 		});
 
@@ -56,8 +56,6 @@ router.get("/logout", checkLogin, async (req, res) => {
 		next(error.messsage);
 	}
 });
-
-
 
 router.post("/reset-password/initiate", async (req, res) => {
 	try {

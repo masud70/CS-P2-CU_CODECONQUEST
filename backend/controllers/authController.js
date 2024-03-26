@@ -62,9 +62,20 @@ module.exports = {
 		}
 	},
 
-	getLogin: async ({ email, password }) => {
+	getLogin: async ({ emailOrMobileNumber, password }) => {
 		try {
-			const user = await db.User.findOne({ where: { email: email } });
+			const email = emailOrMobileNumber.includes("@")
+				? emailOrMobileNumber
+				: null;
+			const mobileNumber = !emailOrMobileNumber.includes("@")
+				? emailOrMobileNumber
+				: null;
+
+			const where = {
+				[email ? "email" : "mobileNumber"]: email || mobileNumber,
+			};
+
+			const user = await db.User.findOne({ where });
 			if (user) {
 				const isValidPassword = await bcrypt.compare(
 					password,
@@ -88,7 +99,10 @@ module.exports = {
 					throw new Error("Authentication failed!");
 				}
 			} else {
-				throw new Error(`User with email ${email} not found`);
+				const errorMessage = email
+					? `User with email ${email} not found`
+					: `User with mobile number ${mobileNumber} not found`;
+				throw new Error(errorMessage);
 			}
 		} catch (error) {
 			return {
