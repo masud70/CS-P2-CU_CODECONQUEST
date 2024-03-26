@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography'
 import DisplaySnackBar from '../components/DisplaySnackBar'
 import ATextField from '../components/ATextField'
 
+import {CircularProgress} from "@nextui-org/react";
+
 export default function Page() {
 
     const [password, setpassword] = useState('')
@@ -40,8 +42,10 @@ export default function Page() {
             
             </Box>
             <Box className='SubmitButtonDiv'>
-                <Button className='SubmitButton' disabled={password.length<1 || confirmPassword.length<1 || password!=confirmPassword}>Reset Password</Button>
-                {/* <CircularProgress size={25} color={'error'} sx={{color:'white'}} /> */}
+                <Button className='SubmitButton' disabled={password.length<1 || confirmPassword.length<1 || password!=confirmPassword}>
+                  Reset Password
+                  {/* <CircularProgress color="primary" size="sm" aria-label="Loading..." /> */}
+                 </Button>
             </Box>
             <DisplaySnackBar open={open} message={'Password has been reset'}/>
 
