@@ -3,21 +3,9 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import "./auth.css";
-import { hasCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
 
 export default function RootLayout({ children }) {
 	const [bgImage, setbgImage] = useState("/assets/1.jpg");
-
-	const router = useRouter();
-	const auth = useSelector((st) => st.auth);
-
-	useEffect(() => {
-		if (hasCookie(process.env.tokenKey)) {
-			router.push("/dashboard");
-		}
-	}, [auth]);
 
 	useEffect(() => {
 		let num = 1;

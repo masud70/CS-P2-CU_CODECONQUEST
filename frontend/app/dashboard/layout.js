@@ -11,8 +11,6 @@ const layout = ({ children }) => {
 	useEffect(() => {
 		if (!hasCookie(process.env.tokenKey)) {
 			router.push("/");
-		} else {
-			router.push("/dashboard");
 		}
 	}, [auth]);
 
