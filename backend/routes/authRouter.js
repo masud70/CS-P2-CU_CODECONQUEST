@@ -62,7 +62,7 @@ router.post("/reset-password/initiate", async (req, res) => {
 		const user = req.body;
 
 		const result = await initiateResetPassword({
-			email: user.email,
+			emailOrMobileNumber: user.emailOrMobileNumber,
 		});
 
 		res.json(result);
@@ -76,7 +76,7 @@ router.post("/reset-password/confirm", async (req, res) => {
 		const user = req.body;
 
 		const result = await confirmResetPassword({
-			email: user.email,
+			emailOrMobileNumber: user.emailOrMobileNumber,
 			code: user.code,
 		});
 
@@ -88,7 +88,6 @@ router.post("/reset-password/confirm", async (req, res) => {
 
 router.post("/change-password", checkLogin, async (req, res) => {
 	try {
-        console.log(req.body);
 		const { newPassword } = req.body;
 		const userId = req.userId;
 

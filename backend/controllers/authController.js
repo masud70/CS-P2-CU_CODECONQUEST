@@ -133,12 +133,28 @@ module.exports = {
 		}
 	},
 
-	initiateResetPassword: async ({ email, validFor = 5 }) => {
+	initiateResetPassword: async ({ emailOrMobileNumber, validFor = 5 }) => {
 		try {
-			const code = getRandomChars(6);
-			const user = await db.User.findOne({ where: { email: email } });
+			const email = emailOrMobileNumber.includes("@")
+				? emailOrMobileNumber
+				: null;
+			const mobileNumber = !emailOrMobileNumber.includes("@")
+				? emailOrMobileNumber
+				: null;
+
+			if (mobileNumber) {
+				throw new Error(
+					"Password recovery with mobile number is not supported yet!"
+				);
+			}
+
+			const where = {
+				[email ? "email" : "mobileNumber"]: email || mobileNumber,
+			};
+			const user = await db.User.findOne({ where });
 
 			if (user) {
+				const code = getRandomChars(6);
 				const otp = await db.Otp.create({
 					code: code,
 					generatedAt: Date.now(),
@@ -161,6 +177,7 @@ module.exports = {
 						success: true,
 						message:
 							"An email is sent with your password recovery code. Please check your inbox.",
+						otpId: otp.id,
 					};
 				} else {
 					throw new Error(emailResult.message);
@@ -176,10 +193,22 @@ module.exports = {
 		}
 	},
 
-	confirmResetPassword: async ({ email, code }) => {
+	confirmResetPassword: async ({ emailOrMobileNumber, code }) => {
 		try {
+            emailOrMobileNumber = emailOrMobileNumber.replace('%40', '@');
+            
+			const email = emailOrMobileNumber.includes("@")
+				? emailOrMobileNumber
+				: null;
+			const mobileNumber = !emailOrMobileNumber.includes("@")
+				? emailOrMobileNumber
+				: null;
+
+			const where = {
+				[email ? "email" : "mobileNumber"]: email || mobileNumber,
+			};
 			const user = await db.User.findOne({
-				where: { email: email },
+				where,
 				include: [
 					{
 						model: db.Otp,
@@ -189,7 +218,6 @@ module.exports = {
 					},
 				],
 			});
-
 			const notExpired = user.Otps[0].generatedAt + 300000 >= Date.now();
 
 			if (user && notExpired) {
@@ -199,7 +227,7 @@ module.exports = {
 				await db.Otp.destroy({ where: { id: user.Otps[0].id } });
 
 				const token = generateToken({
-					email: email,
+					email: user.email,
 					userId: user.id,
 				});
 				return {

@@ -1,59 +1,48 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import "./resetPassword.css";
+import React, { useEffect, useState } from "react";
+import "./forgotPass.css";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import ATextField from "../components/ATextField";
+import ATextField from "../../components/ATextField";
 import { Button } from "@nextui-org/react";
 import { toast } from "react-toastify";
-import axios from "axios";
-import { getCookie, hasCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { hasCookie } from "cookies-next";
 import { useSelector } from "react-redux";
 
 export default function Page() {
-	const [password, setpassword] = useState("");
-	const [confirmPassword, setconfirmPassword] = useState("");
+	const [emailOrMobile, setEmailOrMobile] = useState("");
 	const [errorMessaage, setErrorMessaage] = useState("");
 	const [loading, setLoading] = useState(false);
-	const auth = useSelector((st) => st.auth);
+    const auth = useSelector((st) => st.auth);
 	const router = useRouter();
 
-	useEffect(() => {
-		if (!hasCookie(process.env.tokenKey)) {
+    useEffect(() => {
+		if (hasCookie(process.env.tokenKey)) {
 			router.push("/");
 		}
 	}, [auth]);
 
-	const submitResetPassword = async () => {
+	const sendOtp = async () => {
 		try {
-			setLoading(true);
 			setErrorMessaage("");
+			setLoading(true);
 
-			if (password !== confirmPassword) {
-				throw new Error("Passwrds doesn't match");
-			}
-
-			const result = await axios({
-				method: "POST",
-				url: process.env.backendUrl + "/auth/change-password",
-				headers: {
-					authorization: "Bearer " + getCookie(process.env.tokenKey),
-				},
-				data: {
-					newPassword: password,
-				},
-			});
+			const result = await axios.post(
+				`${process.env.backendUrl}/auth/reset-password/initiate`,
+				{
+					emailOrMobileNumber: emailOrMobile,
+				}
+			);
 
 			if (!result.data.success) {
 				throw new Error(result.data.message);
 			}
 
 			toast.success(result.data.message);
-			router.push("/dashboard");
-			setpassword("");
-			setconfirmPassword("");
+			router.push(`/auth/reset-password/confirm/${emailOrMobile}`);
 		} catch (error) {
 			toast.error(error.message);
 			setErrorMessaage(error.message);
@@ -65,20 +54,14 @@ export default function Page() {
 	return (
 		<Box className="inputDiv">
 			<div className="text-3xl w-full text-center pb-[15px] text-[wheat]">
-				Change Password
+				Reset Password
 			</div>
 			<Box>
 				<ATextField
-					type={"password"}
-					label={"Password"}
-					setFunction={setpassword}
-					value={password}
-				/>
-				<ATextField
-					type={"password"}
-					label={"Confirm Password"}
-					setFunction={setconfirmPassword}
-					value={confirmPassword}
+					type={"text"}
+					label={"Email / Mobile Number"}
+					setFunction={setEmailOrMobile}
+					value={emailOrMobile}
 				/>
 			</Box>
 			<Box className="errorMessageDiv">
@@ -88,14 +71,19 @@ export default function Page() {
 					</Typography>
 				)}
 			</Box>
+			<div>
+				<Button className="bg-transparent font-bold text-white">
+					Send OTP again
+				</Button>
+			</div>
 			<Box className="SubmitButtonDiv">
 				<Button
 					isLoading={loading}
 					size="lg"
 					color="primary"
-					onClick={submitResetPassword}
+					onClick={sendOtp}
 				>
-					Reset Password
+					Send OTP
 				</Button>
 			</Box>
 		</Box>
