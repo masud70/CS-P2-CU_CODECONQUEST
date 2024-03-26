@@ -1,0 +1,24 @@
+.menuDiv{
+    width: 100%;
+    background-color: rgba(3, 143, 194, 0.436);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 8px;
+
+}
+.menuCol{
+    width: 30%;
+}
+.alignLeft{
+    display: flex;
+    justify-content:flex-start;
+}
+.alignCenter{
+    display: flex;
+    justify-content: center;
+}
+.alignRight{ 
+    display: flex;
+    justify-content: flex-end;
+}

@@ -7,6 +7,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import DisplaySnackBar from '../components/DisplaySnackBar'
 import ATextField from '../components/ATextField'
+import {CircularProgress} from "@nextui-org/react";
 
 export default function Page() {
 
@@ -39,8 +40,9 @@ export default function Page() {
                 <ATextField type={'text'} label={'OTP'} setFunction={setotp} value={otp}/>
             </Box>
             <Box className='SubmitButtonDiv'>
-                <Button className='SubmitButton' disabled={mobileNumber.length<1}>Send OTP</Button>
-                {/* <CircularProgress size={25} color={'error'} sx={{color:'white'}} /> */}
+                <Button className='SubmitButton' disabled={mobileNumber.length<1}>Send OTP
+                {/* <CircularProgress color="primary" size="sm" aria-label="Loading..." /> */}
+                </Button>
             </Box>
                
            <DisplaySnackBar open={open} message={"OTP Sent to your mobile."}/>
