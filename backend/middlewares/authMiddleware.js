@@ -3,6 +3,9 @@ const db = require("../models");
 
 module.exports = {
 	decodeToken: async ({ authorization }) => {
+		if (!authorization) {
+			throw new Error("Authorization token error!");
+		}
 		const token = authorization.split(" ")[1];
 		const { email, userId } = jwt.verify(token, process.env.JWT_SECRET);
 

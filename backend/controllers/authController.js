@@ -7,6 +7,9 @@ module.exports = {
 	createUser: async ({ email, password }) => {
 		try {
 			if (!password) password = getRandomChars(6);
+			if (!email) {
+				throw new Error("Email cannot be empty!");
+			}
 
 			const user = await db.User.findAll({ where: { email: email } });
 
@@ -195,8 +198,8 @@ module.exports = {
 
 	confirmResetPassword: async ({ emailOrMobileNumber, code }) => {
 		try {
-            emailOrMobileNumber = emailOrMobileNumber.replace('%40', '@');
-            
+			emailOrMobileNumber = emailOrMobileNumber.replace("%40", "@");
+
 			const email = emailOrMobileNumber.includes("@")
 				? emailOrMobileNumber
 				: null;

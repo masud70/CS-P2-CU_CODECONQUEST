@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import { Button } from "@nextui-org/react";
+import React from "react";
 import { Avatar } from "@nextui-org/react";
 import Logout from "@/icon/Logout";
 import { toast } from "react-toastify";
@@ -20,13 +19,11 @@ import Exchange from "@/icon/Exchange";
 import Link from "next/link";
 
 export default function Header() {
-	const [isLoading, setIsLoading] = useState(false);
 	const dispatch = useDispatch();
 	const router = useRouter();
 
 	const submitLogout = async () => {
 		try {
-			setIsLoading(true);
 			const result = await axios({
 				method: "GET",
 				url: process.env.backendUrl + "/auth/logout",
@@ -43,8 +40,6 @@ export default function Header() {
 			router.push("/");
 		} catch (error) {
 			toast.error(error.message);
-		} finally {
-			setIsLoading(false);
 		}
 	};
 	return (

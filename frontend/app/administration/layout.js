@@ -10,7 +10,9 @@ export default function Layout({ children }) {
 	return (
 		<>
 			<Header />
-			{children}
+			<div className="px-4 py-2 w-full flex justify-center">
+				<div className="w-[90%] md:w-[85%] lg:w-[80%]">{children}</div>
+			</div>
 			<Drawer />
 		</>
 	);

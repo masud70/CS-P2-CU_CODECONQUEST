@@ -10,7 +10,7 @@ const DrawerMenu = () => {
 
 	return (
 		<>
-			<Box className={"hamBar"}>
+			<Box className="absolute top-3 left-2 text-white cursor-pointer">
 				<TiThMenu
 					size={"2em"}
 					onClick={() => setsideBarShow((st) => !st)}
