@@ -1,7 +1,8 @@
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
-
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -16,10 +17,10 @@ export default function RootLayout({ children }) {
 				<Providers>
 					<main className="text-foreground bg-background">
 						{children}
+						<ToastContainer />
 					</main>
 				</Providers>
 			</body>
 		</html>
 	);
 }
-

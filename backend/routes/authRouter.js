@@ -28,12 +28,12 @@ router.post("/create", systemAdminAccessCheck, async (req, res, next) => {
 	}
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res, next) => {
 	try {
 		const user = req.body;
 
 		const result = await getLogin({
-			email: user.email,
+			emailOrMobileNumber: user.emailOrMobileNumber,
 			password: user.password,
 		});
 
@@ -57,14 +57,12 @@ router.get("/logout", checkLogin, async (req, res) => {
 	}
 });
 
-
-
 router.post("/reset-password/initiate", async (req, res) => {
 	try {
 		const user = req.body;
 
 		const result = await initiateResetPassword({
-			email: user.email,
+			emailOrMobileNumber: user.emailOrMobileNumber,
 		});
 
 		res.json(result);
@@ -78,7 +76,7 @@ router.post("/reset-password/confirm", async (req, res) => {
 		const user = req.body;
 
 		const result = await confirmResetPassword({
-			email: user.email,
+			emailOrMobileNumber: user.emailOrMobileNumber,
 			code: user.code,
 		});
 

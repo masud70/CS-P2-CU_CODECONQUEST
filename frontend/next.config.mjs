@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+	env: {
+		backendUrl: "http://localhost:8000",
+        tokenKey: 'eco@token'
+	},
+};
 
 export default nextConfig;
