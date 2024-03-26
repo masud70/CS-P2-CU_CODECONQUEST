@@ -14,13 +14,13 @@ export default function Page() {
 
 	useEffect(() => {
 		if (!hasCookie(process.env.tokenKey)) {
-			router.push("/");
+			// router.push("/");
 		}
 	}, [auth]);
 
 	return (
 		<Box className="AdminPageDiv">
-			{/* <UserManagementTab /> */}
+			<UserManagementTab />
 		</Box>
 	);
 }

@@ -7,6 +7,8 @@ import {Button, Select, SelectItem} from "@nextui-org/react";
 import { DataGrid } from '@mui/x-data-grid';
 import { MdDeleteForever } from "react-icons/md";
 
+import { PieChart } from '@mui/x-charts/PieChart';
+
 
 export default function UserManagementTab() {
 
@@ -17,6 +19,12 @@ export default function UserManagementTab() {
     {value:'hai',label:'haai'}
     
   ]
+
+  const items = [
+    { value: 10, label: 'Series A ( no Id )' },
+    { id: 'id_B', value: 15, label: 'Series B' },
+    { id: 'id_C', value: 20, label: 'Series C' },
+  ];
 
   const rows = [
     { id: 1, full_name: 'Hello', role: 'World' },
@@ -32,10 +40,21 @@ export default function UserManagementTab() {
 
 
   return (
-    <Box className="h-auto w-full flex px-3">
+    <Box className="h-auto w-full flex px-1">
       <Box className="w-[35%] h-full">
-        <Box className="h-3/4">
-            Ekhane ekta chart jabe
+        <Box className="h-3/4 w-full">
+          
+          <PieChart
+              series={[
+                {
+                  data: items,
+                },
+              ]}
+              // onClick={handleClick}
+              width={350}
+              height={200}
+              margin={{ right: 200 }}
+            />
         </Box>
         <Box className="h-1/4">
           ekhane kichu basic numbers and information jabe
@@ -50,11 +69,13 @@ export default function UserManagementTab() {
                 className="max-w-l mb-0.5"
                 onSelectionChange={(e)=>{setselectedUserType(e.currentKey)}}
               >
-                {userType.map((animal) => (
+                {
+                userType.map((animal) => (
                   <SelectItem className='text-zinc-800' key={animal.value} value={animal.value}>
                     {animal.label}
                   </SelectItem>
-                ))}
+                ))
+                }
             </Select>
             <Box className="mt-3 text-right">
                   <Button color="danger" variant="bordered" startContent={<MdDeleteForever />}>Remove User</Button>
