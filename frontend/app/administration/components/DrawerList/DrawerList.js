@@ -11,13 +11,14 @@ import { Divider } from "@nextui-org/react";
 import React from "react";
 import "./DrawerList.css";
 import { FaUsersGear } from "react-icons/fa6";
+import Link from "next/link";
 
 export default function DrawerList({ toggleDrawer }) {
 	return (
 		<Box
 			sx={{ width: 250, paddingY: "5px" }}
 			role="presentation"
-			onClick={toggleDrawer()}
+			onClick={toggleDrawer}
 		>
 			<Typography
 				className="menuTitle w-full text-center font-bold"
@@ -26,23 +27,23 @@ export default function DrawerList({ toggleDrawer }) {
 				Menu
 			</Typography>
 			<List>
-				{["User Management"].map((text, index) => (
+				{[
+					{ text: "Admin Home", link: "/administration" },
+					{ text: "User Management", link: "/administration/user" },
+					{ text: "Role Management", link: "/administration/role" },
+				].map((item, index) => (
 					<>
-						<ListItem
-							key={text}
-							disablePadding
-							onClick={() => {
-								console.log("hudai");
-							}}
-						>
-							<ListItemButton>
-								<ListItemIcon>
-									<FaUsersGear />
-								</ListItemIcon>
-								<ListItemText primary={text} />
-							</ListItemButton>
-						</ListItem>
-						<Divider />
+						<Link href={item.link}>
+							<ListItem key={index} disablePadding>
+								<ListItemButton>
+									<ListItemIcon>
+										<FaUsersGear />
+									</ListItemIcon>
+									<ListItemText primary={item.text} />
+								</ListItemButton>
+							</ListItem>
+							<Divider />
+						</Link>
 					</>
 				))}
 			</List>
