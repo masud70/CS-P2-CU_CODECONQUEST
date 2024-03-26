@@ -8,11 +8,14 @@ import { DataGrid } from '@mui/x-data-grid';
 import { MdDeleteForever } from "react-icons/md";
 
 import { PieChart } from '@mui/x-charts/PieChart';
+import ModalWithUserInfo from '../../Modal/ModalWithUserInfo';
 
 
 export default function UserManagementTab() {
 
   const [selectedUserType, setselectedUserType] = useState('')
+
+  const [isOpen, setisOpen] = useState(true)
 
   const userType = [
     {value:'hi',label:'hi'},
@@ -42,7 +45,7 @@ export default function UserManagementTab() {
   return (
     <Box className="h-auto w-full flex px-1">
       <Box className="w-[35%] h-full">
-        <Box className="h-3/4 w-full">
+        <Box className="h-3/4 w-full my-3">
           
           <PieChart
               series={[
@@ -51,13 +54,13 @@ export default function UserManagementTab() {
                 },
               ]}
               // onClick={handleClick}
-              width={350}
-              height={200}
+              width={400}
+              height={350}
               margin={{ right: 200 }}
             />
         </Box>
         <Box className="h-1/4">
-          ekhane kichu basic numbers and information jabe
+            
         </Box>
 
       </Box>
@@ -85,6 +88,9 @@ export default function UserManagementTab() {
             </Box>
           </Box>
       </Box>
+
+      <ModalWithUserInfo isOpen={isOpen} setisOpen={setisOpen}/>
+
     </Box>
   )
 }
