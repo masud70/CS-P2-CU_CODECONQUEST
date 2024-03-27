@@ -50,7 +50,7 @@ const page = () => {
 				throw new Error(res.data.message);
 			}
 			toast.success(res.data.message);
-            getUser();
+			getUser();
 		} catch (error) {
 			toast.error(error.message);
 		} finally {
@@ -70,16 +70,20 @@ const page = () => {
 				</div>
 				<Divider />
 				<img
-					className="rounded-xl overflow-hidden pt-4"
+					className="rounded-xl overflow-hidden mt-4"
 					src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
 					width={250}
 				/>
 				<div className="font-bold text-2xl pt-2 text-[#1b0051]">
 					{user?.name || "Name not set"}
 				</div>
-				<div className="font-bold text-lg text-[#1b0051]">
-					({user?.role || "Role not assigned"})
-				</div>
+				{user?.roles?.map(
+					((role) => (
+						<div className="font-bold text-lg text-[#1b0051]">
+							{role}
+						</div>
+					)) || "Role not assigned"
+				)}
 			</div>
 			<div className="bg-white rounded overflow-hidden flex flex-col p-2 justify-center space-y-4 items-center">
 				<div className="w-full rounded overflow-hidden  border-2 border-[#150038]">
@@ -179,11 +183,15 @@ const page = () => {
 						</div>
 					</div>
 					<div className="w-full p-2">
-						<span className="text-xl font-semibold">
-							{user?.role}
-						</span>
+						{user?.roles?.map(
+							((role) => (
+								<span className="text-xl font-semibold">
+									{role}
+								</span>
+							)) || "Role not assigned"
+						)}
 						<div className="flex space-x-2 font-bold">
-							<Input value={user?.role} placeholder="Your role" />
+							<Input disabled value={user?.role} placeholder="Your role" />
 							<Button disabled color="primary">
 								Update
 							</Button>

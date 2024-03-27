@@ -25,13 +25,13 @@ const layout = ({ children }) => {
 					className="bg-purple-500"
 					text="Home"
 					icon={<Home />}
-					link="/dashboard/sts"
+					link="/dashboard/admin"
 				/>
 				<MenuCard
 					className="bg-blue-500"
 					text="Vehicle Entry"
 					icon={<Truck />}
-					link="/dashboard/sts/vehicle-entry"
+					link="/dashboard/admin/vehicle-register"
 				/>
 				<MenuCard
 					className="bg-red-500"

@@ -13,7 +13,7 @@ module.exports = {
 				name: user.name,
 				email: user.email,
 				mobileNumber: user.mobileNumber,
-				role: user.Roles[0].roleString,
+				roles: user.Roles.map((r) => r.roleString),
 			};
 
 			return {
@@ -45,13 +45,10 @@ module.exports = {
 
 			user[field] = value;
 			await user.save();
-            
-			const updateUser = await db.User.findByPk(userId);
 
 			return {
 				success: true,
 				message: "Update successful!",
-				user: updateUser,
 			};
 		} catch (error) {
 			return {
