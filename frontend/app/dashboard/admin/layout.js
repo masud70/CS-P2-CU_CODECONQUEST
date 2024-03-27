@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import MenuCard from "@/components/MenuCard";
 import Truck from "@/icon/Truck";
 import Home from "@/icon/Home";
-import Taka from "@/icon/Taka";
+import StsIcon from "@/icon/StsIcon";
 
 const layout = ({ children }) => {
 	const router = useRouter();
@@ -35,9 +35,9 @@ const layout = ({ children }) => {
 				/>
 				<MenuCard
 					className="bg-red-500"
-					text="Bill"
-					icon={<Taka />}
-					link="/dashboard/bill"
+					text="STS Register"
+					icon={<StsIcon />}
+					link="/dashboard/admin/sts-register"
 				/>
 			</div>
 			<div className="w-2/3 lg:w-4/5 p-2">{children}</div>

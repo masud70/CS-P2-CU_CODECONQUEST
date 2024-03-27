@@ -43,13 +43,14 @@ module.exports = {
 		}
 	},
 
-	addSts: async ({ wardNumber, capacity, lat, long }) => {
+	addSts: async ({ wardNumber, capacity, locationName, lat, lng }) => {
 		try {
 			const sts = await db.Sts.create({
 				wardNumber,
 				capacity,
+				locationName,
 				lat,
-				long,
+				lng,
 			});
 
 			return {
