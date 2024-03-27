@@ -19,6 +19,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 export default function UserManagementTab() {
 
   const [selectedUserType, setselectedUserType] = useState('')
+  const [userDataToBeShown, setuserDataToBeShown] = useState({})
 
   const [isOpen, setisOpen] = useState(true)
 
@@ -43,10 +44,14 @@ export default function UserManagementTab() {
   const columns = [
     { field: 'full_name', headerName: 'Full Name', width: 300 },
     { field: 'role', headerName: 'Role', width: 150 },
-    { field: 'actions', headerName: 'Actions', width: 150, sortable:false,
+    { field: 'actions', headerName: 'Actions', width: 130, sortable:false,
     renderCell:(params)=>
         <Box className="flex w-full justify-between">
-          <Button className="mx-1" isIconOnly color="primary" variant="faded" aria-label="See this User">
+          <Button onClick={()=>{
+            // console.log(params.row)
+            setuserDataToBeShown(params.row)
+            setisOpen(!isOpen)
+          }} className="mx-1" isIconOnly color="primary" variant="faded" aria-label="See this User">
               <FaEye color={'green'}/>
 
           </Button>

@@ -20,7 +20,7 @@ export default function Page() {
 
 	return (
 		<Box className="AdminPageDiv">
-			<UserManagementTab />
+			{/* <UserManagementTab /> */}
 		</Box>
 	);
 }
