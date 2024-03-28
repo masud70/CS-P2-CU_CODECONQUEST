@@ -30,7 +30,7 @@ export default function DrawerList({ toggleDrawer }) {
 				{[
 					{ text: "Admin Home", link: "/administration" },
 					{ text: "User Management", link: "/administration/user" },
-					{ text: "Role Management", link: "/administration/role" },
+					{ text: "Role Management", link: "/administration/role-management" },
 				].map((item, index) => (
 					<>
 						<Link href={item.link}>
