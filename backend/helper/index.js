@@ -65,7 +65,7 @@ module.exports = {
 
 	getDistanceAndDuration: async ({ origin, destination }) => {
 		try {
-			const API_KEY = process.env.API_KEY + "M";
+			const API_KEY = process.env.API_KEY;
 			const API_URL =
 				"https://maps.googleapis.com/maps/api/directions/json";
 

@@ -39,6 +39,12 @@ const layout = ({ children }) => {
 					icon={<StsIcon />}
 					link="/dashboard/admin/sts-register"
 				/>
+                <MenuCard
+					className="bg-green-500"
+					text="STS Register"
+					icon={<StsIcon />}
+					link="/dashboard/admin/sts-management"
+				/>
 			</div>
 			<div className="w-2/3 lg:w-4/5 p-2">{children}</div>
 		</div>

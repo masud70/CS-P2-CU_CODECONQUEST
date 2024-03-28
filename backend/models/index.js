@@ -50,20 +50,29 @@ db.Role.belongsToMany(db.User, { through: db.UserRole });
 db.Permission.belongsToMany(db.Role, { through: db.RolePermission });
 db.Role.belongsToMany(db.Permission, { through: db.RolePermission });
 
-db.Sts.hasOne(db.User);
-db.User.belongsTo(db.Sts);
+db.Sts.belongsToMany(db.User, { through: db.Manager });
+db.User.belongsToMany(db.Sts, { through: db.Manager });
+
+db.Landfill.belongsToMany(db.User, { through: db.Manager });
+db.User.belongsToMany(db.Landfill, { through: db.Manager });
+
+db.Landfill.hasMany(db.DumpEntry);
+db.DumpEntry.belongsTo(db.Landfill);
 
 db.Sts.hasMany(db.StsDeparture);
 db.StsDeparture.belongsTo(db.Sts);
 
+db.Sts.hasMany(db.Vehicle);
+db.Vehicle.belongsTo(db.Sts);
+
 db.Vehicle.hasMany(db.StsDeparture);
 db.StsDeparture.belongsTo(db.Vehicle);
 
-db.User.hasMany(db.Dump);
-db.Dump.belongsTo(db.User);
+db.User.hasMany(db.DumpEntry);
+db.DumpEntry.belongsTo(db.User);
 
-db.Vehicle.hasMany(db.Dump);
-db.Dump.belongsTo(db.Vehicle);
+db.Vehicle.hasMany(db.DumpEntry);
+db.DumpEntry.belongsTo(db.Vehicle);
 
 db.User.hasMany(db.Otp);
 db.Otp.belongsTo(db.User);
