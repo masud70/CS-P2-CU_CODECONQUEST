@@ -36,7 +36,30 @@ module.exports = {
 		}
 	},
 
-    getAllLandfill: async () => {
+	getManagers: async ({ title }) => {
+		try {
+			const managers = await db.User.findAll({
+				include: [
+					{
+						model: db.Role,
+						where: { title },
+					},
+				],
+			});
+
+			return {
+				success: true,
+				managers: managers,
+			};
+		} catch (error) {
+			return {
+				success: false,
+				message: error.message,
+			};
+		}
+	},
+
+	getAllLandfill: async () => {
 		try {
 			const sts = await db.Landfill.findAll();
 

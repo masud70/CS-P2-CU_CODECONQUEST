@@ -45,7 +45,7 @@ const layout = ({ children }) => {
 				/>
                 <MenuCard
 					className="bg-green-500"
-					text="STS Register"
+					text="STS Management"
 					icon={<StsIcon />}
 					link="/dashboard/admin/sts-management"
 				/>
