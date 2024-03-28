@@ -25,7 +25,7 @@ export default function Login() {
 
 	useEffect(() => {
 		if (hasCookie(process.env.tokenKey)) {
-			router.push("/");
+			router.push("/dashboard");
 		}
 	}, [auth]);
 

@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			primaryKey: true,
 		},
-		volumeOfWaste: {
+		weightOfWaste: {
 			type: DataTypes.DOUBLE,
 			allowNull: false,
 		},

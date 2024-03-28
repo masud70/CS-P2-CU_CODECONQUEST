@@ -1,17 +1,21 @@
 module.exports = (sequelize, DataTypes) => {
-	const Sts = sequelize.define("Sts", {
+	const Landfill = sequelize.define("Landfill", {
 		id: {
 			type: DataTypes.INTEGER,
 			autoIncrement: true,
 			allowNull: false,
 			primaryKey: true,
 		},
-		wardNumber: {
+		locationName: {
+			type: DataTypes.STRING,
+		},
+		startingYear: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
-		locationName: {
-			type: DataTypes.STRING,
+		operationalTimespan: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
 		},
 		capacity: {
 			type: DataTypes.INTEGER,
@@ -27,5 +31,5 @@ module.exports = (sequelize, DataTypes) => {
 		},
 	});
 
-	return Sts;
+	return Landfill;
 };

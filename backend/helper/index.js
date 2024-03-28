@@ -65,7 +65,7 @@ module.exports = {
 
 	getDistanceAndDuration: async ({ origin, destination }) => {
 		try {
-			const API_KEY = process.env.API_KEY + "M";
+			const API_KEY = process.env.API_KEY;
 			const API_URL =
 				"https://maps.googleapis.com/maps/api/directions/json";
 
@@ -102,10 +102,10 @@ module.exports = {
 	initializeDB: async () => {
 		try {
 			const roles = [
-				{ title: "system_admin" },
-				{ title: "sts_manager" },
-				{ title: "landfill_manager" },
-				{ title: "unassigned" },
+				{ title: "system_admin", roleString: "System Admin" },
+				{ title: "sts_manager", roleString: "STS Manager" },
+				{ title: "landfill_manager", roleString: "Landfill Manager" },
+				{ title: "unassigned", roleString: "Not Assigned" },
 			];
 			const permissions = [
 				{ type: "update" },
