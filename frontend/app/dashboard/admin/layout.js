@@ -13,8 +13,12 @@ const layout = ({ children }) => {
 	const auth = useSelector((st) => st.auth);
 
 	useEffect(() => {
-		if (!hasCookie(process.env.tokenKey)) {
-			router.push("/");
+		if (
+			!hasCookie(process.env.tokenKey) ||
+			!auth.roles.includes("system_admin")
+		) {
+			toast.error("Invalid access!");
+			router.push("/dashboard");
 		}
 	}, [auth]);
 
