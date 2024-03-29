@@ -252,7 +252,7 @@ module.exports = {
 			}
 
 			await landfill.addUsers(managers);
-			const updatedSts = await db.Sts.findOne({
+			const updatedLandfill = await db.Landfill.findOne({
 				where: { id: landfillId },
 				include: db.User,
 			});
@@ -260,7 +260,7 @@ module.exports = {
 			return {
 				success: true,
 				message: "Landfill manager(s) added successfully!",
-				sts: updatedSts,
+				landfill: updatedLandfill,
 			};
 		} catch (error) {
 			return {

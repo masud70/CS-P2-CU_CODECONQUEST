@@ -13,7 +13,8 @@ module.exports = {
 				name: user.name,
 				email: user.email,
 				mobileNumber: user.mobileNumber,
-				roles: user.Roles.map((r) => r.roleString),
+				roleStrings: user.Roles.map((r) => r.roleString),
+				roles: user.Roles.map((r) => r.title),
 			};
 
 			return {

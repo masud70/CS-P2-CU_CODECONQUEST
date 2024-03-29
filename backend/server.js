@@ -13,7 +13,9 @@ const profileRouter = require("./routes/profileRouter");
 const rbacRouter = require("./routes/rbacRouter");
 const adminRouter = require("./routes/adminRouter");
 const utilRouter = require("./routes/utilRouter");
+const stsRouter = require("./routes/stsRouter");
 const { initializeDB } = require("./helper");
+const { stsManagerAccessCheck, managerAccessCheck } = require("./middlewares/authMiddleware");
 
 const PORT = process.env.NODE_DOCKER_PORT_BACKEND || 8000;
 var corsOptions = {
@@ -43,6 +45,7 @@ app.use("/profile", profileRouter);
 app.use("/rbac", rbacRouter);
 app.use("/admin", adminRouter);
 app.use("/util", utilRouter);
+app.use("/sts", managerAccessCheck, stsRouter);
 
 app.get("/health", (req, res) => {
 	res.status(200).json({ status: "OK", message: "Server is healthy" });
@@ -54,8 +57,8 @@ app.use((err, req, res, next) => {
 
 // listen for requests
 app.listen(PORT, () => {
-	db.sequelize
-		.sync({ alter: false })
+	db.sequelizes
+		.sync({ alter: true })
 		.then(async () => {
 			try {
 				await initializeDB();

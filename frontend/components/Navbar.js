@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -24,7 +25,7 @@ import {
 import { UserIcon } from "@/app/administration/components/Header/UserIcon";
 import Exchange from "@/icon/Exchange";
 import Logout from "@/icon/Logout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { getCookie } from "cookies-next";
@@ -33,15 +34,20 @@ import { toast } from "react-toastify";
 
 const drawerWidth = 240;
 const navItems = [
-	{ text: "Home", link: "/dashboard" },
-	{ text: "System Admin", link: "/dashboard/admin" },
-	{ text: "STS Manager", link: "/dashboard/sts" },
-	{ text: "Landfill Manager", link: "/dashboard/landfill" },
+	{ text: "Home", link: "/dashboard", access: "all" },
+	{ text: "System Admin", link: "/dashboard/admin", access: "system_admin" },
+	{ text: "STS Manager", link: "/dashboard/sts", access: "sts_manager" },
+	{
+		text: "Landfill Manager",
+		link: "/dashboard/landfill",
+		access: "landfill_manager",
+	},
 ];
 
 function NavBar(props) {
 	const { window, children } = props;
 	const [mobileOpen, setMobileOpen] = React.useState(false);
+	const auth = useSelector((st) => st.auth);
 	const dispatch = useDispatch();
 	const router = useRouter();
 
@@ -77,13 +83,20 @@ function NavBar(props) {
 			</div>
 			<Divider />
 			<List>
-				{navItems.map((item, idx) => (
-					<ListItem key={idx} disablePadding>
-						<ListItemButton sx={{ textAlign: "center" }}>
-							<Link href={item.link}>{item.text}</Link>
-						</ListItemButton>
-					</ListItem>
-				))}
+				<ListItem key={100} disablePadding>
+					<ListItemButton sx={{ textAlign: "center" }}>
+						<Link href={navItems[0].link}>{navItems[0].text}</Link>
+					</ListItemButton>
+				</ListItem>
+				{navItems.map((item, idx) =>
+					auth.roles?.includes(item.access) ? (
+						<ListItem key={idx} disablePadding>
+							<ListItemButton sx={{ textAlign: "center" }}>
+								<Link href={item.link}>{item.text}</Link>
+							</ListItemButton>
+						</ListItem>
+					) : null
+				)}
 			</List>
 		</Box>
 	);
@@ -125,11 +138,18 @@ function NavBar(props) {
 							display: { xs: "none", sm: "block", sm: "flex" },
 						}}
 					>
-						{navItems.map((item, idx) => (
-							<Button key={idx} sx={{ color: "#fff" }}>
-								<Link href={item.link}>{item.text}</Link>
-							</Button>
-						))}
+						<Button key={100} sx={{ color: "#fff" }}>
+							<Link href={navItems[0].link}>
+								{navItems[0].text}
+							</Link>
+						</Button>
+						{navItems.map((item, idx) =>
+							auth.roles?.includes(item.access) ? (
+								<Button key={idx} sx={{ color: "#fff" }}>
+									<Link href={item.link}>{item.text}</Link>
+								</Button>
+							) : null
+						)}
 					</Box>
 					<Dropdown className="bg-sky-500 font-extrabold">
 						<DropdownTrigger>
@@ -142,7 +162,9 @@ function NavBar(props) {
 							<DropdownItem key="new">
 								<div className="flex items-center space-x-2 flex-row">
 									<UserIcon />
-									<Link href="/dashboard/profile">Profile</Link>
+									<Link href="/dashboard/profile">
+										Profile
+									</Link>
 								</div>
 							</DropdownItem>
 							<DropdownItem key="copy">

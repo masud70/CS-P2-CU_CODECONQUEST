@@ -77,7 +77,7 @@ module.exports = {
 				[email ? "email" : "mobileNumber"]: email || mobileNumber,
 			};
 
-			const user = await db.User.findOne({ where });
+			const user = await db.User.findOne({ where, include: db.Role });
 			if (user) {
 				const isValidPassword = await bcrypt.compare(
 					password,
@@ -88,14 +88,18 @@ module.exports = {
 					user.loginStatus = true;
 					await user.save();
 
+					const roles = user.Roles.map((role) => role.title);
+
 					const token = generateToken({
 						userId: user.id,
 						email: email,
 					});
-					return {
+
+                    return {
 						success: true,
 						message: "Login successful!",
 						token: token,
+						user: { ...user.dataValues, roles },
 					};
 				} else {
 					throw new Error("Authentication failed!");

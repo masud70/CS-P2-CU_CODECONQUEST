@@ -77,7 +77,7 @@ const page = () => {
 				<div className="font-bold text-2xl pt-2 text-[#1b0051]">
 					{user?.name || "Name not set"}
 				</div>
-				{user?.roles?.map(
+				{user?.roleStrings?.map(
 					((role) => (
 						<div className="font-bold text-lg text-[#1b0051]">
 							{role}
@@ -183,7 +183,7 @@ const page = () => {
 						</div>
 					</div>
 					<div className="w-full p-2">
-						{user?.roles?.map(
+						{user?.roleStrings?.map(
 							((role) => (
 								<span className="text-xl font-semibold">
 									{role}
