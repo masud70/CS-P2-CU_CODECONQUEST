@@ -13,8 +13,12 @@ const layout = ({ children }) => {
 	const auth = useSelector((st) => st.auth);
 
 	useEffect(() => {
-		if (!hasCookie(process.env.tokenKey)) {
-			router.push("/");
+		if (
+			!hasCookie(process.env.tokenKey) ||
+			!auth.roles.includes("system_admin")
+		) {
+			toast.error("Invalid access!");
+			router.push("/dashboard");
 		}
 	}, [auth]);
 
@@ -41,7 +45,7 @@ const layout = ({ children }) => {
 				/>
                 <MenuCard
 					className="bg-green-500"
-					text="STS Register"
+					text="STS Management"
 					icon={<StsIcon />}
 					link="/dashboard/admin/sts-management"
 				/>

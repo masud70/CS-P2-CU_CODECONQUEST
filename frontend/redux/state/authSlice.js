@@ -14,6 +14,7 @@ export const authSlice = createSlice({
 			state.status = true;
 			if (action.payload.user) {
 				state.user = action.payload.user;
+				state.roles = action.payload.user.roles;
 			}
 			if (action.payload.token) {
 				state.token = action.payload.token;
@@ -22,17 +23,19 @@ export const authSlice = createSlice({
 			toast.success("Login successful.");
 		},
 
+		setUserData: (state, action) => {
+			state.status = true;
+			if (action.payload.user) {
+				state.user = action.payload.user;
+				state.roles = action.payload.user.roles;
+			}
+		},
+
 		logout: (state) => {
 			deleteCookie(process.env.tokenKey);
 			state.status = false;
 			state.user = {};
 			toast.success("Logout successful.");
-		},
-
-		setAuthUserData: (state, action) => {
-			if (action.payload.user) {
-				state.userData = action.payload.user;
-			}
 		},
 	},
 });
