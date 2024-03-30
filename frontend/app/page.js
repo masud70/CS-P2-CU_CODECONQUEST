@@ -1,8 +1,18 @@
+"use client";
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+	const auth = useSelector((st) => st.auth);
+	const router = useRouter();
+
+	useEffect(() => {
+		if (auth.status) router.push("/dashboard");
+	}, [auth]);
+
 	return (
 		<>
 			<div className="font-bold items-center w-screen h-screen justify-center flex">

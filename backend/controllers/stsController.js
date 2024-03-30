@@ -20,6 +20,24 @@ module.exports = {
 		}
 	},
 
+	getUnassignedVehicles: async () => {
+		try {
+			const vehicles = await db.Vehicle.findAll({
+				where: { StId: null },
+			});
+
+			return {
+				success: true,
+				vehicles: vehicles,
+			};
+		} catch (error) {
+			return {
+				success: false,
+				message: error.message,
+			};
+		}
+	},
+
 	getAllSts: async () => {
 		try {
 			const sts = await db.Sts.findAll();
