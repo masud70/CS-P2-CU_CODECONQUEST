@@ -37,6 +37,12 @@ const layout = ({ children }) => {
 					icon={<Truck />}
 					link="/dashboard/admin/vehicle-register"
 				/>
+                <MenuCard
+					className="bg-yellow-500"
+					text="Vehicle Assignment"
+					icon={<StsIcon />}
+					link="/dashboard/admin/vehicle-assignment"
+				/>
 				<MenuCard
 					className="bg-red-500"
 					text="STS Register"
