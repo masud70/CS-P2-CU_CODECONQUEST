@@ -92,7 +92,7 @@ export default function Page() {
 				<Button
 					isLoading={loading}
 					size="lg"
-					color="primary"
+					className="SubmitButton"
 					onClick={submitResetPassword}
 				>
 					Reset Password
