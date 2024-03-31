@@ -16,7 +16,7 @@ const layout = ({ children }) => {
 
 	useEffect(() => {
 		if (
-			!hasCookie(process.env.tokenKey) //||!auth.roles.includes("sts_manager")
+			!hasCookie(process.env.tokenKey) ||!auth.roles.includes("sts_manager")
 		) {
 			toast.error("Invalid access!");
 			router.push("/dashboard");

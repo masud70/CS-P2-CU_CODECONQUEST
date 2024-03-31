@@ -32,19 +32,16 @@ const layout = ({ children }) => {
 			<div className="w-1/3 lg:w-1/5 h-full p-2 bg-slate-200 flex flex-col space-y-2 overflow-auto">
 				<MenuCard text="Home" icon={<Home />} link="/dashboard/admin" />
 				<MenuCard
-					className="bg-red-500"
 					text="User Management"
 					icon={<UserIcon />}
 					link="/dashboard/admin/user"
 				/>
 				<MenuCard
-					className="bg-blue-500"
 					text="Vehicle Entry"
 					icon={<Truck />}
 					link="/dashboard/admin/vehicle-register"
 				/>
 				<MenuCard
-					className="bg-yellow-500"
 					text="Vehicle Assignment"
 					icon={<StsIcon />}
 					link="/dashboard/admin/vehicle-assignment"
@@ -55,7 +52,6 @@ const layout = ({ children }) => {
 					link="/dashboard/admin/sts-register"
 				/>
 				<MenuCard
-					className="bg-green-500"
 					text="STS Management"
 					icon={<StsIcon />}
 					link="/dashboard/admin/sts-management"

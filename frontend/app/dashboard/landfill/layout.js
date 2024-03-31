@@ -15,7 +15,7 @@ const layout = ({ children }) => {
 
 	useEffect(() => {
 		if (
-			!hasCookie(process.env.tokenKey) //|| !auth.roles.includes("landfill_manager")
+			!hasCookie(process.env.tokenKey) || !auth.roles.includes("landfill_manager")
 		) {
 			toast.error("Invalid access!");
 			router.push("/dashboard");
