@@ -1,5 +1,7 @@
+import { Box } from "@mui/material";
 import Link from "next/link";
 import React from "react";
+import './dashboard.css'
 
 const page = () => {
 	return (

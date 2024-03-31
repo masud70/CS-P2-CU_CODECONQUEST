@@ -25,14 +25,12 @@ const layout = ({ children }) => {
 	}, [auth]);
 
 	return (
-		<div className="w-full lg:w-4/5 h-full flex flex-row rounded-b overflow-hidden">
+		<div
+			style={{ backgroundColor: "#eaf8ef" }}
+			className="w-full lg:w-4/5 h-full flex flex-row rounded-b overflow-hidden"
+		>
 			<div className="w-1/3 lg:w-1/5 h-full p-2 bg-slate-200 flex flex-col space-y-2 overflow-auto">
-				<MenuCard
-					className="bg-purple-500"
-					text="Home"
-					icon={<Home />}
-					link="/dashboard/admin"
-				/>
+				<MenuCard text="Home" icon={<Home />} link="/dashboard/admin" />
 				<MenuCard
 					className="bg-red-500"
 					text="User Management"
@@ -52,7 +50,6 @@ const layout = ({ children }) => {
 					link="/dashboard/admin/vehicle-assignment"
 				/>
 				<MenuCard
-					className="bg-red-500"
 					text="STS Register"
 					icon={<StsIcon />}
 					link="/dashboard/admin/sts-register"

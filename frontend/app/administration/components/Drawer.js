@@ -17,11 +17,11 @@ const DrawerMenu = () => {
 				/>
 			</Box>
 			<div>
-				<Drawer
+				<Drawer 
 					open={sideBarShow}
 					onClose={() => setsideBarShow((st) => !st)}
 				>
-					<DrawerList
+					<DrawerList 
 						toggleDrawer={() => setsideBarShow((st) => !st)}
 					/>
 				</Drawer>

@@ -26,14 +26,14 @@ export default function Home() {
 						/>
 					</Box>
 				</Box>
-				<div className="z-10 text-center items-center justify-center flex space-y-2 flex-col mt-64">
+				<div className="z-10 text-center items-center justify-center flex space-y-3 flex-col mt-64">
 					<div className="font-extrabold text-6xl text-slate-900">
 						Code Samurai 2024
 					</div>
 					<div className="font-extrabold text-4xl text-slate-900">
 						Team: CU_CODECONQUEST
 					</div>
-					<div className="text-xl font-bold rounded-xl border-2 transition-colors bg-green-500 overflow-hidden hover:text-white border-solid hover:bg-green-800 w-32 p-2">
+					<div className="loginBtn text-xl font-bold transition-colorsoverflow-hidden hover:text-white border-solid hover:bg-green-800 p-2">
 						<Link href="/auth/login">Login</Link>
 					</div>
 				</div>

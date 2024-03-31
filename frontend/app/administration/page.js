@@ -7,6 +7,7 @@ import { hasCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import UserManagementTab from "./components/Tabs/UserManagementTab/UserManagementTab";
+import RoleManagementTab from './components/Tabs/RoleManagementTab/RoleManagementTab';
 
 export default function Page() {
 	const router = useRouter();
@@ -20,7 +21,8 @@ export default function Page() {
 
 	return (
 		<Box className="AdminPageDiv">
-			<UserManagementTab />
+			{/* <UserManagementTab /> */}
+			<RoleManagementTab />
 		</Box>
 	);
 }

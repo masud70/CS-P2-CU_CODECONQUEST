@@ -17,7 +17,7 @@ const layout = ({ children }) => {
 	}, [auth]);
 
 	return (
-		<div className="">
+		<div className="" style={{backgroundColor:'#eaf8ef'}}>
 			<NavBar>{children}</NavBar>
 		</div>
 	);

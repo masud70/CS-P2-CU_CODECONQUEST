@@ -6,7 +6,6 @@ export default function ATextField(props) {
 
 	return (
 		<TextField
-			className={"inputField"}
 			type={type}
 			label={label}
 			variant="outlined"

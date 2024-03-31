@@ -1,6 +1,6 @@
 "use client";
 
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import "./auth.css";
 
@@ -18,13 +18,14 @@ export default function RootLayout({ children }) {
 
 	return (
 		<Box className={"main"}>
-			<Box className="absoluteBg text-foreground flexMiddle">
+			<Box className="absoluteBg text-foreground flex-col flexMiddle">
 				<img
 					className="img"
 					src={bgImage}
 					draggable={false}
 					alt="background-image"
 				/>
+				<p className="ecosyncTitle">EcoSync</p>
 				{children}
 			</Box>
 		</Box>

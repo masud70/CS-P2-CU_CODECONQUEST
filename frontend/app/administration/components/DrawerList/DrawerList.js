@@ -16,7 +16,7 @@ import Link from "next/link";
 export default function DrawerList({ toggleDrawer }) {
 	return (
 		<Box
-			sx={{ width: 250, paddingY: "5px" }}
+			sx={{ width: 250, paddingY: "5px" , backgroundColor:'#3CDA7C',height:'100%',color:'white'}}
 			role="presentation"
 			onClick={toggleDrawer}
 		>
@@ -37,7 +37,7 @@ export default function DrawerList({ toggleDrawer }) {
 							<ListItem key={index} disablePadding>
 								<ListItemButton>
 									<ListItemIcon>
-										<FaUsersGear />
+										<FaUsersGear color={'white'} />
 									</ListItemIcon>
 									<ListItemText primary={item.text} />
 								</ListItemButton>

@@ -1,6 +1,6 @@
 .inputDiv{
     z-index: 2;
-    background-color: rgba(3, 143, 194, 0.436);
+    background-color: #007e3283;
     width: 50%;
     height: auto;
     padding: 15px;
@@ -37,18 +37,14 @@
     font-weight: bold;
 }
 .SubmitButton{
-    width: 50%;
-    background-color: rgb(1, 153, 219);
-    color: white;
-    padding: 10px;
-    font-weight: bold;
-    border:2px solid transparent;
+	width: 30%;
+	background-color: #009934 !important;
+	color: white !important;
+	border-radius: 10px !important;
+	border-bottom: 6px solid #007327 !important;
+	cursor: pointer;
 }
 
-.SubmitButton:hover{
-    background-color: rgb(0, 94, 135);
-    border: 2px solid white;
-}
 
 
 

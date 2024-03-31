@@ -3,7 +3,7 @@ import React from "react";
 
 const MenuCard = ({ text, icon, className, link }) => {
 	return (
-		<Link href={link}>
+		<Link href={link} style={{backgroundColor:'#3CDA7C', color:'white',margin:'5px 10px',padding:'5px',borderRadius:'10px', boxShadow: '0px 2px 5px black'}}>
 			<div
 				className={
 					"flex flex-col items-center justify-center h-[120px] rounded overflow-hidden cursor-pointer " +

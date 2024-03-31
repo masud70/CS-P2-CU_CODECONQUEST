@@ -56,7 +56,7 @@ export default function Page() {
 
 	return (
 		<Box className="inputDiv">
-			<div className="text-3xl w-full text-center pb-[15px] text-[wheat]">
+			<div className="text-3xl w-full text-left pb-[15px] text-[white]">
 				Reset Password
 			</div>
 			<Box>
@@ -81,8 +81,7 @@ export default function Page() {
 			</div>
 			<Box className="SubmitButtonDiv">
 				<Button
-					size="lg"
-					color="primary"
+					className="SubmitButton"
 					isLoading={loading}
 					onClick={submitOtp}
 				>

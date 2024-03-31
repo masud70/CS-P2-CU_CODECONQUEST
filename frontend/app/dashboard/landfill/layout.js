@@ -7,6 +7,7 @@ import MenuCard from "@/components/MenuCard";
 import Truck from "@/icon/Truck";
 import Home from "@/icon/Home";
 import Taka from "@/icon/Taka";
+import { toast } from "react-toastify";
 
 const layout = ({ children }) => {
 	const router = useRouter();
@@ -14,8 +15,7 @@ const layout = ({ children }) => {
 
 	useEffect(() => {
 		if (
-			!hasCookie(process.env.tokenKey) ||
-			!auth.roles.includes("landfill_manager")
+			!hasCookie(process.env.tokenKey) //|| !auth.roles.includes("landfill_manager")
 		) {
 			toast.error("Invalid access!");
 			router.push("/dashboard");

@@ -122,7 +122,7 @@ function NavBar(props) {
 	return (
 		<Box sx={{ display: "flex" }}>
 			<CssBaseline />
-			<AppBar component="nav">
+			<AppBar component="nav" sx={{backgroundColor:'#3CDA7C'}}>
 				<Toolbar sx={{ justifyContent: "space-between" }}>
 					<IconButton
 						color="inherit"
@@ -186,14 +186,14 @@ function NavBar(props) {
 							) : null
 						)}
 					</Box>
-					<Dropdown className="bg-sky-500 font-extrabold">
+					<Dropdown className=" font-extrabold">
 						<DropdownTrigger>
 							<Avatar
 								name="Masud"
 								src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
 							/>
 						</DropdownTrigger>
-						<DropdownMenu aria-label="Static Actions">
+						<DropdownMenu aria-label="Static Actions" style={{backgroundColor:'#3CDA7C',borderColor:'#3CDA7C',borderRadius:'7%',color:'white'}} >
 							<DropdownItem key="new">
 								<div className="flex items-center space-x-2 flex-row">
 									<UserIcon />
