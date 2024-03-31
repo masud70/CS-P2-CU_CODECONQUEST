@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { getRandomChars, sendMail, generateToken } = require("../helper");
 const db = require("../models");
 const saltRounds = 10;
@@ -95,7 +95,7 @@ module.exports = {
 						email: email,
 					});
 
-                    return {
+					return {
 						success: true,
 						message: "Login successful!",
 						token: token,
@@ -122,6 +122,7 @@ module.exports = {
 		try {
 			const user = await db.User.findByPk(userId);
 			if (user) {
+				console.log(user);
 				user.loginStatus = false;
 				await user.save();
 
@@ -187,7 +188,7 @@ module.exports = {
 						otpId: otp.id,
 					};
 				} else {
-					throw new Error(emailResult.message);
+					throw new Error(result.message);
 				}
 			} else {
 				throw new Error("User not found!");
@@ -223,6 +224,9 @@ module.exports = {
 							code: code,
 						},
 					},
+					{
+						model: db.Role,
+					},
 				],
 			});
 			const notExpired = user.Otps[0].generatedAt + 300000 >= Date.now();
@@ -233,6 +237,8 @@ module.exports = {
 
 				await db.Otp.destroy({ where: { id: user.Otps[0].id } });
 
+				const roles = user.Roles.map((role) => role.title);
+
 				const token = generateToken({
 					email: user.email,
 					userId: user.id,
@@ -241,6 +247,7 @@ module.exports = {
 					success: true,
 					message: "Correct password reset code!",
 					token: token,
+					user: { ...user.dataValues, roles },
 				};
 			} else {
 				throw new Error("Invalid email or code!");

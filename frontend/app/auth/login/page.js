@@ -40,6 +40,8 @@ export default function Login() {
 				}
 			);
 
+            console.log(result.data);
+
 			if (!result.data.success) {
 				throw new Error(result.data.message);
 			}
@@ -89,7 +91,7 @@ export default function Login() {
 			</Box>
 			<Box className="forgotPasswordDiv">
 				<Link
-					href={"/auth/forgot-password"}
+					href={"/auth/reset-password/initiate"}
 					className="forgotPasswordLink"
 				>
 					Forgot Password?

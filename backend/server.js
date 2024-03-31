@@ -58,7 +58,7 @@ app.use((err, req, res, next) => {
 // listen for requests
 app.listen(PORT, () => {
 	db.sequelize
-		.sync({ alter: false })
+		.sync({ alter: true })
 		.then(async () => {
 			try {
 				await initializeDB();

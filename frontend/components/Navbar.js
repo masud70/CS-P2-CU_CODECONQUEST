@@ -58,9 +58,11 @@ function NavBar(props) {
 				method: "GET",
 				url: process.env.backendUrl + "/auth/logout",
 				headers: {
-					authorization: "Bearer " + getCookie(process.env.tokenKey),
+					authorization: "Bearer " + auth.token,
 				},
 			});
+
+            console.log(result.data);
 
 			if (!result.data.success) {
 				throw new Error(result.data.message);

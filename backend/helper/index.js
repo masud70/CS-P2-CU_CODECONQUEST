@@ -115,6 +115,7 @@ module.exports = {
 			];
 			const systemAdmin = {
 				email: "mdmasud.csecu@gmail.com",
+                name: "Md. Masud Mazumder",
 				password:
 					"$2b$10$CV/kUVCgdiNKvAGrVrjVfuPoxZRFol3pZi21QBEdiKXi.6Yy4CEjO",
 			};
@@ -124,7 +125,7 @@ module.exports = {
 				defaults: systemAdmin,
 			});
 			const adminRole = await db.Role.findOrCreate({
-				where: { title: "system_admin" },
+				where: { title: "system_admin", roleString: "System Admin" },
 			});
 
 			await db.UserRole.findOrCreate({
