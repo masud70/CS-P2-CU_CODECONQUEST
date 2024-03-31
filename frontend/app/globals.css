@@ -58,6 +58,14 @@ body {
 	object-fit: cover;
 	z-index: 1;
 }
+.loginBtn{
+	width: 30%;
+	background-color: #009934;
+	color: white;
+	border-radius: 10px;
+	border-bottom: 6px solid #007327;
+	cursor: pointer;
+}
 
 @layer utilities {
 	.text-balance {

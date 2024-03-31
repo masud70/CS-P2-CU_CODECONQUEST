@@ -62,10 +62,10 @@ export default function Login() {
 
 	return (
 		<Box className="inputDiv">
-			<div className="text-3xl w-full text-center p-[15px] text-[wheat]">
+			<div className="text-3xl w-full text-left p-[20px] text-[wheat]">
 				Log In
 			</div>
-			<Box>
+			<Box className="flex flex-col gap-3">
 				<ATextField
 					type={"text"}
 					label={"Email / Mobile Number"}
@@ -99,9 +99,8 @@ export default function Login() {
 				<Button
 					isLoading={isLoading}
 					disabled={!emailOrMobile.length || !password.length}
-					size="lg"
-					color="primary"
 					onClick={submitLogin}
+					className="SubmitButton"
 				>
 					Submit
 				</Button>
