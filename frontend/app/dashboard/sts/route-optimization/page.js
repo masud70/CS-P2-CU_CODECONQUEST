@@ -3,11 +3,12 @@ import { Divider, Select, SelectItem } from "@nextui-org/react";
 import { Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-const origin = { lat: 22.482153, lng: 91.802773 };
-const destination = { lat: 22.505678, lng: 91.804193 };
+const center = { lat: 22.482153, lng: 91.802773 };
+// const destination = { lat: 22.505678, lng: 91.804193 };
 
-const Directions = ({ setData }) => {
+const Directions = ({ setData, origin, destination }) => {
 	const map = useMap();
 	const rl = useMapsLibrary("routes");
 	const [ds, setDs] = useState();
@@ -18,12 +19,13 @@ const Directions = ({ setData }) => {
 	const leg = selected?.legs[0];
 
 	useEffect(() => {
+		console.log(origin, destination);
 		if (!leg) return;
 		setData({
 			distance: leg.distance.value / 1000.0,
 			duration: leg.duration.value / 60,
 		});
-	}, [leg]);
+	}, [leg, origin, destination]);
 
 	useEffect(() => {
 		if (!rl || !map) return;
@@ -94,39 +96,95 @@ const Directions = ({ setData }) => {
 
 const page = () => {
 	const [data, setData] = useState({});
+	const [origins, setOrigins] = useState([]);
+	const [destinations, setDestinations] = useState([]);
+	const [vehicles, setVehicles] = useState([]);
 	const [route, setRoute] = useState({});
+	const [src, setSrc] = useState({ lat: 22.482153, lng: 91.802773 });
+	const [dest, setDest] = useState({ lat: 22.505678, lng: 91.804193 });
+	const auth = useSelector((st) => st.auth);
 
-    const getData = async ()=>{
-        try {
-            const sts = await axios({
-                method: 'GET',
-                url: `${process.env.backendUrl}/sts/available-vehicle/`
-            })
-        } catch (error) {
-            console.log(error);
-        }
-    }
+	const getData = async () => {
+		try {
+			const sts = await axios({
+				method: "GET",
+				url: `${process.env.backendUrl}/sts/all-sts/`,
+				headers: {
+					Authorization: `Bearer ${auth.token}`,
+				},
+			});
 
-	const origins = [
-		{ label: "Location A", value: 1 },
-		{ label: "Location B", value: 2 },
-		{ label: "Location C", value: 3 },
-		{ label: "Location D", value: 4 },
-	];
+			const landfill = await axios({
+				method: "GET",
+				url: `${process.env.backendUrl}/sts/all-landfills`,
+				headers: {
+					Authorization: `Bearer ${auth.token}`,
+				},
+			});
 
-	const destinations = [
-		{ label: "Location A", value: 1 },
-		{ label: "Location B", value: 2 },
-		{ label: "Location C", value: 3 },
-		{ label: "Location D", value: 4 },
-	];
+			setData({
+				sts: sts.data.sts,
+				landfills: landfill.data.landfills,
+			});
 
-	const vehicles = [
-		{ label: "DHA111", value: 1 },
-		{ label: "DHA112", value: 2 },
-		{ label: "DHA113", value: 3 },
-		{ label: "DHA114", value: 4 },
-	];
+			const stsArray = sts.data.sts.map((item) => ({
+				label: item.locationName || item.id.toString(),
+				value: item.id,
+			}));
+			const landfillArray = landfill.data.landfills.map((item) => ({
+				label: item.locationName || item.id.toString(),
+				value: item.id,
+			}));
+
+			setOrigins(stsArray);
+			setDestinations(landfillArray);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const getVehicles = async () => {
+		try {
+			const result = await axios({
+				method: "GET",
+				url: `${process.env.backendUrl}/sts/available-vehicle/${data.stsId}`,
+				headers: {
+					Authorization: `Bearer ${auth.token}`,
+				},
+			});
+
+			const vehicleArray = result.data.vehicles.map((item) => ({
+				label: item.regNumber,
+				value: item.id,
+			}));
+
+			setVehicles(vehicleArray);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		getData();
+	}, []);
+
+	useEffect(() => {
+		if (!data.stsId) return;
+		getVehicles();
+	}, [data]);
+
+	useEffect(() => {
+		if (vehicles.length <= 0) return;
+		const s = data.sts.find((it) => it.id == data.stsId);
+		const d = data.landfills.find((it) => it.id == data.landfillId);
+
+		setSrc({ lat: s?.lat, lng: s?.lng });
+		setDest({ lat: d?.lat, lng: d?.lng });
+	}, [vehicles]);
+
+	useEffect(() => {
+		console.log(src, dest);
+	}, [src, dest]);
 
 	return (
 		<div className="w-full flex flex-col space-y-2 p-2 rounded justify-center items-center overflow-hidden">
@@ -213,10 +271,14 @@ const page = () => {
 				<div className="w-full h-[700px] p-2 bg-green-200 relative border-2 border-slate-600 rounded overflow-hidden">
 					<Map
 						style={{ width: "100%", height: "100%" }}
-						defaultCenter={origin}
+						defaultCenter={src}
 						defaultZoom={15}
 					>
-						<Directions setData={setRoute} />
+						<Directions
+							setData={setRoute}
+							origin={src}
+							destination={dest}
+						/>
 					</Map>
 				</div>
 				<div className="w-full p-4">

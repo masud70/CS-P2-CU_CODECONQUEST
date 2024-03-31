@@ -1,5 +1,5 @@
 "use client";
-import { Button, Divider, Input, Select, SelectItem } from "@nextui-org/react";
+import { Button, Divider, Input } from "@nextui-org/react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import React, { useState } from "react";

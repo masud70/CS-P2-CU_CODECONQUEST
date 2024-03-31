@@ -47,6 +47,7 @@ const navItems = [
 function NavBar(props) {
 	const { window, children } = props;
 	const [mobileOpen, setMobileOpen] = React.useState(false);
+	const [index, setIndex] = React.useState(0);
 	const auth = useSelector((st) => st.auth);
 	const dispatch = useDispatch();
 	const router = useRouter();
@@ -85,14 +86,28 @@ function NavBar(props) {
 			<List>
 				<ListItem key={100} disablePadding>
 					<ListItemButton sx={{ textAlign: "center" }}>
-						<Link href={navItems[0].link}>{navItems[0].text}</Link>
+						<Link
+							className={`font-bold text-md ${
+								!index && "bg-blue-400"
+							} px-2 py-1 rounded-xl`}
+							href={navItems[0].link}
+						>
+							{navItems[0].text}
+						</Link>
 					</ListItemButton>
 				</ListItem>
 				{navItems.map((item, idx) =>
 					auth.roles?.includes(item.access) ? (
 						<ListItem key={idx} disablePadding>
 							<ListItemButton sx={{ textAlign: "center" }}>
-								<Link href={item.link}>{item.text}</Link>
+								<Link
+									className={`font-bold text-md ${
+										idx == index && "bg-blue-400"
+									} px-2 py-1 rounded-xl`}
+									href={item.link}
+								>
+									{item.text}
+								</Link>
 							</ListItemButton>
 						</ListItem>
 					) : null
@@ -138,15 +153,35 @@ function NavBar(props) {
 							display: { xs: "none", sm: "block", sm: "flex" },
 						}}
 					>
-						<Button key={100} sx={{ color: "#fff" }}>
-							<Link href={navItems[0].link}>
+						<Button
+							key={100}
+							sx={{ color: "#fff" }}
+							onClick={() => setIndex(0)}
+						>
+							<Link
+								className={`font-bold text-md ${
+									!index && "bg-blue-400"
+								} px-2 py-1 rounded-xl`}
+								href={navItems[0].link}
+							>
 								{navItems[0].text}
 							</Link>
 						</Button>
 						{navItems.map((item, idx) =>
 							auth.roles?.includes(item.access) ? (
-								<Button key={idx} sx={{ color: "#fff" }}>
-									<Link href={item.link}>{item.text}</Link>
+								<Button
+									key={idx}
+									sx={{ color: "#fff" }}
+									onClick={() => setIndex(idx)}
+								>
+									<Link
+										className={`font-bold text-md ${
+											idx == index && "bg-blue-400"
+										} px-2 py-1 rounded-xl`}
+										href={item.link}
+									>
+										{item.text}
+									</Link>
 								</Button>
 							) : null
 						)}

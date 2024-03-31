@@ -7,6 +7,8 @@ import MenuCard from "@/components/MenuCard";
 import Truck from "@/icon/Truck";
 import Home from "@/icon/Home";
 import StsIcon from "@/icon/StsIcon";
+import { toast } from "react-toastify";
+import UserIcon from "@/icon/UserIcon";
 
 const layout = ({ children }) => {
 	const router = useRouter();
@@ -32,12 +34,18 @@ const layout = ({ children }) => {
 					link="/dashboard/admin"
 				/>
 				<MenuCard
+					className="bg-red-500"
+					text="User Management"
+					icon={<UserIcon />}
+					link="/dashboard/admin/user"
+				/>
+				<MenuCard
 					className="bg-blue-500"
 					text="Vehicle Entry"
 					icon={<Truck />}
 					link="/dashboard/admin/vehicle-register"
 				/>
-                <MenuCard
+				<MenuCard
 					className="bg-yellow-500"
 					text="Vehicle Assignment"
 					icon={<StsIcon />}
@@ -49,14 +57,14 @@ const layout = ({ children }) => {
 					icon={<StsIcon />}
 					link="/dashboard/admin/sts-register"
 				/>
-                <MenuCard
+				<MenuCard
 					className="bg-green-500"
 					text="STS Management"
 					icon={<StsIcon />}
 					link="/dashboard/admin/sts-management"
 				/>
 			</div>
-			<div className="w-2/3 lg:w-4/5 p-2">{children}</div>
+			<div className="w-2/3 lg:w-4/5 p-2 overflow-auto">{children}</div>
 		</div>
 	);
 };

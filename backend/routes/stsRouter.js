@@ -3,8 +3,9 @@ const {
 	getAvailabeVehicle,
 	getAllSts,
 	getAllLandfill,
-    getManagers,
-    getUnassignedVehicles,
+	getManagers,
+	getUnassignedVehicles,
+	getAvailableVehicle,
 } = require("../controllers/stsController");
 const router = express.Router();
 
@@ -38,7 +39,7 @@ router.get("/unassigned-vehicles", async (req, res, next) => {
 
 router.get("/managers/:title", async (req, res, next) => {
 	try {
-        const data = req.params;
+		const data = req.params;
 
 		const result = await getManagers(data);
 
@@ -68,6 +69,19 @@ router.get("/all-landfills", async (req, res, next) => {
 	try {
 		const result = await getAllLandfill();
 
+		res.json(result);
+	} catch (error) {
+		res.json({
+			success: false,
+			message: error.message,
+		});
+	}
+});
+
+router.get("/available-vehicle/:stsId", async (req, res, next) => {
+	try {
+		const stsId = req.params.stsId;
+		const result = await getAvailabeVehicle({ stsId });
 		res.json(result);
 	} catch (error) {
 		res.json({

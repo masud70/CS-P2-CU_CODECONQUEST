@@ -79,11 +79,29 @@ module.exports = {
 
 	getAllLandfill: async () => {
 		try {
-			const sts = await db.Landfill.findAll();
+			const landfills = await db.Landfill.findAll();
 
 			return {
 				success: true,
-				sts: sts,
+				landfills: landfills,
+			};
+		} catch (error) {
+			return {
+				success: false,
+				message: error.message,
+			};
+		}
+	},
+
+	getAvailableVehicle: async ({ stsId }) => {
+		try {
+			const vehicles = await db.Vehicle.findAll({
+				where: { StId: stsId },
+			});
+
+			return {
+				success: true,
+				vehicles: vehicles,
 			};
 		} catch (error) {
 			return {
