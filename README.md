@@ -1,5 +1,9 @@
 # Code Samurai 2024 (Team CU_CODECONQUEST)
 
+Welcome to the README file for **Team CU_CODECONQUEST** participating in the Code **Samurai 2024** competition!
+
+## Team Information
+
 | Index              |  Value                     |
 |--------------------|:--------------------------:|
 | Team Name          |  CU_CODECONQUEST           |
@@ -25,6 +29,11 @@ To run in detached mode run the command:
 ```bash
 docker compose up -d --build
 ```
+
+## Frontend & Backend
+
+- Frontend will be live at `http://localhost:3000`
+- Backend will be live at `http://localhost:8000`
 
 ## Stop the System
 
