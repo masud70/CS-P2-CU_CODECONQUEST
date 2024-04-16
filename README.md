@@ -26,6 +26,10 @@ To run in detached mode run the command:
 docker compose up -d --build
 ```
 
+### Admin Login Credentials
+- Email: mdmasud.csecu@gmail.com
+- Password: admin
+
 ## Stop the System
 
 Stopping all the running containers is also simple with a single command:
