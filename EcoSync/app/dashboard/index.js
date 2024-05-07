@@ -3,7 +3,7 @@ import React from "react";
 
 const index = () => {
 	return (
-		<View>
+		<View className="bg-indigo-950 h-screen">
 			<Text>Dashboard</Text>
 		</View>
 	);
