@@ -1,5 +1,9 @@
 # Code Samurai 2024 (Team CU_CODECONQUEST)
 
+Welcome to the README file for **Team CU_CODECONQUEST** participating in the Code **Samurai 2024** competition!
+
+## Team Information
+
 | Index              |  Value                     |
 |--------------------|:--------------------------:|
 | Team Name          |  CU_CODECONQUEST           |
@@ -29,6 +33,11 @@ docker compose up -d --build
 ### Admin Login Credentials
 - Email: mdmasud.csecu@gmail.com
 - Password: admin
+
+## Frontend & Backend
+
+- Frontend will be live at `http://localhost:3000`
+- Backend will be live at `http://localhost:8000`
 
 ## Stop the System
 

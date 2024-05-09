@@ -14,8 +14,7 @@ module.exports = {
 		const userRoles = await user.getRoles();
 		const roles = userRoles.map((role) => role.title);
 
-		const retValue = { ...user.dataValues, roles: roles };
-		return retValue;
+		return { ...user.dataValues, roles: roles };
 	},
 
 	checkLogin: async (req, res, next) => {
@@ -98,11 +97,15 @@ module.exports = {
 		}
 	},
 
-    managerAccessCheck: async (req, res, next) => {
+	managerAccessCheck: async (req, res, next) => {
 		try {
 			const user = await module.exports.decodeToken(req.headers);
 
-			const isManager = checkCommonElements(user.roles, ["system_admin", "sts_manager", "landfill_manager"]);
+			const isManager = checkCommonElements(user.roles, [
+				"system_admin",
+				"sts_manager",
+				"landfill_manager",
+			]);
 
 			if (user.loginStatus === true && isManager) {
 				req.userId = user.id;

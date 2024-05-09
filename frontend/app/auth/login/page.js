@@ -2,7 +2,7 @@
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./login.css";
 import Link from "next/link";
 import ATextField from "../components/ATextField";
@@ -13,15 +13,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { login } from "@/redux/state/authSlice";
 import { hasCookie } from "cookies-next";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Login() {
 	const [emailOrMobile, setEmailOrMobile] = useState("");
+	const [capVal, setCapVal] = useState(null);
 	const [password, setpassword] = useState("");
 	const [errorMessaage, seterrorMessaage] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const dispatch = useDispatch();
 	const router = useRouter();
 	const auth = useSelector((st) => st.auth);
+	const capRef = useRef(null);
 
 	useEffect(() => {
 		if (hasCookie(process.env.tokenKey)) {
@@ -37,10 +40,11 @@ export default function Login() {
 				{
 					emailOrMobileNumber: emailOrMobile,
 					password: password,
+					captcha: capVal,
 				}
 			);
 
-            console.log(result.data);
+			console.log(result.data);
 
 			if (!result.data.success) {
 				throw new Error(result.data.message);
@@ -97,10 +101,18 @@ export default function Login() {
 					Forgot Password?
 				</Link>
 			</Box>
+			<ReCAPTCHA
+				className="mt-4"
+				ref={capRef}
+				sitekey={process.env.recaptchaKey}
+				onChange={setCapVal}
+			/>
 			<Box className="SubmitButtonDiv pt-2">
 				<Button
 					isLoading={isLoading}
-					disabled={!emailOrMobile.length || !password.length}
+					disabled={
+						!capVal && (!emailOrMobile.length || !password.length)
+					}
 					onClick={submitLogin}
 					className="SubmitButton"
 				>

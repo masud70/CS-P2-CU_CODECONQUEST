@@ -115,7 +115,7 @@ module.exports = {
 			];
 			const systemAdmin = {
 				email: "mdmasud.csecu@gmail.com",
-                name: "Md. Masud Mazumder",
+				name: "Md. Masud Mazumder",
 				password:
 					"$2b$10$CV/kUVCgdiNKvAGrVrjVfuPoxZRFol3pZi21QBEdiKXi.6Yy4CEjO",
 			};

@@ -1,5 +1,9 @@
 const bcrypt = require("bcryptjs");
-const { getRandomChars, sendMail, generateToken } = require("../helper");
+const {
+	getRandomChars,
+	sendMail,
+	generateToken,
+} = require("../helper");
 const db = require("../models");
 const saltRounds = 10;
 
@@ -66,6 +70,7 @@ module.exports = {
 
 	getLogin: async ({ emailOrMobileNumber, password }) => {
 		try {
+			// Find email or mobile number
 			const email = emailOrMobileNumber.includes("@")
 				? emailOrMobileNumber
 				: null;
@@ -84,6 +89,7 @@ module.exports = {
 					user.password
 				);
 
+				// If valid password, then let the user logged in. Else repond with appropriate error message
 				if (isValidPassword) {
 					user.loginStatus = true;
 					await user.save();
@@ -122,7 +128,6 @@ module.exports = {
 		try {
 			const user = await db.User.findByPk(userId);
 			if (user) {
-				console.log(user);
 				user.loginStatus = false;
 				await user.save();
 
@@ -260,11 +265,20 @@ module.exports = {
 		}
 	},
 
-	changePassword: async ({ userId, newPassword }) => {
+	changePassword: async ({ userId, oldPassword, newPassword }) => {
 		try {
 			const user = await db.User.findByPk(userId);
 
 			if (user) {
+				const isValidPassword = await bcrypt.compare(
+					oldPassword,
+					user.password
+				);
+
+                if(!isValidPassword) {
+                    throw new Error('Invalid old password!')
+                }
+
 				user.password = await bcrypt.hash(newPassword, saltRounds);
 				await user.save();
 
