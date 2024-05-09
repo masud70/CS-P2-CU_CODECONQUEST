@@ -42,7 +42,9 @@ app.get("/", checkValidity, async (req, res) => {
 	}
 });
 
+// Authentication routes
 app.use("/auth", authRouter);
+
 app.use("/users", userRouter);
 app.use("/profile", profileRouter);
 app.use("/rbac", rbacRouter);

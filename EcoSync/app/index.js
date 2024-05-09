@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
-	return <Redirect href="/admin" />;
+	// return <Redirect href="/admin" />;
 	return (
 		<SafeAreaView>
 			<View className="flex justify-center items-center h-screen bg-indigo-950 text-white">

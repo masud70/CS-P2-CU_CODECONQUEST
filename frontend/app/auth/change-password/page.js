@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./resetPassword.css";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -11,20 +11,37 @@ import axios from "axios";
 import { getCookie, hasCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Page() {
 	const [password, setpassword] = useState("");
+	const [capVal, setCapVal] = useState(null);
 	const [confirmPassword, setconfirmPassword] = useState("");
 	const [errorMessaage, setErrorMessaage] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [time, setTime] = useState(300);
 	const auth = useSelector((st) => st.auth);
 	const router = useRouter();
+	const capRef = useRef(null);
 
 	useEffect(() => {
 		if (!hasCookie(process.env.tokenKey)) {
 			router.push("/");
 		}
 	}, [auth]);
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			decrement();
+			if (time === 0) router.push("/dashboard");
+		}, 1000);
+
+		return () => clearTimeout(timer);
+	}, [time]);
+
+	const decrement = () => {
+		setTime((prevTime) => prevTime - 1);
+	};
 
 	const submitResetPassword = async () => {
 		try {
@@ -63,41 +80,49 @@ export default function Page() {
 	};
 
 	return (
-		<Box className="inputDiv">
+		<Box className="inputDiv relative">
 			<div className="text-3xl w-full text-center pb-[15px] text-[wheat]">
 				Change Password
 			</div>
-			<Box>
+			<div className="absolute top-[-20px] right-[-20px] bg-slate-100 w-[50px] h-[50px] flex items-center justify-center rounded-full border-4 border-red-200">
+				{time}s
+			</div>
+			<div className="flex flex-col space-y-2">
 				<ATextField
 					type={"password"}
-					label={"Password"}
+					label={"Old Password"}
 					setFunction={setpassword}
 					value={password}
 				/>
 				<ATextField
 					type={"password"}
-					label={"Confirm Password"}
+					label={"New Password"}
 					setFunction={setconfirmPassword}
 					value={confirmPassword}
 				/>
-			</Box>
-			<Box className="errorMessageDiv">
+
 				{errorMessaage.length > 0 && (
 					<Typography className="errorMessageText">
 						** {errorMessaage} **
 					</Typography>
 				)}
-			</Box>
-			<Box className="SubmitButtonDiv">
+
+				<ReCAPTCHA
+					ref={capRef}
+					sitekey={process.env.recaptchaKey}
+					onChange={setCapVal}
+				/>
+
 				<Button
 					isLoading={loading}
+					disabled={!capVal}
 					size="lg"
-					className="SubmitButton"
+					className="w-full"
 					onClick={submitResetPassword}
 				>
 					Reset Password
 				</Button>
-			</Box>
+			</div>
 		</Box>
 	);
 }
