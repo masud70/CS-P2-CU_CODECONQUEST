@@ -62,7 +62,7 @@ function NavBar(props) {
 				},
 			});
 
-            console.log(result.data);
+			console.log(result.data);
 
 			if (!result.data.success) {
 				throw new Error(result.data.message);
@@ -124,7 +124,11 @@ function NavBar(props) {
 	return (
 		<Box sx={{ display: "flex" }}>
 			<CssBaseline />
-			<AppBar component="nav" sx={{backgroundColor:'#3CDA7C'}}>
+			<AppBar
+				className="bg-green-500"
+				component="nav"
+				sx={{ backgroundColor: `rgb(34 197 94)` }}
+			>
 				<Toolbar sx={{ justifyContent: "space-between" }}>
 					<IconButton
 						color="inherit"
@@ -195,7 +199,15 @@ function NavBar(props) {
 								src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
 							/>
 						</DropdownTrigger>
-						<DropdownMenu aria-label="Static Actions" style={{backgroundColor:'#3CDA7C',borderColor:'#3CDA7C',borderRadius:'7%',color:'white'}} >
+						<DropdownMenu
+							aria-label="Static Actions"
+							style={{
+								backgroundColor: `rgb(34 197 94)`,
+								borderColor: "#3CDA7C",
+								borderRadius: "7%",
+								color: "white",
+							}}
+						>
 							<DropdownItem key="new">
 								<div className="flex items-center space-x-2 flex-row">
 									<UserIcon />

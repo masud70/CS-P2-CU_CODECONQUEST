@@ -25,11 +25,8 @@ const layout = ({ children }) => {
 	}, [auth]);
 
 	return (
-		<div
-			style={{ backgroundColor: "#eaf8ef" }}
-			className="w-full lg:w-4/5 h-full flex flex-row rounded-b overflow-hidden"
-		>
-			<div className="w-1/3 lg:w-1/5 h-full p-2 bg-slate-200 flex flex-col space-y-2 overflow-auto">
+		<div className="w-full bg-[#eaf8ef] h-full flex flex-row rounded-b overflow-hidden">
+			<div className="w-1/3 lg:w-1/5 h-full p-2 bg-slate-200 flex flex-col space-y-4 overflow-auto">
 				<MenuCard text="Home" icon={<Home />} link="/dashboard/admin" />
 				<MenuCard
 					text="User Management"

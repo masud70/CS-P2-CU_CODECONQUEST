@@ -2,42 +2,9 @@ const Roles = require("../constants");
 const bcrypt = require("bcryptjs");
 const { getRandomChars, sendMail } = require("../helper");
 const db = require("../models");
+const saltRounds = 10;
 
 module.exports = {
-	getAllUsers: async () => {
-		try {
-			const users = await db.User.findAll();
-			return {
-				success: true,
-				users: users,
-			};
-		} catch (error) {
-			return {
-				success: false,
-				message: error.message,
-			};
-		}
-	},
-
-	getUserById: async ({ userId }) => {
-		try {
-			const user = await db.User.findByPk(userId);
-			if (user) {
-				return {
-					success: true,
-					user: user,
-				};
-			} else {
-				throw new Error(`User with ${userId} not found!`);
-			}
-		} catch (error) {
-			return {
-				success: false,
-				message: error.message,
-			};
-		}
-	},
-
 	createUser: async ({ email, password }) => {
 		try {
 			if (!password) password = getRandomChars(6);
@@ -89,6 +56,40 @@ module.exports = {
 				}
 			} else {
 				throw new Error("User already exists!");
+			}
+		} catch (error) {
+			return {
+				success: false,
+				message: error.message,
+			};
+		}
+	},
+
+	getAllUsers: async () => {
+		try {
+			const users = await db.User.findAll({ include: db.Role });
+			return {
+				success: true,
+				users: users,
+			};
+		} catch (error) {
+			return {
+				success: false,
+				message: error.message,
+			};
+		}
+	},
+
+	getUserById: async ({ userId }) => {
+		try {
+			const user = await db.User.findByPk(userId);
+			if (user) {
+				return {
+					success: true,
+					user: user,
+				};
+			} else {
+				throw new Error(`User with ${userId} not found!`);
 			}
 		} catch (error) {
 			return {
