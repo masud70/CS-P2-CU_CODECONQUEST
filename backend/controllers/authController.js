@@ -1,5 +1,9 @@
-const bcrypt = require("bcrypt");
-const { getRandomChars, sendMail, generateToken } = require("../helper");
+const bcrypt = require("bcryptjs");
+const {
+	getRandomChars,
+	sendMail,
+	generateToken,
+} = require("../helper");
 const db = require("../models");
 const saltRounds = 10;
 
@@ -66,6 +70,7 @@ module.exports = {
 
 	getLogin: async ({ emailOrMobileNumber, password }) => {
 		try {
+			// Find email or mobile number
 			const email = emailOrMobileNumber.includes("@")
 				? emailOrMobileNumber
 				: null;
@@ -77,25 +82,30 @@ module.exports = {
 				[email ? "email" : "mobileNumber"]: email || mobileNumber,
 			};
 
-			const user = await db.User.findOne({ where });
+			const user = await db.User.findOne({ where, include: db.Role });
 			if (user) {
 				const isValidPassword = await bcrypt.compare(
 					password,
 					user.password
 				);
 
+				// If valid password, then let the user logged in. Else repond with appropriate error message
 				if (isValidPassword) {
 					user.loginStatus = true;
 					await user.save();
+
+					const roles = user.Roles.map((role) => role.title);
 
 					const token = generateToken({
 						userId: user.id,
 						email: email,
 					});
+
 					return {
 						success: true,
 						message: "Login successful!",
 						token: token,
+						user: { ...user.dataValues, roles },
 					};
 				} else {
 					throw new Error("Authentication failed!");
@@ -183,7 +193,7 @@ module.exports = {
 						otpId: otp.id,
 					};
 				} else {
-					throw new Error(emailResult.message);
+					throw new Error(result.message);
 				}
 			} else {
 				throw new Error("User not found!");
@@ -219,6 +229,9 @@ module.exports = {
 							code: code,
 						},
 					},
+					{
+						model: db.Role,
+					},
 				],
 			});
 			const notExpired = user.Otps[0].generatedAt + 300000 >= Date.now();
@@ -229,6 +242,8 @@ module.exports = {
 
 				await db.Otp.destroy({ where: { id: user.Otps[0].id } });
 
+				const roles = user.Roles.map((role) => role.title);
+
 				const token = generateToken({
 					email: user.email,
 					userId: user.id,
@@ -237,6 +252,7 @@ module.exports = {
 					success: true,
 					message: "Correct password reset code!",
 					token: token,
+					user: { ...user.dataValues, roles },
 				};
 			} else {
 				throw new Error("Invalid email or code!");
@@ -249,11 +265,20 @@ module.exports = {
 		}
 	},
 
-	changePassword: async ({ userId, newPassword }) => {
+	changePassword: async ({ userId, oldPassword, newPassword }) => {
 		try {
 			const user = await db.User.findByPk(userId);
 
 			if (user) {
+				const isValidPassword = await bcrypt.compare(
+					oldPassword,
+					user.password
+				);
+
+                if(!isValidPassword) {
+                    throw new Error('Invalid old password!')
+                }
+
 				user.password = await bcrypt.hash(newPassword, saltRounds);
 				await user.save();
 

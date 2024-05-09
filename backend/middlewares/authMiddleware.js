@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const db = require("../models");
+const { checkCommonElements } = require("../helper");
 
 module.exports = {
 	decodeToken: async ({ authorization }) => {
@@ -13,8 +14,7 @@ module.exports = {
 		const userRoles = await user.getRoles();
 		const roles = userRoles.map((role) => role.title);
 
-		const retValue = { ...user.dataValues, roles: roles };
-		return retValue;
+		return { ...user.dataValues, roles: roles };
 	},
 
 	checkLogin: async (req, res, next) => {
@@ -85,6 +85,29 @@ module.exports = {
 			);
 
 			if (user.loginStatus === true && isSysAdmin) {
+				req.userId = user.id;
+				req.email = user.email;
+				req.roles = user.roles;
+				next();
+			} else {
+				throw new Error("Access denied!");
+			}
+		} catch (error) {
+			next(error.message);
+		}
+	},
+
+	managerAccessCheck: async (req, res, next) => {
+		try {
+			const user = await module.exports.decodeToken(req.headers);
+
+			const isManager = checkCommonElements(user.roles, [
+				"system_admin",
+				"sts_manager",
+				"landfill_manager",
+			]);
+
+			if (user.loginStatus === true && isManager) {
 				req.userId = user.id;
 				req.email = user.email;
 				req.roles = user.roles;

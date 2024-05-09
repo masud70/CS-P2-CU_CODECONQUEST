@@ -1,12 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
-	const Dump = sequelize.define("Dump", {
+	const DumpEntry = sequelize.define("DumpEntry", {
 		id: {
 			type: DataTypes.INTEGER,
 			autoIncrement: true,
 			allowNull: false,
 			primaryKey: true,
 		},
-		volumeOfWaste: {
+		weightOfWaste: {
 			type: DataTypes.DOUBLE,
 			allowNull: false,
 		},
@@ -18,7 +18,11 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
+        billStatus:{
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        }
 	});
 
-	return Dump;
+	return DumpEntry;
 };

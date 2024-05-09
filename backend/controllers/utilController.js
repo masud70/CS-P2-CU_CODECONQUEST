@@ -2,22 +2,22 @@ const { getDistanceAndDuration } = require("../helper");
 const db = require("../models");
 
 module.exports = {
-	computeBill: async ({
-		origin,
-		volumeOfWaste,
-		regNumber,
-		loaded,
-		destination = { lat: 23.7816358, lng: 90.3345173 },
-	}) => {
+	computeBill: async ({ dumpEntryId }) => {
 		try {
-			const vehicle = await db.Vehicle.findOne({
-				where: { regNumber },
+			const dumpEntry = await db.DumpEntry.findOne({
+				where: { id: dumpEntryId },
+				include: [
+					{ model: db.User },
+					{ model: db.Vehicle, include: db.Sts },
+                    {model: db.Landfill}
+				],
 			});
-			if (!vehicle) {
-				throw new Error(
-					`Couldn't find vehicle with regNumber: ${regNumber}`
-				);
-			}
+			
+            const sts = dumpEntry.Vehicle.St;
+            const landfill = dumpEntry.Landfill;
+            const vehicle = dumpEntry.Vehicle;
+			const origin = { lat: sts.lat, lng: sts.lng };
+			const destination = { lat: landfill.lat, lng: landfill.lng };
 
 			const dd = await getDistanceAndDuration({ origin, destination });
 
@@ -25,39 +25,26 @@ module.exports = {
 				throw new Error("Could not find route distance!");
 			}
 
-			const extraCostPerTon =
-				Math.max(
-					vehicle.costPerKiloLoaded - vehicle.costPerKiloUnLoaded,
-					0
-				) / vehicle.capacity;
-
 			var totalCost =
 				dd.distance *
-				(loaded
-					? vehicle.costPerKiloLoaded
-					: vehicle.costPerKiloUnLoaded);
-
-			totalCost =
-				totalCost -
-				(loaded
-					? extraCostPerTon *
-					  Math.max(vehicle.capacity - volumeOfWaste, 0)
-					: 0);
+				(vehicle.costPerKiloUnLoaded +
+					(3 / 5) *
+						(vehicle.costPerKiloLoaded -
+							vehicle.costPerKiloUnLoaded));
 
 			return {
 				success: true,
 				message: "Bill computed successfully!",
-				vehicleId: vehicle.id,
-				regNumber: vehicle.regNumber,
+				vehicle: vehicle,
+				origin: sts,
+				destination: landfill,
 				totalCost: totalCost,
-				origin: origin,
-				destination: destination,
-				volumeOfWaste: volumeOfWaste,
+				weightOfWaste: dumpEntry.weightOfWaste,
 			};
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},
