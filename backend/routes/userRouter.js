@@ -10,15 +10,14 @@ const {
 	deleteUser,
 	getAllAvailableRoles,
 	updateRole,
+	createUser,
 } = require("../controllers/userController");
-const { createUser } = require("../controllers/authController");
 const Roles = require("../constants");
 const router = express.Router();
 
 router.get("/", systemAdminAccessCheck, async (req, res) => {
 	try {
 		const result = await getAllUsers();
-
 		res.json(result);
 	} catch (error) {
 		next(error.message);
@@ -32,8 +31,8 @@ router.get("/roles", (req, res) => {
 
 router.get("/:userId", async (req, res) => {
 	try {
-		const userId = req.params.userId;
-		const result = await getUserById({ userId });
+		const data = req.params;
+		const result = await getUserById(data);
 
 		res.json(result);
 	} catch (error) {
@@ -43,12 +42,8 @@ router.get("/:userId", async (req, res) => {
 
 router.post("/", systemAdminAccessCheck, async (req, res) => {
 	try {
-		const user = req.body;
-
-		const result = await createUser({
-			email: user.email,
-			password: user.password,
-		});
+		const data = req.body;
+		const result = await createUser(data);
 
 		res.json(result);
 	} catch (error) {
@@ -60,8 +55,6 @@ router.put("/:userId/roles", systemAdminAccessCheck, async (req, res) => {
 	try {
 		const { role } = req.body;
 		const userId = req.params.userId;
-
-        console.log(role, userId);
 
 		const result = await updateRole({
 			userId: userId,
@@ -78,31 +71,27 @@ router.put("/:userId", checkLogin, async (req, res, next) => {
 	try {
 		const user = req.body;
 		const userId = req.params.userId;
+		const roles = req.role;
 
-		console.log(req.userId, userId);
-		if (req.userId == userId || req.role === Roles.SYSTEM_ADMIN) {
+		if (req.userId == userId || roles.includes(Roles.SYSTEM_ADMIN)) {
 			const result = await updateUser({
 				userId: userId,
 				data: user,
-				role: req.role,
 			});
 
 			res.json(result);
 		} else {
-			throw new Error("Invalid user access!");
+			throw new Error("Invalid access!");
 		}
 	} catch (error) {
-		next(error.messsage);
+		next(error.message);
 	}
 });
 
 router.delete("/:userId", systemAdminAccessCheck, async (req, res) => {
 	try {
 		const userId = req.params.userId;
-
-		const result = await deleteUser({
-			userId: userId,
-		});
+		const result = await deleteUser({ userId });
 
 		res.json(result);
 	} catch (error) {
