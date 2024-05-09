@@ -19,6 +19,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 export default function UserManagementTab() {
 
   const [selectedUserType, setselectedUserType] = useState('')
+  const [userDataToBeShown, setuserDataToBeShown] = useState({})
 
   const [isOpen, setisOpen] = useState(true)
 
@@ -43,19 +44,22 @@ export default function UserManagementTab() {
   const columns = [
     { field: 'full_name', headerName: 'Full Name', width: 300 },
     { field: 'role', headerName: 'Role', width: 150 },
-    { field: 'actions', headerName: 'Actions', width: 150, sortable:false,
-    renderCell:(params)=>{
-      return 
-        <Box className="flex justify-between">
-          <Button isIconOnly color="primary" variant="faded" aria-label="See this User">
+    { field: 'actions', headerName: 'Actions', width: 130, sortable:false,
+    renderCell:(params)=>
+        <Box className="flex w-full justify-between">
+          <Button onClick={()=>{
+            // console.log(params.row)
+            setuserDataToBeShown(params.row)
+            setisOpen(!isOpen)
+          }} className="mx-1" isIconOnly color="primary" variant="faded" aria-label="See this User">
               <FaEye color={'green'}/>
 
           </Button>
-          <Button isIconOnly color="danger" variant="faded" aria-label="Delete this user">
+          <Button className="mx-1" isIconOnly color="danger" variant="faded" aria-label="Delete this user">
               <RiDeleteBin5Line />
           </Button>
         </Box>
-    } },
+    },
   ];
 
 
@@ -65,7 +69,7 @@ export default function UserManagementTab() {
       <Box className="w-[35%] h-full">
         <Box className="h-3/4 w-full my-3">
           
-          <PieChart
+          {/* <PieChart
               series={[
                 {
                   data: items,
@@ -75,7 +79,7 @@ export default function UserManagementTab() {
               width={400}
               height={350}
               margin={{ right: 200 }}
-            />
+            /> */}
         </Box>
         <Box className="h-1/4">
             
@@ -85,7 +89,7 @@ export default function UserManagementTab() {
       <Box className="w-[65%] h-full">
           <Box>
             <Typography variant='h5' className='mb-0.5'>Manage Users</Typography>
-            <Select 
+            {/* <Select 
                 label="Select a user type" 
                 className="max-w-l mb-0.5"
                 onSelectionChange={(e)=>{setselectedUserType(e.currentKey)}}
@@ -97,7 +101,7 @@ export default function UserManagementTab() {
                   </SelectItem>
                 ))
                 }
-            </Select>
+            </Select> */}
             <Box className="mt-3 text-right">
                   <Button color="danger" variant="bordered" startContent={<MdDeleteForever />}>Remove Users</Button>
             </Box>
