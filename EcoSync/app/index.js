@@ -22,6 +22,8 @@ export default function App() {
 				>
 					Admin
 				</Link>
+				<Link className="border-2 rounded-xl px-4 py-2 w-40 text-center font-bold text-white bg-green-400 mt-4"
+				href={"/authentication/Login"}>Login</Link>
 			</View>
 		</SafeAreaView>
 	);
