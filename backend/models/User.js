@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
 		name: {
 			type: DataTypes.TEXT,
 		},
+		username: {
+			type: DataTypes.STRING,
+		},
 		email: {
 			type: DataTypes.TEXT,
 			allowNull: false,
@@ -18,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		avatar: {
 			type: DataTypes.TEXT,
+		},
+		dob: {
+			type: DataTypes.BIGINT,
 		},
 		password: {
 			type: DataTypes.TEXT,

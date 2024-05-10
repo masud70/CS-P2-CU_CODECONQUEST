@@ -12,8 +12,9 @@ const {
 	addDump,
 	addVehiclesTosts,
 	addLandfill,
-    assignLandfillManager,
-    addDumpEntry,
+	assignLandfillManager,
+	addDumpEntry,
+	contractorRegister,
 } = require("../controllers/adminController");
 const router = express.Router();
 
@@ -113,16 +114,39 @@ router.post(
 	}
 );
 
-router.post("/add-dump-entry", landfillManagerAccessCheck, async (req, res, next) => {
-	try {
-		const data = req.body;
+router.post(
+	"/add-dump-entry",
+	landfillManagerAccessCheck,
+	async (req, res, next) => {
+		try {
+			const data = req.body;
 
-		const result = await addDumpEntry({ ...data, managerId: req.userId });
+			const result = await addDumpEntry({
+				...data,
+				managerId: req.userId,
+			});
 
-		res.json(result);
-	} catch (error) {
-		next(error.message);
+			res.json(result);
+		} catch (error) {
+			next(error.message);
+		}
 	}
-});
+);
+
+router.post(
+	"/contractor-register",
+	systemAdminAccessCheck,
+	async (req, res, next) => {
+		try {
+			const data = req.body;
+
+			const result = await contractorRegister(data);
+
+			res.json(result);
+		} catch (error) {
+			next(error.message);
+		}
+	}
+);
 
 module.exports = router;

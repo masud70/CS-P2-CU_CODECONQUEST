@@ -53,6 +53,11 @@ const layout = ({ children }) => {
 					icon={<StsIcon />}
 					link="/dashboard/admin/sts-management"
 				/>
+				<MenuCard
+					text="Contractor Registration"
+					icon={<UserIcon />}
+					link="/dashboard/admin/contractor-register"
+				/>
 			</div>
 			<div className="w-2/3 lg:w-4/5 p-2 overflow-auto">{children}</div>
 		</div>

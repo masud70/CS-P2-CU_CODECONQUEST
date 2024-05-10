@@ -6,6 +6,10 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			primaryKey: true,
 		},
+		managerType: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
 	});
 
 	return Manager;

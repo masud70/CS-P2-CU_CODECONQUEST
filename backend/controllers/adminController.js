@@ -314,4 +314,24 @@ module.exports = {
 			};
 		}
 	},
+
+	contractorRegister: async (data) => {
+		try {
+			const contractor = await db.Contractor.create(data);
+			if (!contractor) {
+				throw new Error("Contractor could not be created!");
+			}
+
+			return {
+				success: true,
+				message: "Contractor registered successfully!",
+				contractor: contractor,
+			};
+		} catch (error) {
+			return {
+				success: false,
+				message: error.message,
+			};
+		}
+	},
 };
