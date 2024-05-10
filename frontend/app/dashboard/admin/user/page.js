@@ -25,14 +25,11 @@ const page = () => {
 	const [data, setData] = useState({});
 	const [users, setUsers] = useState([]);
 	const [createEmail, setCreateEmail] = useState("");
-	const [updateEmail, setUpdateEmail] = useState("");
-	const [deleteEmail, setDeleteEmail] = useState("");
 	const [cLoading, setCLoading] = useState(false);
 	const [uLoading, setULoading] = useState(false);
 	const [dLoading, setDLoading] = useState(false);
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	const auth = useSelector((st) => st.auth);
-	const validKeys = ["email", "name"];
 
 	const createUser = async () => {
 		try {
@@ -53,6 +50,7 @@ const page = () => {
 			}
 			toast.success(result.data.message);
 			setCreateEmail("");
+            getAllUsers();
 		} catch (error) {
 			toast.error(error.message);
 		} finally {
@@ -69,7 +67,6 @@ const page = () => {
 				},
 			});
 
-			console.log(result);
 			if (!result.data.success) {
 				throw new Error(result.data.message);
 			}
@@ -79,17 +76,14 @@ const page = () => {
 		}
 	};
 
-	const deleteUser = async () => {
+	const deleteUser = async (userId) => {
 		try {
-			setCLoading(true);
+			setDLoading(true);
 			const result = await axios({
-				url: `${process.env.backendUrl}/users`,
+				url: `${process.env.backendUrl}/users/${userId}`,
 				method: "DELETE",
 				headers: {
 					Authorization: "Bearer " + getCookie(process.env.tokenKey),
-				},
-				data: {
-					email: createEmail,
 				},
 			});
 
@@ -97,24 +91,32 @@ const page = () => {
 				throw new Error(result.data.message);
 			}
 			toast.success(result.data.message);
-			setCreateEmail("");
+			getAllUsers();
 		} catch (error) {
 			toast.error(error.message);
 		} finally {
-			setCLoading(false);
+			setDLoading(false);
 		}
 	};
 	const userItem = (user) => {
-		const item = Object.entries(user).map(([key, value]) =>
-			validKeys.includes(key) ? (
-				<div key={key}>
-					<span>{key} :</span>
-					<span>{value}</span>
-				</div>
-			) : null
+		return (
+			<div>
+				<p>Name : {user.name || "Not set"}</p>
+				<p>Email : {user.email}</p>
+				<p>Mobile : {user.mobileNumber || "Not set"}</p>
+				<p>
+					Roles :{" "}
+					{user?.Roles?.map((role, idx) => (
+						<span
+							key={idx}
+							className="px-2 rounded-xl bg-slate-400"
+						>
+							{role.roleString}
+						</span>
+					))}
+				</p>
+			</div>
 		);
-
-		return item;
 	};
 
 	useEffect(() => {
@@ -141,13 +143,12 @@ const page = () => {
 				},
 			});
 
-			console.log(result);
-
 			if (!result.data.success) {
 				throw new Error(result.data.message);
 			}
 
 			toast.success(result.data.message);
+			getAllUsers();
 		} catch (error) {
 			toast.error(error.message);
 		}
@@ -156,8 +157,8 @@ const page = () => {
 	return (
 		<>
 			<div className="flex flex-col space-y-2 w-full">
-				<div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-					<div className="h-[150px] rounded bg-slate-500">
+				<div className="w-full grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4">
+					<div className="h-[150px] rounded bg-green-300">
 						<div className="text-xl font-bold text-center py-4">
 							Create New User
 						</div>
@@ -172,7 +173,7 @@ const page = () => {
 							/>
 							<Button
 								size="lg"
-								color="primary"
+								color="success"
 								onClick={createUser}
 								isLoading={cLoading}
 							>
@@ -180,7 +181,7 @@ const page = () => {
 							</Button>
 						</div>
 					</div>
-					<div className="h-[150px] rounded bg-slate-500">
+					<div className="h-[150px] rounded bg-green-300">
 						<div className="text-xl font-bold text-center py-4">
 							Update User
 						</div>
@@ -197,7 +198,7 @@ const page = () => {
 						</div>
 					</div>
 
-					<div className="h-[150px] rounded bg-slate-500">
+					<div className="h-[150px] rounded bg-green-300">
 						<div className="text-xl font-bold text-center py-4">
 							Delete User
 						</div>
@@ -215,7 +216,7 @@ const page = () => {
 					</div>
 				</div>
 				<div className="w-full">
-					<div className="w-full text-center font-bold text-3xl">
+					<div className="w-full text-center font-bold text-3xl border-b-2 mb-2 border-slate-500">
 						{" "}
 						All Users
 					</div>
@@ -229,12 +230,12 @@ const page = () => {
 									title={user.email}
 									className="bg-slate-400 mb-2 px-2 rounded w-full font-bold text-lg text-slate-800"
 								>
-									<div className="bg-slate-300 p-2 w-full flex space-x-2 flex-row rounded font-normal">
-										<div className="w-3/5">
+									<div className="bg-slate-300 p-2 w-full flex space-y-2 lg:space-x-2 lg:space-y-0 flex-col lg:flex-row rounded font-normal">
+										<div className="w-full lg:w-3/5">
 											{userItem(user)}
 										</div>
-										<div className="w-2/5 grid gap-3 text-center">
-											<div
+										<div className="w-full lg:w-2/5 grid gap-3 text-center">
+											<Button
 												onClick={() => {
 													onOpen();
 													setData((p) => ({
@@ -242,13 +243,22 @@ const page = () => {
 														user: user,
 													}));
 												}}
-												className="cursor-pointer bg-purple-500 flex justify-center items-center font-bold text-lg rounded min-h-[50px]"
+												color="success"
 											>
 												Assign Role
-											</div>
-											<div className="cursor-pointer bg-red-500 flex justify-center items-center font-bold text-lg rounded min-h-[50px]">
-												Action 2
-											</div>
+											</Button>
+											<Button color="primary">
+												Update Data
+											</Button>
+											<Button
+												color="danger"
+												onClick={() =>
+													deleteUser(user.id)
+												}
+												isLoading={dLoading}
+											>
+												Delete User
+											</Button>
 										</div>
 									</div>
 								</AccordionItem>

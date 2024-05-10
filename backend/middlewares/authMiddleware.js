@@ -24,7 +24,7 @@ module.exports = {
 			if (user.loginStatus === true) {
 				req.userId = user.id;
 				req.email = user.email;
-				req.roles = user.roles;
+				req.role = user.roles;
 				next();
 			} else {
 				throw new Error("User logged out!");
