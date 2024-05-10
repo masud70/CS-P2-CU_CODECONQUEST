@@ -10,6 +10,10 @@ const {
 	assignStsManager,
 	addDeparture,
 	addDump,
+	addVehiclesTosts,
+	addLandfill,
+    assignLandfillManager,
+    addDumpEntry,
 } = require("../controllers/adminController");
 const router = express.Router();
 
@@ -36,6 +40,22 @@ router.post("/add-sts", systemAdminAccessCheck, async (req, res, next) => {
 		next(error.message);
 	}
 });
+
+router.put(
+	"/assign-vehicle-to-sts",
+	systemAdminAccessCheck,
+	async (req, res, next) => {
+		try {
+			const data = req.body;
+
+			const result = await addVehiclesTosts(data);
+
+			res.json(result);
+		} catch (error) {
+			next(error.message);
+		}
+	}
+);
 
 router.post(
 	"/assign-sts-manager",
@@ -65,11 +85,39 @@ router.post("/add-departure", stsManagerAccessCheck, async (req, res, next) => {
 	}
 });
 
-router.post("/add-dump", landfillManagerAccessCheck, async (req, res, next) => {
+router.post("/add-landfill", systemAdminAccessCheck, async (req, res, next) => {
 	try {
 		const data = req.body;
 
-		const result = await addDump({ ...data, managerId: req.userId });
+		const result = await addLandfill(data);
+
+		res.json(result);
+	} catch (error) {
+		next(error.message);
+	}
+});
+
+router.post(
+	"/assign-landfill-manager",
+	systemAdminAccessCheck,
+	async (req, res, next) => {
+		try {
+			const data = req.body;
+
+			const result = await assignLandfillManager(data);
+
+			res.json(result);
+		} catch (error) {
+			next(error.message);
+		}
+	}
+);
+
+router.post("/add-dump-entry", landfillManagerAccessCheck, async (req, res, next) => {
+	try {
+		const data = req.body;
+
+		const result = await addDumpEntry({ ...data, managerId: req.userId });
 
 		res.json(result);
 	} catch (error) {

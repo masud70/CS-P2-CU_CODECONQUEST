@@ -11,17 +11,19 @@ import { toast } from "react-toastify";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { hasCookie } from "cookies-next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "@/redux/state/authSlice";
 
 export default function Page() {
 	const [otp, setOtp] = useState("");
 	const [errorMessaage, setErrorMessaage] = useState("");
 	const [loading, setLoading] = useState(false);
-    const auth = useSelector((st) => st.auth);
+	const auth = useSelector((st) => st.auth);
+	const dispatch = useDispatch();
 	const { email } = useParams();
 	const router = useRouter();
 
-    useEffect(() => {
+	useEffect(() => {
 		if (hasCookie(process.env.tokenKey)) {
 			router.push("/");
 		}
@@ -40,12 +42,17 @@ export default function Page() {
 				}
 			);
 
+			console.log(result.data);
+
 			if (!result.data.success) {
 				throw new Error(result.data.message);
 			}
 
 			toast.success(result.data.message);
-			router.push("/auth/login");
+			dispatch(
+				login({ token: result.data.token, user: result.data.user })
+			);
+			router.push("/dashboard");
 		} catch (error) {
 			toast.error(error.message);
 			setErrorMessaage(error.message);
@@ -56,7 +63,7 @@ export default function Page() {
 
 	return (
 		<Box className="inputDiv">
-			<div className="text-3xl w-full text-center pb-[15px] text-[wheat]">
+			<div className="text-3xl w-full text-left pb-[15px] text-[white]">
 				Reset Password
 			</div>
 			<Box>
@@ -81,8 +88,7 @@ export default function Page() {
 			</div>
 			<Box className="SubmitButtonDiv">
 				<Button
-					size="lg"
-					color="primary"
+					className="SubmitButton"
 					isLoading={loading}
 					onClick={submitOtp}
 				>

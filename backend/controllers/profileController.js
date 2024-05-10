@@ -3,42 +3,58 @@ const db = require("../models");
 module.exports = {
 	getUserData: async ({ userId }) => {
 		try {
-			const user = await db.User.findByPk(userId);
+			const user = await db.User.findOne({
+				where: { id: userId },
+				include: db.Role,
+			});
+
+			const userData = {
+				id: user.id,
+				name: user.name,
+				email: user.email,
+				mobileNumber: user.mobileNumber,
+				roleStrings: user.Roles.map((r) => r.roleString),
+				roles: user.Roles.map((r) => r.title),
+			};
 
 			return {
 				success: true,
-				user: user,
+				user: userData,
 			};
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},
 
-	updateUserData: async ({ userId, data }) => {
+	updateUserData: async ({ userId, field, value }) => {
 		try {
+			const allowed = ["name", "mobileNumber", "avatar"];
+
+			if (!allowed.includes(field)) {
+				throw new Error(
+					"You don't have permission to update this value!"
+				);
+			}
+
 			const user = await db.User.findByPk(userId);
-			if (user) {
-				if (data.name) user.name = data.name;
-				if (data.avatar) user.avatar = data.avatar;
-
-				await user.save();
-				const updateUser = await db.User.findByPk(userId);
-
-				return {
-					success: true,
-					message: "Update successful!",
-					user: updateUser,
-				};
-			} else {
+			if (!user) {
 				throw new Error(`User with ${userId} not found!`);
 			}
+
+			user[field] = value;
+			await user.save();
+
+			return {
+				success: true,
+				message: "Update successful!",
+			};
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},

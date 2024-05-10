@@ -10,6 +10,9 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
+		locationName: {
+			type: DataTypes.STRING,
+		},
 		capacity: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
@@ -18,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.DOUBLE,
 			allowNull: false,
 		},
-		long: {
+		lng: {
 			type: DataTypes.DOUBLE,
 			allowNull: false,
 		},

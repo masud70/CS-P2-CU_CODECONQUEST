@@ -7,6 +7,7 @@ import { hasCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import UserManagementTab from "./components/Tabs/UserManagementTab/UserManagementTab";
+import RoleManagementTab from './components/Tabs/RoleManagementTab/RoleManagementTab';
 
 export default function Page() {
 	const router = useRouter();
@@ -14,13 +15,14 @@ export default function Page() {
 
 	useEffect(() => {
 		if (!hasCookie(process.env.tokenKey)) {
-			router.push("/");
+			// router.push("/");
 		}
 	}, [auth]);
 
 	return (
 		<Box className="AdminPageDiv">
 			{/* <UserManagementTab /> */}
+			<RoleManagementTab />
 		</Box>
 	);
 }

@@ -12,6 +12,7 @@ const {
 	systemAdminAccessCheck,
 	checkLogin,
 } = require("../middlewares/authMiddleware");
+const { validateCaptcha } = require("../middlewares");
 
 router.post("/create", systemAdminAccessCheck, async (req, res, next) => {
 	try {
@@ -28,14 +29,12 @@ router.post("/create", systemAdminAccessCheck, async (req, res, next) => {
 	}
 });
 
-router.post("/login", async (req, res, next) => {
+// For user login
+router.post("/login", validateCaptcha, async (req, res, next) => {
 	try {
-		const user = req.body;
+		const data = req.body;
 
-		const result = await getLogin({
-			emailOrMobileNumber: user.emailOrMobileNumber,
-			password: user.password,
-		});
+		const result = await getLogin(data);
 
 		res.json(result);
 	} catch (error) {
@@ -43,6 +42,7 @@ router.post("/login", async (req, res, next) => {
 	}
 });
 
+// For user logout
 router.get("/logout", checkLogin, async (req, res) => {
 	try {
 		const userId = req.userId;
@@ -86,20 +86,26 @@ router.post("/reset-password/confirm", async (req, res) => {
 	}
 });
 
-router.post("/change-password", checkLogin, async (req, res) => {
-	try {
-		const { newPassword } = req.body;
-		const userId = req.userId;
+router.post(
+	"/change-password",
+	validateCaptcha,
+	checkLogin,
+	async (req, res) => {
+		try {
+			const { oldPassword, newPassword } = req.body;
+			const userId = req.userId;
 
-		const result = await changePassword({
-			userId: userId,
-			newPassword: newPassword,
-		});
+			const result = await changePassword({
+				userId,
+				oldPassword,
+				newPassword,
+			});
 
-		res.json(result);
-	} catch (error) {
-		next(error.messsage);
+			res.json(result);
+		} catch (error) {
+			next(error.messsage);
+		}
 	}
-});
+);
 
 module.exports = router;

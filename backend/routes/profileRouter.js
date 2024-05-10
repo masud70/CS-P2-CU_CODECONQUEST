@@ -21,7 +21,7 @@ router.put("/", checkLogin, async (req, res, next) => {
 		const data = req.body;
 		const result = await updateUserData({
 			userId: req.userId,
-			data: data,
+			...data,
 		});
 
 		res.json(result);

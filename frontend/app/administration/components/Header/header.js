@@ -44,20 +44,20 @@ export default function Header() {
 	};
 	return (
 		<>
-			<div className="w-full min-h-[60px] bg-sky-300 flex justify-between items-center">
+			<div style={{backgroundColor:'#3CDA7C'}} className="w-full min-h-[60px] flex justify-between items-center">
 				<div className="w-[25%] text-center"></div>
 				<div className="w-[50%] items-center text-center font-bold text-2xl">
 					System Administration
 				</div>
 				<div className="w-[25%] flex justify-end space-x-2 px-2">
-					<Dropdown className="bg-sky-500 font-extrabold">
+					<Dropdown className="font-extrabold">
 						<DropdownTrigger>
 							<Avatar
 								name="Masud"
 								src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
 							/>
 						</DropdownTrigger>
-						<DropdownMenu aria-label="Static Actions">
+						<DropdownMenu aria-label="Static Actions"  style={{backgroundColor:'#3CDA7C',borderColor:'#3CDA7C',borderRadius:'7%',color:'white'}}>
 							<DropdownItem key="new">
 								<div className="flex items-center space-x-2 flex-row">
 									<UserIcon />

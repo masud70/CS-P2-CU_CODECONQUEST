@@ -61,6 +61,8 @@ router.put("/:userId/roles", systemAdminAccessCheck, async (req, res) => {
 		const { role } = req.body;
 		const userId = req.params.userId;
 
+        console.log(role, userId);
+
 		const result = await updateRole({
 			userId: userId,
 			role: role,

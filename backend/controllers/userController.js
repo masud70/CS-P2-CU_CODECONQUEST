@@ -12,7 +12,7 @@ module.exports = {
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},
@@ -31,7 +31,7 @@ module.exports = {
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},
@@ -56,7 +56,7 @@ module.exports = {
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},
@@ -78,7 +78,7 @@ module.exports = {
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},
@@ -116,7 +116,7 @@ module.exports = {
 		} catch (error) {
 			return {
 				success: false,
-				error: error.message,
+				message: error.message,
 			};
 		}
 	},

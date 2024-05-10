@@ -65,7 +65,7 @@ module.exports = {
 
 	getDistanceAndDuration: async ({ origin, destination }) => {
 		try {
-			const API_KEY = process.env.API_KEY + "M";
+			const API_KEY = process.env.API_KEY;
 			const API_URL =
 				"https://maps.googleapis.com/maps/api/directions/json";
 
@@ -102,10 +102,10 @@ module.exports = {
 	initializeDB: async () => {
 		try {
 			const roles = [
-				{ title: "system_admin" },
-				{ title: "sts_manager" },
-				{ title: "landfill_manager" },
-				{ title: "unassigned" },
+				{ title: "system_admin", roleString: "System Admin" },
+				{ title: "sts_manager", roleString: "STS Manager" },
+				{ title: "landfill_manager", roleString: "Landfill Manager" },
+				{ title: "unassigned", roleString: "Not Assigned" },
 			];
 			const permissions = [
 				{ type: "update" },
@@ -115,6 +115,7 @@ module.exports = {
 			];
 			const systemAdmin = {
 				email: "mdmasud.csecu@gmail.com",
+				name: "Md. Masud Mazumder",
 				password:
 					"$2b$10$CV/kUVCgdiNKvAGrVrjVfuPoxZRFol3pZi21QBEdiKXi.6Yy4CEjO",
 			};
@@ -124,7 +125,7 @@ module.exports = {
 				defaults: systemAdmin,
 			});
 			const adminRole = await db.Role.findOrCreate({
-				where: { title: "system_admin" },
+				where: { title: "system_admin", roleString: "System Admin" },
 			});
 
 			await db.UserRole.findOrCreate({
@@ -152,5 +153,12 @@ module.exports = {
 		} catch (error) {
 			console.log(error.message);
 		}
+	},
+
+	checkCommonElements(arr1, arr2) {
+		for (let i = 0; i < arr1.length; i++) {
+			if (arr2.includes(arr1[i])) return true;
+		}
+		return false;
 	},
 };
