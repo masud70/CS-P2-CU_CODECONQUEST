@@ -55,7 +55,6 @@ export default function App() {
                     <Text>Else, 
                         <Link onPress={()=>{
                             setEmail('');
-                            setPassword('');
                             seterrorMessage('')}
                             } href='/authentication/Login' 
                             style={styles.footerLink}> Sign in </Link>
