@@ -1,20 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
-	const Sts = sequelize.define("Sts", {
+	const EmployeeActivityLog = sequelize.define("EmployeeActivityLog", {
 		id: {
 			type: DataTypes.INTEGER,
 			autoIncrement: true,
 			allowNull: false,
 			primaryKey: true,
 		},
-		wardNumber: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-		},
-		locationName: {
+		activityStatus: {
 			type: DataTypes.STRING,
-		},
-		capacity: {
-			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 		lat: {
@@ -25,17 +18,11 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.DOUBLE,
 			allowNull: false,
 		},
-		finePerMissingTon: {
-			type: DataTypes.DOUBLE,
+		time: {
+			type: DataTypes.BIGINT,
 			allowNull: false,
-		},
-		collectionHourStart: {
-			type: DataTypes.BIGINT,
-		},
-		collectionHourEnd: {
-			type: DataTypes.BIGINT,
 		},
 	});
 
-	return Sts;
+	return EmployeeActivityLog;
 };

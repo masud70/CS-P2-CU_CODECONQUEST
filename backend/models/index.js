@@ -56,6 +56,9 @@ db.User.belongsToMany(db.Sts, { through: db.Manager });
 db.Landfill.belongsToMany(db.User, { through: db.Manager });
 db.User.belongsToMany(db.Landfill, { through: db.Manager });
 
+db.Contractor.belongsToMany(db.User, { through: db.Manager });
+db.User.belongsToMany(db.Contractor, { through: db.Manager });
+
 db.Landfill.hasMany(db.DumpEntry);
 db.DumpEntry.belongsTo(db.Landfill);
 
@@ -64,6 +67,33 @@ db.StsDeparture.belongsTo(db.Sts);
 
 db.Sts.hasMany(db.Vehicle);
 db.Vehicle.belongsTo(db.Sts);
+
+// db.Contractor.hasMany(db.Vehicle);
+// db.Vehicle.belongsTo(db.Contractor);
+
+// db.Vehicle.hasMany(db.StsEntry);
+// db.StsEntry.belongsTo(db.Vehicle);
+
+db.Contractor.hasMany(db.StsEntry);
+db.StsEntry.belongsTo(db.Contractor);
+
+db.Sts.hasMany(db.StsEntry);
+db.StsEntry.belongsTo(db.Sts);
+
+db.Contractor.hasMany(db.Employee);
+db.Employee.belongsTo(db.Contractor);
+
+db.Manager.hasMany(db.CollectionPlan);
+db.CollectionPlan.belongsTo(db.Manager);
+
+db.Employee.hasMany(db.EmployeeWorkLog);
+db.EmployeeWorkLog.belongsTo(db.Employee);
+
+db.Employee.hasMany(db.EmployeeActivityLog);
+db.EmployeeActivityLog.belongsTo(db.Employee);
+
+db.Employee.hasMany(db.EmployeeLoginLogoutLog);
+db.EmployeeLoginLogoutLog.belongsTo(db.Employee);
 
 db.Vehicle.hasMany(db.StsDeparture);
 db.StsDeparture.belongsTo(db.Vehicle);
