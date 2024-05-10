@@ -344,6 +344,7 @@ module.exports = {
 		email,
 		mobileNumber,
 		password,
+		contractorId,
 	}) => {
 		try {
 			if (!password) password = getRandomChars(6);
@@ -367,6 +368,15 @@ module.exports = {
 					await db.UserRole.create({
 						UserId: createdUser.id,
 						RoleId: role.id,
+					});
+					const contractor = await db.Contractor.findByPk(
+						contractorId
+					);
+
+					await db.Manager.create({
+						UserId: createdUser.id,
+						managerType: "contractor_manager",
+						ContractorId: contractor.id,
 					});
 
 					const body = {

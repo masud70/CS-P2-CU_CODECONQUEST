@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import Link from "next/link";
 import React from "react";
-import './dashboard.css'
+import "./dashboard.css";
 
 const page = () => {
 	return (
@@ -18,6 +18,11 @@ const page = () => {
 			</div>
 			<div className="font-bold w-[220px] text-2xl border-2 rounded border-green-400 px-2 bg-fuchsia-200">
 				<Link href="/dashboard/landfill">Landfill Manager</Link>
+			</div>
+			<div className="font-bold w-[220px] text-2xl border-2 rounded border-green-400 px-2 bg-fuchsia-200">
+				<Link href="/dashboard/contractor-manager">
+					Contractor Manager
+				</Link>
 			</div>
 		</div>
 	);

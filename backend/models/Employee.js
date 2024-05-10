@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
 		paymentRatePerHour: {
 			type: DataTypes.DOUBLE,
 		},
+        contactInfo: {
+            type: DataTypes.STRING,
+        },
 		assignedCollectionRoute: {
 			type: DataTypes.STRING,
 		},

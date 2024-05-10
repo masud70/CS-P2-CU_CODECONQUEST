@@ -14,11 +14,9 @@ const rbacRouter = require("./routes/rbacRouter");
 const adminRouter = require("./routes/adminRouter");
 const utilRouter = require("./routes/utilRouter");
 const stsRouter = require("./routes/stsRouter");
+const contractorManagerRoute = require("./routes/contractManagerRoute");
 const { initializeDB } = require("./helper");
-const {
-	stsManagerAccessCheck,
-	managerAccessCheck,
-} = require("./middlewares/authMiddleware");
+const { managerAccessCheck } = require("./middlewares/authMiddleware");
 
 const PORT = process.env.NODE_DOCKER_PORT_BACKEND || 8000;
 var corsOptions = {
@@ -50,6 +48,7 @@ app.use("/rbac", rbacRouter);
 app.use("/admin", adminRouter);
 app.use("/util", utilRouter);
 app.use("/sts", managerAccessCheck, stsRouter);
+app.use("/contractorManager", contractorManagerRoute);
 app.use("/mobile-api", (req, res) => {
 	res.json({
 		status: true,

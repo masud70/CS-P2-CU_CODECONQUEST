@@ -181,40 +181,6 @@ const page = () => {
 							</Button>
 						</div>
 					</div>
-
-					{/* <div className="h-[150px] rounded bg-green-300">
-						<div className="text-xl font-bold text-center py-4">
-							Update User
-						</div>
-						<Divider className="w-full" />
-						<div className="w-full flex space-x-2 p-2">
-							<Input
-								size="sm"
-								type="email"
-								label="Email / Phone Number"
-							/>
-							<Button size="lg" color="primary">
-								Search
-							</Button>
-						</div>
-					</div>
-
-					<div className="h-[150px] rounded bg-green-300">
-						<div className="text-xl font-bold text-center py-4">
-							Delete User
-						</div>
-						<Divider className="w-full" />
-						<div className="w-full flex space-x-2 p-2">
-							<Input
-								size="sm"
-								type="email"
-								label="Email / Phone Number"
-							/>
-							<Button size="lg" color="danger">
-								Delete
-							</Button>
-						</div>
-					</div> */}
 				</div>
 				<div className="w-full">
 					<div className="w-full text-center font-bold text-3xl border-b-2 mb-2 border-green-500">

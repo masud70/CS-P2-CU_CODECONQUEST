@@ -119,4 +119,30 @@ module.exports = {
 			next(error.message);
 		}
 	},
+
+	contractorManagerAccessCheck: async (req, res, next) => {
+		try {
+			const user = await module.exports.decodeToken(req.headers);
+
+			const isManager = checkCommonElements(user.roles, [
+				"contractor_manager",
+			]);
+
+			if (user.loginStatus === true && isManager) {
+				const user2 = await db.User.findOne({
+					where: { id: user.id },
+					include: db.Contractor,
+				});
+				req.contractorId = user2.Contractors[0].id;
+				req.userId = user.id;
+				req.email = user.email;
+				req.roles = user.roles;
+				next();
+			} else {
+				throw new Error("Access denied!");
+			}
+		} catch (error) {
+			next(error.message);
+		}
+	},
 };

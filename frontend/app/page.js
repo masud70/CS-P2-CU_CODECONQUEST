@@ -15,7 +15,8 @@ export default function Home() {
 
 	return (
 		<>
-			<div className="font-bold items-center w-screen h-screen justify-center flex">
+			<div className="font-bold relative items-center w-screen h-screen justify-center flex">
+				
 				<Box className={"main absolute z-0"}>
 					<Box className="absoluteBg text-foreground flexMiddle">
 						<img
