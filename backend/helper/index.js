@@ -105,6 +105,10 @@ module.exports = {
 				{ title: "system_admin", roleString: "System Admin" },
 				{ title: "sts_manager", roleString: "STS Manager" },
 				{ title: "landfill_manager", roleString: "Landfill Manager" },
+				{
+					title: "contractor_manager",
+					roleString: "Contractor Manager",
+				},
 				{ title: "unassigned", roleString: "Not Assigned" },
 			];
 			const permissions = [

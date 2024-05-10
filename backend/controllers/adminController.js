@@ -1,5 +1,8 @@
 const { Capacity, VehicleType } = require("../constants");
+const { getRandomChars, sendMail } = require("../helper");
 const db = require("../models");
+const bcrypt = require("bcryptjs");
+const saltRounds = 10;
 
 module.exports = {
 	addVehicle: async ({
@@ -327,6 +330,71 @@ module.exports = {
 				message: "Contractor registered successfully!",
 				contractor: contractor,
 			};
+		} catch (error) {
+			return {
+				success: false,
+				message: error.message,
+			};
+		}
+	},
+
+	contractorManagerRegister: async ({
+		name,
+		username,
+		email,
+		mobileNumber,
+		password,
+	}) => {
+		try {
+			if (!password) password = getRandomChars(6);
+			const user = await db.User.findAll({ where: { email: email } });
+
+			if (user.length == 0) {
+				const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+				const createdUser = await db.User.create({
+					email,
+					name,
+					username,
+					mobileNumber,
+					password: hashedPassword,
+				});
+
+				if (createdUser) {
+					const role = await db.Role.findOne({
+						where: { title: "contractor_manager" },
+					});
+					await db.UserRole.create({
+						UserId: createdUser.id,
+						RoleId: role.id,
+					});
+
+					const body = {
+						text: "",
+						html: `<p>An admin has created a new account for you. Below is your account credentials.</p><h2>Email: ${email} <br>Password: ${password}</h2>`,
+					};
+
+					const emailResult = await sendMail({
+						email: email,
+						body: body,
+					});
+
+					if (emailResult.success) {
+						return {
+							success: true,
+							message:
+								"Registration successfully! Ask the user to check their email.",
+						};
+					} else {
+						await createdUser.destroy();
+						throw new Error(emailResult.message);
+					}
+				} else {
+					throw new Error("User creation failed!");
+				}
+			} else {
+				throw new Error("User already exists!");
+			}
 		} catch (error) {
 			return {
 				success: false,

@@ -50,7 +50,7 @@ const page = () => {
 			}
 			toast.success(result.data.message);
 			setCreateEmail("");
-            getAllUsers();
+			getAllUsers();
 		} catch (error) {
 			toast.error(error.message);
 		} finally {
@@ -181,7 +181,8 @@ const page = () => {
 							</Button>
 						</div>
 					</div>
-					<div className="h-[150px] rounded bg-green-300">
+
+					{/* <div className="h-[150px] rounded bg-green-300">
 						<div className="text-xl font-bold text-center py-4">
 							Update User
 						</div>
@@ -213,10 +214,10 @@ const page = () => {
 								Delete
 							</Button>
 						</div>
-					</div>
+					</div> */}
 				</div>
 				<div className="w-full">
-					<div className="w-full text-center font-bold text-3xl border-b-2 mb-2 border-slate-500">
+					<div className="w-full text-center font-bold text-3xl border-b-2 mb-2 border-green-500">
 						{" "}
 						All Users
 					</div>
@@ -228,9 +229,9 @@ const page = () => {
 									key={idx}
 									aria-label="Accordion 1"
 									title={user.email}
-									className="bg-slate-400 mb-2 px-2 rounded w-full font-bold text-lg text-slate-800"
+									className="bg-green-300 mb-2 px-2 rounded w-full font-bold text-lg text-slate-800"
 								>
-									<div className="bg-slate-300 p-2 w-full flex space-y-2 lg:space-x-2 lg:space-y-0 flex-col lg:flex-row rounded font-normal">
+									<div className="bg-green-100 p-2 w-full flex space-y-2 lg:space-x-2 lg:space-y-0 flex-col lg:flex-row rounded font-normal">
 										<div className="w-full lg:w-3/5">
 											{userItem(user)}
 										</div>

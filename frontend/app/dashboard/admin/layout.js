@@ -58,6 +58,11 @@ const layout = ({ children }) => {
 					icon={<UserIcon />}
 					link="/dashboard/admin/contractor-register"
 				/>
+                <MenuCard
+					text="Contractor Manager Registration"
+					icon={<UserIcon />}
+					link="/dashboard/admin/contractor-manager-register"
+				/>
 			</div>
 			<div className="w-2/3 lg:w-4/5 p-2 overflow-auto">{children}</div>
 		</div>

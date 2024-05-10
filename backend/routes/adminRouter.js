@@ -15,6 +15,7 @@ const {
 	assignLandfillManager,
 	addDumpEntry,
 	contractorRegister,
+    contractorManagerRegister,
 } = require("../controllers/adminController");
 const router = express.Router();
 
@@ -148,5 +149,21 @@ router.post(
 		}
 	}
 );
+
+router.post(
+	"/contractor-manager-register",
+	systemAdminAccessCheck,
+	async (req, res, next) => {
+		try {
+			const data = req.body;
+			const result = await contractorManagerRegister(data);
+
+			res.json(result);
+		} catch (error) {
+			next(error.message);
+		}
+	}
+);
+
 
 module.exports = router;
