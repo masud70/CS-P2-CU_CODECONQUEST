@@ -12,7 +12,7 @@ export default function Others() {
 
     const navigationComponents = [
         {
-          title: "Volunteer Community", icon: <MaterialIcons name="volunteer-activism" size={24} color="black" />
+          title: "Volunteer Registration", icon: <MaterialIcons name="volunteer-activism" size={24} color="black" />
         },
         {
             title: "Volunteer Community", icon: <MaterialIcons name="groups-2" size={24} color="black" />
@@ -54,7 +54,7 @@ export default function Others() {
                     <Text className="text-[22px] mb-2 font-semibold border-b-2 mb-3">Others</Text>
                     {
                         navigationComponents.map((item,index)=>{
-                            return <View style={styles.oneNavigation}>
+                            return <View key={item.title} style={styles.oneNavigation}>
                                         <View className="w-1/4 flex justify-center items-center">
                                                 {item.icon}
                                         </View>
