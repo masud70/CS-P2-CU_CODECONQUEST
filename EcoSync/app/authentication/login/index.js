@@ -13,14 +13,19 @@ export default function App() {
     const [loggedInStatus, setloggedInStatus] = useState(false)
     const [isRememberMeChecked, setIsRememberMeChecked] = useState(false);
 
+    const setAllNone = ()=>{
+        setPassword('')
+        setEmail('')
+    }
+
 
 	return (
-		<SafeAreaView className='w-screen'>
-			<View style={{width:'auto'}} className="flex justify-center items-center">
-				<Image
+        <SafeAreaView>
+            <View style={{width:'auto'}} className="flex justify-center bg-white h-screen items-center">
+                <Image
                     style={{width:200, height:200, resizeMode:'contain'}}
-                 source={require('../../../assets/logo_bg_removed.png')}/>
-				<TextInput
+                    source={require('../../../assets/logo_bg_removed.png')}/>
+                <TextInput
                     style={styles.input} placeholder='E-mail' placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => {setEmail(text);  seterrorMessage('');}} value={email} 
                     underlineColorAndroid="transparent" autoCapitalize="none"
@@ -64,12 +69,18 @@ export default function App() {
                         setEmail('');
                         setPassword('');
                         seterrorMessage('')}
-                        } href='' 
+                        } href='authentication/forgotPassword' 
                         style={styles.footerLink}> Forgot password?</Link>
                 </View>
+
+                <View style={styles.footerView}>
+                        <Text style={styles.footerText}>Don't have an account? <Link onPress={()=>{
+                            setAllNone()
+                            }} href={"authentication/signup"} style={styles.footerLink2}>Sign Up</Link></Text>
+                    </View>
                 
-			</View>
-		</SafeAreaView>
+            </View>
+        </SafeAreaView>
 	);
 }
 
@@ -127,6 +138,11 @@ const styles = StyleSheet.create({
     },
     footerLink: {
         color: "#e80505",
+        fontWeight: "bold",
+        fontSize: 16
+    },
+    footerLink2: {
+        color: "#09D95D",
         fontWeight: "bold",
         fontSize: 16
     },
