@@ -34,7 +34,7 @@ const layout = ({ children }) => {
 					link="/dashboard/admin/user"
 				/>
 				<MenuCard
-					text="Vehicle Entry"
+					text="Vehicle Register"
 					icon={<Truck />}
 					link="/dashboard/admin/vehicle-register"
 				/>
