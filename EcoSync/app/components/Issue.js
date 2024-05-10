@@ -25,22 +25,42 @@ export default function Issue() {
         {label: 'Damaged Infrastructure', value: 'DamagedInfrastructure'}
     ]);
 
+
+    const [openArealist, setopenArealist] = useState(false);
+    const [selectedArea, setselectedArea] = useState(null);
+    const [areas, setareas] = useState([
+        {label: 'Savar', value:'Savar'},
+        {label: 'Amin Bazar', value: 'AminBazar'},
+    ]);
+
     const [postannonymously, setpostannonymously] = useState(false)
     const [loading, setloading] = useState(false)
   
     return (
         <SafeAreaView  className="bg-white">
-            <View style={{margin:'auto', width:'94%', zIndex:10}} className="flex justify-center mt-8 items-center pt-5 bg-white">
+            <View style={{margin:'auto', width:'94%', zIndex:11}} className="flex justify-center mt-8 items-center pt-5 bg-white">
                 <Text className="mr-auto font-bold text-[25px]">Issue a report</Text>
                 <DropDownPicker
-                open={openIssueTypelist}
-                value={issueType}
-                items={issues}
-                setOpen={setopenIssueTypelist}
-                setValue={setissueType}
-                setItems={setIssues}
-                style={{borderColor:'#09D95D'}}
+                    open={openIssueTypelist}
+                    value={issueType}
+                    items={issues}
+                    setOpen={setopenIssueTypelist}
+                    setValue={setissueType}
+                    setItems={setIssues}
+                    style={{borderColor:'#09D95D'}}
                 placeholder='Select issue type'
+                />
+            </View>
+            <View style={{margin:'auto', width:'94%', zIndex:10}} className="flex justify-center items-center pt-5 bg-white">
+                <DropDownPicker
+                    open={openArealist}
+                    value={selectedArea}
+                    items={areas}
+                    setOpen={setopenArealist}
+                    setValue={setselectedArea}
+                    setItems={setareas}
+                    style={{borderColor:'#09D95D'}}
+                placeholder='Select location'
                 searchable={true}
                 />
             </View>
