@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Link, useRouter } from 'expo-router';
 
-const ForumListItem = ({}) => {
+const ForumListItem = ({navigation}) => {
+    const router = useRouter()
 
   return(
-    <Pressable style={styles.blogContainer} onPress={()=>{navigateToABlog()}}>
+    <Pressable onPress={()=>{router.push('components/ApostScreen')}} style={styles.blogContainer}>
       <Image source={require('../../assets/1176433.png')} style={styles.profilePic} />
       <View style={styles.blogContent}>
         <Text style={styles.userName}>Masud Mazumdar</Text>
@@ -34,6 +36,7 @@ const ForumListItem = ({}) => {
 const styles = {
   blogContainer: {
     flexDirection: 'row',
+    width:'100%',
     padding: 10,
     marginBottom: 10,
     backgroundColor: '#fff',

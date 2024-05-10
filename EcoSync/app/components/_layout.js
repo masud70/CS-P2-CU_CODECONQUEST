@@ -10,7 +10,7 @@ const Layout = () => {
 			<Stack.Screen name="Others" options={{ headerShown: false }} />
 			<Stack.Screen name="Forum" options={{ headerShown: false }} />
 			<Stack.Screen name="Issue" options={{ headerShown: false }} />
-			<Stack.Screen name="Timeline" options={{ headerShown: false }} />
+			<Stack.Screen name="ApostScreen" options={{ headerShown: false }} />
 		</Stack>
 	);
 };
