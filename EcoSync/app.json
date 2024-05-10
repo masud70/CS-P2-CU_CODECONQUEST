@@ -4,11 +4,11 @@
 		"slug": "EcoSync",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/icon.png",
+		"icon": "./assets/logo_with_bg.png",
 		"userInterfaceStyle": "light",
 		"scheme": "ecosync",
 		"splash": {
-			"image": "./assets/splash.png",
+			"image": "./assets/logo_bg_removed.png",
 			"resizeMode": "contain",
 			"backgroundColor": "#ffffff"
 		},
@@ -18,12 +18,12 @@
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive-icon.png",
+				"foregroundImage": "./assets/logo_bg_removed.png",
 				"backgroundColor": "#ffffff"
 			}
 		},
 		"web": {
-			"favicon": "./assets/favicon.png"
+			"favicon": "./assets/logo_bg_removed.png"
 		},
 		"plugins": ["expo-router"]
 	}
