@@ -4,7 +4,7 @@
 		"slug": "EcoSync",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/logo_with_bg.png",
+		"icon": "./assets/logo_bg_removed.png",
 		"userInterfaceStyle": "light",
 		"scheme": "ecosync",
 		"splash": {
