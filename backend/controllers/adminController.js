@@ -46,15 +46,9 @@ module.exports = {
 		}
 	},
 
-	addSts: async ({ wardNumber, capacity, locationName, lat, lng }) => {
+	addSts: async (data) => {
 		try {
-			const sts = await db.Sts.create({
-				wardNumber,
-				capacity,
-				locationName,
-				lat,
-				lng,
-			});
+			const sts = await db.Sts.create(data);
 
 			return {
 				success: true,

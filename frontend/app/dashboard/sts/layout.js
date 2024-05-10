@@ -16,7 +16,8 @@ const layout = ({ children }) => {
 
 	useEffect(() => {
 		if (
-			!hasCookie(process.env.tokenKey) ||!auth.roles.includes("sts_manager")
+			!hasCookie(process.env.tokenKey) ||
+			!auth.roles.includes("sts_manager")
 		) {
 			toast.error("Invalid access!");
 			router.push("/dashboard");
@@ -24,9 +25,9 @@ const layout = ({ children }) => {
 	}, [auth]);
 
 	return (
-		<div className="w-full lg:w-4/5 h-full overflow-hidden bg-slate-200">
+		<div className="w-full h-full overflow-hidden bg-slate-200">
 			<div className="mt-2 w-full h-full flex flex-row px-2 rounded overflow-hidden">
-				<div className="w-1/3 lg:w-1/5 h-full p-2 bg-slate-200 flex flex-col space-y-2 overflow-auto border-r-2 border-slate-400">
+				<div className="w-1/3 lg:w-1/5 h-full p-2 bg-slate-200 flex flex-col space-y-4 overflow-auto border-r-2 border-slate-400">
 					<MenuCard
 						text="Home"
 						icon={<Home />}
@@ -36,6 +37,11 @@ const layout = ({ children }) => {
 						text="Vehicle Entry"
 						icon={<Truck />}
 						link="/dashboard/sts/vehicle-entry"
+					/>
+                    <MenuCard
+						text="Contractor's Dump Entry"
+						icon={<Truck />}
+						link="/dashboard/sts/contractor-dump-entry"
 					/>
 					<MenuCard
 						text="Bill"

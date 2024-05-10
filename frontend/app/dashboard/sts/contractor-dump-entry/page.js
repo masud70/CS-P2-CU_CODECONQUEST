@@ -1,31 +1,22 @@
 "use client";
-import { Button, Divider, Input } from "@nextui-org/react";
+import { DateTimePicker } from "@mui/x-date-pickers";
+import { Button, Divider, Input, Select, SelectItem } from "@nextui-org/react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
+import dayjs from "dayjs";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 const page = () => {
-	const [data, setData] = useState({});
+	const [data, setData] = useState({ dateTime: dayjs(new Date()).unix() });
 	const [loading, setLoading] = useState(false);
 
-	const addSts = async () => {
+	const registerEntry = async () => {
 		try {
 			setLoading(true);
-			const res = await axios({
-				method: "POST",
-				url: `${process.env.backendUrl}/admin/add-sts`,
-				headers: {
-					Authorization: "Bearer " + getCookie(process.env.tokenKey),
-				},
-				data: { ...data },
-			});
-
-			if (!res.data.success) {
-				throw new Error(res.data.message);
-			}
-			toast.success(res.data.message);
-			setData({});
+			toast.warning("Method not implemented yet!");
+			// toast.success(res.data.message);
+			// setData({});
 		} catch (error) {
 			toast.error(error.message);
 		} finally {
@@ -33,21 +24,71 @@ const page = () => {
 		}
 	};
 
+	const wasteType = [
+		{ label: "Domestic", value: "domestic" },
+		{ label: "Plastic", value: "plastic" },
+		{ label: "Construction Waste", value: "placonstruction_waste" },
+	];
+
 	return (
 		<div className="w-full flex flex-col justify-center items-center space-y-3">
 			<div className="font-bold text-3xl text-center py-3">
-				STS Register
+				Contractor's Dump Entry
 			</div>
 			<Divider />
 			<div className="my-2 py-2 w-4/5 flex flex-col space-y-10">
+				<div className="flex flex-col space-y-2">
+					<span className="font-bold text-sm">
+						Date and Time of Collection
+					</span>
+					<DateTimePicker
+						value={dayjs.unix(data.dateTime)}
+						onChange={(newValue) => {
+							setData((p) => ({
+								...p,
+								dateTime: dayjs(newValue).unix(),
+							}));
+						}}
+					/>
+				</div>
+				<Input
+					type="number"
+					placeholder="Amount of Waste Collected (KG)"
+					label="Amount of Waste Collected (KG)"
+					labelPlacement="outside"
+					className="font-bold"
+					name="weightOfWaste"
+					value={data.weightOfWaste}
+					onChange={(e) => {
+						setData((prevData) => ({
+							...prevData,
+							[e.target.name]: e.target.value,
+						}));
+					}}
+				/>
 				<Input
 					type="text"
-					placeholder="Location Name"
-					label="Location Name"
+					placeholder="Contractor ID"
+					label="Contractor ID"
 					labelPlacement="outside"
 					className="font-bold"
-					name="locationName"
-					value={data.locationName}
+					name="contractorId"
+					value={data.contractorId}
+					onChange={(e) => {
+						setData((prevData) => ({
+							...prevData,
+							[e.target.name]: e.target.value,
+						}));
+					}}
+				/>
+				<Input
+					type="text"
+					placeholder="Contact Number"
+					label="Contact Number"
+					labelPlacement="outside"
+					className="font-bold"
+					name="mobileNumber"
+					value={data.mobileNumber}
 					onChange={(e) => {
 						setData((prevData) => ({
 							...prevData,
@@ -57,12 +98,51 @@ const page = () => {
 				/>
 				<Input
 					type="number"
-					placeholder="Ward Number"
-					label="Ward Number"
+					placeholder="Contractor ID"
+					label="Contractor ID"
 					labelPlacement="outside"
 					className="font-bold"
-					name="wardNumber"
-					value={data.wardNumber}
+					name="contractorId"
+					value={data.contractorId}
+					onChange={(e) => {
+						setData((prevData) => ({
+							...prevData,
+							[e.target.name]: e.target.value,
+						}));
+					}}
+				/>
+				<Select
+					placeholder="Type of waste collected"
+					labelPlacement="outside"
+					label="Type of waste collected"
+					className="py-0 mt-0 font-bold"
+					name="wasteType"
+					onChange={(e) => {
+						setData((prevData) => ({
+							...prevData,
+							[e.target.name]: e.target.value,
+						}));
+					}}
+				>
+					A
+					{wasteType.map((type) => (
+						<SelectItem
+							className="text-slate-900"
+							key={type.value}
+							value={type.value}
+						>
+							{type.label}
+						</SelectItem>
+					))}
+				</Select>
+				<Input
+					type="text"
+					placeholder="Designated STS ID"
+					label="Designated STS ID"
+					labelPlacement="outside"
+					className="font-bold"
+					name="stsId"
+					value={data.stsId}
 					onChange={(e) => {
 						setData((prevData) => ({
 							...prevData,
@@ -71,88 +151,13 @@ const page = () => {
 					}}
 				/>
 				<Input
-					type="number"
-					placeholder="Fine per missing ton"
-					label="Fine per missing ton"
+					type="text"
+					placeholder="Vehicle used for Transportation"
+					label="Vehicle used for Transportation"
 					labelPlacement="outside"
 					className="font-bold"
-					name="finePerMissingTon"
-					value={data.finePerMissingTon}
-					onChange={(e) => {
-						setData((prevData) => ({
-							...prevData,
-							[e.target.name]: e.target.value,
-						}));
-					}}
-				/>
-				<Input
-					type="number"
-					placeholder="Capacity (Tonns)"
-					label="Capacity (Tonns)"
-					labelPlacement="outside"
-					className="font-bold"
-					name="capacity"
-					value={data.capacity}
-					onChange={(e) => {
-						setData((prevData) => ({
-							...prevData,
-							[e.target.name]: e.target.value,
-						}));
-					}}
-				/>
-				<Input
-					type="number"
-					placeholder="Collection hour start"
-					label="Collection hour start"
-					labelPlacement="outside"
-					className="font-bold"
-					name="collectionHourStart"
-					value={data.collectionHourStart}
-					onChange={(e) => {
-						setData((prevData) => ({
-							...prevData,
-							[e.target.name]: e.target.value,
-						}));
-					}}
-				/>
-				<Input
-					type="number"
-					placeholder="Collection hour end"
-					label="Collection hour end"
-					labelPlacement="outside"
-					className="font-bold"
-					name="collectionHourEnd"
-					value={data.collectionHourEnd}
-					onChange={(e) => {
-						setData((prevData) => ({
-							...prevData,
-							[e.target.name]: e.target.value,
-						}));
-					}}
-				/>
-				<Input
-					type="number"
-					placeholder="Latitude"
-					label="Latitude"
-					labelPlacement="outside"
-					className="font-bold"
-					name="lat"
-					value={data.lat}
-					onChange={(e) => {
-						setData((prevData) => ({
-							...prevData,
-							[e.target.name]: e.target.value,
-						}));
-					}}
-				/>
-				<Input
-					type="number"
-					placeholder="Longitude"
-					label="Longitude"
-					labelPlacement="outside"
-					className="font-bold"
-					name="lng"
-					value={data.lng}
+					name="vehicleUsed"
+					value={data.vehicleUsed}
 					onChange={(e) => {
 						setData((prevData) => ({
 							...prevData,
@@ -167,9 +172,9 @@ const page = () => {
 					disabled={loading}
 					color="primary"
 					size="lg"
-					onClick={addSts}
+					onClick={registerEntry}
 				>
-					Submit
+					Register
 				</Button>
 			</div>
 		</div>
