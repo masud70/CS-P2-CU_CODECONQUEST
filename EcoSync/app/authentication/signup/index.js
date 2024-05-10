@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         overflow: 'hidden',
         backgroundColor: '#f0f0f0',
-        color:'#5591ad',
+        color:'#09D95D',
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 15,

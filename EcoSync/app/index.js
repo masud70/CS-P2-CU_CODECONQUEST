@@ -23,6 +23,8 @@ export default function App() {
 					href={"/authentication/login"}>Login</Link>
 					<Link className="rounded-lg px-4 py-4 w-40 text-center font-bold text-white bg-green-400 mt-4"
 					href={"/authentication/signup"}>Sign up</Link>
+					<Link className="rounded-lg px-4 py-4 w-40 text-center font-bold text-white bg-green-400 mt-4"
+					href={"/home"}>Dashboard</Link>
 				</View>
 			</View>
 			
