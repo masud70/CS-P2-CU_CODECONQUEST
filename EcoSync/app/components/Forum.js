@@ -78,9 +78,9 @@ export default function Forum() {
 const styles = StyleSheet.create({
     checkboxContainer: {
         flexDirection: 'row',
-        marginBottom: 10,
+        marginBottom: 0,
         marginLeft:10,
-        width:'40%',
+        width:'auto',
     },
     checkbox: {
         alignSelf: 'center',
