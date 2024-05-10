@@ -15,8 +15,8 @@ export default function App() {
 
 
 	return (
-		<SafeAreaView className='w-screen'>
-			<View style={{width:'auto'}} className="flex justify-center items-center">
+		<SafeAreaView>
+			<View style={{width:'auto'}} className="flex justify-center items-center bg-white h-screen ">
 				<Image
                     style={{width:200, height:200, resizeMode:'contain'}}
                  source={require('../../../assets/logo_bg_removed.png')}/>
@@ -56,7 +56,7 @@ export default function App() {
                         <Link onPress={()=>{
                             setEmail('');
                             seterrorMessage('')}
-                            } href='/authentication/Login' 
+                            } href='/authentication/login' 
                             style={styles.footerLink}> Sign in </Link>
                             with passowrd.
                     </Text>
