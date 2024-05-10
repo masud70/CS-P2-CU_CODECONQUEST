@@ -12,6 +12,7 @@ const page = () => {
 		{ value: 3, label: "3 Tons" },
 		{ value: 5, label: "5 Tons" },
 		{ value: 7, label: "7 Tons" },
+		{ value: 15, label: "15 Tons" },
 	];
 	const truckType = [
 		{ value: "Open Truck", label: "Open Truck" },

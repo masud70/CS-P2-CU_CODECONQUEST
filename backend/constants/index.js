@@ -16,6 +16,7 @@ const Capacity = {
 	THREE: 3,
 	FIVE: 5,
 	SEVEN: 7,
+	FIFTEEN: 15,
 };
 
 module.exports = { Roles, VehicleType, Capacity };
