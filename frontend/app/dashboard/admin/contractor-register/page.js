@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 const page = () => {
-	const [data, setData] = useState({ regDate: dayjs(new Date()) });
+	const [data, setData] = useState({ regDate: dayjs(new Date()).unix() });
 	const [loading, setLoading] = useState(false);
 
 	const registerContractor = async () => {
@@ -91,7 +91,7 @@ const page = () => {
 					<span className="font-bold text-sm">Registration Date</span>
 					<DatePicker
 						name="regDate"
-						value={data.regDate}
+						value={dayjs.unix(data.regDate)}
 						onChange={(newValue) => {
 							setData((p) => ({
 								...p,
