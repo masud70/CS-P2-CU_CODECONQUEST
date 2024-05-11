@@ -42,6 +42,11 @@ const navItems = [
 		link: "/dashboard/landfill",
 		access: "landfill_manager",
 	},
+	{
+		text: "Contractor Manager",
+		link: "/dashboard/contractor-manager",
+		access: "contractor_manager",
+	},
 ];
 
 function NavBar(props) {

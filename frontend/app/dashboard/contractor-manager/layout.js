@@ -4,11 +4,11 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import MenuCard from "@/components/MenuCard";
-import Truck from "@/icon/Truck";
 import Home from "@/icon/Home";
-import StsIcon from "@/icon/StsIcon";
 import { toast } from "react-toastify";
 import UserIcon from "@/icon/UserIcon";
+import PlanIcon from "@/icon/PlanIcon";
+import ManageIcon from "@/icon/ManageIcon";
 
 const layout = ({ children }) => {
 	const router = useRouter();
@@ -36,6 +36,16 @@ const layout = ({ children }) => {
 					text="Employee Registration"
 					icon={<UserIcon />}
 					link="/dashboard/contractor-manager/register-employee"
+				/>
+				<MenuCard
+					text="Collection Plan"
+					icon={<PlanIcon />}
+					link="/dashboard/contractor-manager/collection-plan"
+				/>
+				<MenuCard
+					text="Manage Collection Plan(s)"
+					icon={<ManageIcon />}
+					link="/dashboard/contractor-manager/manage-plan"
 				/>
 			</div>
 			<div className="w-2/3 lg:w-4/5 p-2 overflow-auto">{children}</div>
