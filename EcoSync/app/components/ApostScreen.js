@@ -1,18 +1,40 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, Dimensions,ScrollView, ActivityIndicator } from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Feather, AntDesign, FontAwesome } from '@expo/vector-icons';
 import moment from 'moment';
 import { RichEditor } from 'react-native-pell-rich-editor';
 import HRline from './HRLine';
+import { useLocalSearchParams } from 'expo-router'
 
-const APostScreen = ({ }) => {
+const APostScreen = () => {
 
   const editorRef = useRef(null);
+
+  const [postData, setpostData] = useState({})
+
+  const {post} = useLocalSearchParams()
+
+  useEffect(() => {
+
+  const getParams = ()=> { 
+    setpostData(JSON.parse(post))
+    setComments(JSON.parse(post).comments)
+    setlikes(JSON.parse(post).likes)
+    setdislikes(JSON.parse(post).dislikes)
+  }
+  getParams()
+    
+  }, [])
+  
   
   const [blogData, setBlogData] = useState(null);
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState([
+    {
+        date:'15 sec ago',
+        username:'Atanu Kumar Dey',
+        commentText:'A new Comment'
+    }
+  ]);
   const [commentInput, setcommentInput] = useState('')
   const [likes, setlikes] = useState([])
   const [dislikes, setdislikes] = useState([])
@@ -39,9 +61,9 @@ const APostScreen = ({ }) => {
 
     const newCommentInfo = {
       "commentText":commentInput,
-      "userProfilePic":userProfilePic,
-      "userRef":userRef,
-      "username":userName,
+      "userProfilePic":'userProfilePic',
+      "userRef":'userRef',
+      "username":'userName',
       "date": formattedDate
     }
     try {
@@ -64,7 +86,7 @@ const APostScreen = ({ }) => {
 
   const addLike = async()=>{
     try {
-      setlikes([...likes,userRef])
+      setlikes([...likes,'userRef'])
     } 
     catch (error) {
       console.error('Error adding likes:', error);
@@ -83,7 +105,7 @@ const APostScreen = ({ }) => {
 
   const addDislike =  async()=>{
     try {
-      setdislikes([...dislikes,userRef])
+      setdislikes([...dislikes,'userRef'])
     } 
     catch (error) {
       console.error('Error adding dislikes:', error);
@@ -110,26 +132,20 @@ const APostScreen = ({ }) => {
     }
   }
   
-  const SomeComments = [
-    {
-        date:'15 sec ago',
-        username:'Atanu Kumar Dey',
-        commentText:'A new Comment'
-    }
-  ]
     
 
 
   const renderComment = (comment) => {
     return (
-      <View key={comment.date} style={styles.commentContainer}>
+      <View key={comment.date+comment.username} style={styles.commentContainer}>
         <Image source={require('../../assets/1176433.png')} style={styles.commentAuthorImage} />
         <View style={styles.commentContent}>
           <Text style={styles.commentAuthor}>{comment.username}
           </Text>
-          <Text style={{fontSize:10,color:'gray',fontWeight:'bold',marginTop:-3,padding:0}}>{comment.date.slice(0,5)+' '+comment.date.slice(8)}</Text>
+          {/* <Text style={{fontSize:10,color:'gray',fontWeight:'bold',marginTop:-3,padding:0}}>{comment.date.slice(0,5)+' '+comment.date.slice(8)}</Text> */}
+          <Text style={{fontSize:10,color:'gray',fontWeight:'bold',marginTop:-3,padding:0}}>{comment.time}</Text>
           
-          <Text style={styles.commentText}>{comment.commentText}</Text>
+          <Text style={styles.commentText}>{comment.commentDescription}</Text>
         </View>
       </View>
     );
@@ -138,25 +154,25 @@ const APostScreen = ({ }) => {
   
     const [editorHeight, setEditorHeight] = useState(0);
 
-//   if (!blogData) {
-//     return <View style={{height:500,display:'flex',justifyContent:'center',alignItems:'center'}}>
-//               <ActivityIndicator color={"#09D95D"} size={50} />
-//             <Text style={{textAlign:'center',verticalAlign:'middle',color:'#09D95D'}}>Loading blog...</Text>
-//           </View>;
-//   }
-
+  if (!postData) {
+    return <View style={{height:500,display:'flex',justifyContent:'center',alignItems:'center'}}>
+              <ActivityIndicator color={"#09D95D"} size={50} />
+            <Text style={{textAlign:'center',verticalAlign:'middle',color:'#09D95D'}}>Loading blog...</Text>
+          </View>;
+  }
+else{
   return (
     <ScrollView style={styles.container}  showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
         <Image source={require('../../assets/1176433.png')} style={styles.authorImage} />
         <View style={styles.authorInfo}>
-          <Text style={styles.authorName}>Md Masud Mazumdar</Text>
-          <Text style={styles.date}>11 July, 2024</Text>
+          <Text style={styles.authorName}>{postData.fullName}</Text>
+          <Text style={styles.date}>{postData.postedDate}</Text>
         </View>
       </View>
       
       <View style={styles.blogContent}>
-        <Text style={styles.title}>A post title</Text>
+        <Text style={styles.title}>{postData.title}</Text>
         <View disabled={true} style={styles.richtexteditorContainer}>
           <RichEditor 
               useContainer={true}
@@ -164,7 +180,7 @@ const APostScreen = ({ }) => {
               disabled={true}
               style={{flex: 1,backgroundColor:'transparent',borderRadius:8}}
               placeholder="Write your cool content here :)"
-              initialContentHTML={"<h1>Sample Data</h1>"}
+              initialContentHTML={postData.description}
               onHeightChange={(height) => setEditorHeight(height)}
             />
         </View>
@@ -191,15 +207,15 @@ const APostScreen = ({ }) => {
         </TouchableOpacity>
         
         <TouchableOpacity style={[styles.likeDislikeCommentBtn]}>
-          <Feather name="message-circle" size={20} color="black" />
-          <Text style={styles.likeDislikeCount}>({comments.length})</Text>
+          <FontAwesome name="share" size={20} color="black" />
+          {/* <Text style={styles.likeDislikeCount}>({comments.length})</Text> */}
         </TouchableOpacity>
       </View>
       
       <HRline/>
       <View style={styles.commentsContainer}>
-        <Text style={styles.commentsHeading}>Comments</Text>
-        {SomeComments.map((comment) => renderComment(comment))}
+        <Text style={styles.commentsHeading}>Comments ({comments.length})</Text>
+        {comments.map((comment) => renderComment(comment))}
       </View>
       <View style={styles.commentBox}>
         <Image source={require('../../assets/1176433.png')} style={styles.commentBoxImage} />
@@ -211,6 +227,7 @@ const APostScreen = ({ }) => {
       </ScrollView>
     );
   };
+}
   
 export default APostScreen;
   
@@ -252,10 +269,10 @@ export default APostScreen;
       fontWeight: 'bold',
       marginBottom: 8,
       color:'#250994',
-      borderTopColor:'#09D95D',
+      borderTopColor:'#fff',
       borderWidth:1,
       paddingVertical:6,
-      borderBottomColor:'#09D95D',
+      borderBottomColor:'#fff',
       borderRightColor:'transparent',
       borderLeftColor:'transparent',
       backgroundColor:'white',
@@ -268,12 +285,12 @@ export default APostScreen;
     },
     richtexteditorContainer:{
       height:'auto',
-      minHeight:350,
+      minHeight:320,
       borderRadius:5,
       overflow:'hidden',
       backgroundColor:'white',
       borderWidth:1,
-      borderColor:'#09D95D',
+      borderColor:'#fff',
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.2,

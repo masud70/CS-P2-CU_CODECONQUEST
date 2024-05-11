@@ -123,7 +123,7 @@ export default function Others() {
                         <Text className=" text-justify w-full">
                             Explore a diverse range of upcoming events and activities. 
                         </Text>
-                        <TouchableOpacity className="rounded-l border-lime-600 border-2 px-4 py-3 mt-5">
+                        <TouchableOpacity onPress={()=>{route.push('otherNavigations/events')}} className="rounded-l border-lime-600 border-2 px-4 py-3 mt-5">
                             <Text className="text-lime-600">Explore Events</Text>
                         </TouchableOpacity>
                         </>

@@ -7,7 +7,7 @@ const RootLayout = () => {
 		<>
 			<Stack>
 				<Stack.Screen name="settings/index" options={{ headerShown: false }} />
-                
+				<Stack.Screen name="events/index" options={{ headerShown: false }} />
 			</Stack>
 		</>
 	);

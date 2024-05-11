@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native'
 import { Searchbar } from 'react-native-paper';
 import ForumListItem from './ForumListItem';
 import Checkbox from 'expo-checkbox';
+import { posts } from '../dummyPosts';
 
 export default function Forum() {
     const [searchQuery, setSearchQuery] = useState('');
@@ -14,9 +15,56 @@ export default function Forum() {
     const [guidelines, setguidelines] = useState(false)
     const [story, setstory] = useState(false)
 
+    const [allPosts, setallPosts] = useState([])
+
+    useEffect(() => {
+
+        const filterPosts = ()=>{
+            const filteredPosts = posts.filter(post => {
+                if (question && post.categories.includes('question')) {
+                  return true;
+                }
+                if (Educational && post.categories.includes('educational')) {
+                  return true;
+                }
+                if (guidelines && post.categories.includes('guidelines')) {
+                  return true;
+                }
+                if (story && post.categories.includes('story')) {
+                  return true;
+                }
+                return false;
+              });
+              if(!question && !Educational && !guidelines && !story){
+                setallPosts(posts)
+              }
+              else setallPosts(filteredPosts)
+        }
+        filterPosts()
+    }, [question,Educational, guidelines, story])
+
+    useEffect(() => {
+        const filterPosts = ()=>{
+            const filteredPosts = posts.filter(post => {
+                // Convert title and description to lowercase for case-insensitive search
+                const lowercaseTitle = post.title.toLowerCase();
+                const lowercaseDescription = post.description.toLowerCase();
+                // Check if search query is present in title or description
+                return lowercaseTitle.includes(searchQuery.toLowerCase()) || lowercaseDescription.includes(searchQuery.toLowerCase());
+              });
+              if(searchQuery.length==0){
+                setallPosts(posts)
+              }
+              else setallPosts(filteredPosts)
+        }
+        filterPosts()
+    }, [searchQuery])
+    
+
+
     return (
         <SafeAreaView>
-            <ScrollView className="h-screen p-3 mt-8 bg-white">
+            <View className="h-screen p-3 mt-8 bg-white">
 
             <Searchbar
                 placeholder="Search for a topic..."
@@ -62,16 +110,17 @@ export default function Forum() {
                     </Pressable>
                 </View>
                 
-                <View className="w-[95%] mt-5 mx-auto flex justify-center items-center ">
-
-                    <ForumListItem/>
-                    <ForumListItem/>
-                    <ForumListItem/>
-                </View>
+                <ScrollView showsVerticalScrollIndicator={false} className="w-full mb-8 mt-1 mx-auto">
+                    {
+                        allPosts.map((post)=>{
+                        return <ForumListItem post={post} key={post.postId}/>
+                        })
+                    }
+                </ScrollView>
 
                 
 
-            </ScrollView>
+            </View>
         </SafeAreaView>
     )
 }

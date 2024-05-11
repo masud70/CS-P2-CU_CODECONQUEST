@@ -1,32 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
 
-const ForumListItem = ({navigation}) => {
+const ForumListItem = ({post}) => {
     const router = useRouter()
+    const [postDescription, setpostDescription] = useState('')
+
+    useEffect(() => {
+        if(post.description.length>0) {
+          setpostDescription(post.description)
+        }
+    }, [post])
+
+
+    const  truncateDescription = (description) =>{
+      // Remove HTML tags from the description
+      const cleanDescription = description.replace(/<[^>]*>/g, '');
+    
+      // Truncate the description to at most 150 characters
+      const truncatedDescription = cleanDescription.length > 150 ? cleanDescription.substring(0, 150) + '...' : cleanDescription;
+    
+      return truncatedDescription;
+    }
+
 
   return(
-    <Pressable onPress={()=>{router.push('components/ApostScreen')}} style={styles.blogContainer}>
+    <Pressable onPress={()=>{router.push({pathname:'components/ApostScreen', params:{ post: JSON.stringify(post)}})}} style={styles.blogContainer}>
       <Image source={require('../../assets/1176433.png')} style={styles.profilePic} />
       <View style={styles.blogContent}>
-        <Text style={styles.userName}>Masud Mazumdar</Text>
-        <Text style={{fontSize:10}}>15-July, 2024</Text>
-        <Text style={styles.title}>A forum title</Text>
+        <Text style={styles.userName}>{post.fullName}r</Text>
+        <Text style={{fontSize:10}}>{post.postedDate}</Text>
+        <Text style={styles.title}>{post.title}</Text>
+        <Text>{truncateDescription(postDescription)}</Text>
         <View style={styles.infoContainer}>
           <View style={styles.likeDislikeContainer}>
             <TouchableOpacity disabled style={styles.iconContainer}>
               <Ionicons name="thumbs-up-outline" size={20} color="green" />
-              <Text style={styles.countText}>5</Text>
+              <Text style={styles.countText}>{post.likes.length}</Text>
             </TouchableOpacity>
             <TouchableOpacity disabled style={styles.iconContainer}>
               <Ionicons name="thumbs-down-outline" size={20} color="red" />
-              <Text style={styles.countText}>1</Text>
+              <Text style={styles.countText}>{post.dislikes.length}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.commentsContainer}>
             <Ionicons name="chatbubble-outline" size={20} color="#999" />
-            <Text style={styles.countText}>2</Text>
+            <Text style={styles.countText}>{post.comments.length}</Text>
           </View>
         </View>
       </View>
@@ -36,7 +56,8 @@ const ForumListItem = ({navigation}) => {
 const styles = {
   blogContainer: {
     flexDirection: 'row',
-    width:'100%',
+    width:'98%',
+    margin:'auto',
     padding: 10,
     marginBottom: 10,
     backgroundColor: '#fff',
