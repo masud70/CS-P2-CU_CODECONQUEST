@@ -64,7 +64,7 @@ const WritePost = ({navigation}) => {
   return (
     <SafeAreaView>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Write a Blog</Text>
+        <Text style={styles.title}>Write a post..</Text>
         <TextInput value={title} onChangeText={(text)=>setTitle(text)} style={styles.input} placeholder='Title of the Post..'/>
         <View className="flex justify-between flex-row flex-wrap">
                     <Pressable style={styles.checkboxContainer}  onPress={()=>{setquestion(!question)}}>
@@ -107,7 +107,7 @@ const WritePost = ({navigation}) => {
         <View style={styles.editorContainer}>
           <RichToolbar
               editor={editorRef}
-              actions={[ actions.setBold, actions.setItalic, actions.setUnderline,actions.setStrikethrough, actions.heading1,actions.insertLink, actions.insertBulletsList,actions.insertOrderedList,actions.code,actions.blockquote,actions.alignLeft,actions.alignCenter,actions.alignRight,actions.setSuperscript, actions.setSubscript, actions.removeFormat,actions.undo,actions.redo ]}
+              actions={[ actions.insertImage, actions.setBold, actions.setItalic, actions.setUnderline,actions.setStrikethrough, actions.heading1,actions.insertLink, actions.insertBulletsList,actions.insertOrderedList,actions.code,actions.blockquote,actions.alignLeft,actions.alignCenter,actions.alignRight,actions.setSuperscript, actions.setSubscript, actions.removeFormat,actions.undo,actions.redo ]}
               iconMap={{ [actions.heading1]: handleHead }}
               selectedIconTint="#000"
               disabledIconTint="#bfbfbf"
