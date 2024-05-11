@@ -29,7 +29,7 @@ const ForumListItem = ({post}) => {
     <Pressable onPress={()=>{router.push({pathname:'components/ApostScreen', params:{ post: JSON.stringify(post)}})}} style={styles.blogContainer}>
       <Image source={require('../../assets/1176433.png')} style={styles.profilePic} />
       <View style={styles.blogContent}>
-        <Text style={styles.userName}>{post.fullName}r</Text>
+        <Text style={styles.userName}>{post.fullName}</Text>
         <Text style={{fontSize:10}}>{post.postedDate}</Text>
         <Text style={styles.title}>{post.title}</Text>
         <Text>{truncateDescription(postDescription)}</Text>

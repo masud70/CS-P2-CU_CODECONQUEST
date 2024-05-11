@@ -17,6 +17,7 @@
 	"author": "cu_codeconquest",
 	"license": "ISC",
 	"dependencies": {
+		"@tensorflow-models/toxicity": "^1.2.2",
 		"axios": "^1.6.8",
 		"bcryptjs": "^2.4.3",
 		"cors": "^2.8.5",

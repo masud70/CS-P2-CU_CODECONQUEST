@@ -1,11 +1,14 @@
 require("dotenv").config();
 const express = require("express");
+const tox = require("@tensorflow-models/toxicity");
 const cors = require("cors");
 const db = require("./models");
 const { checkValidity } = require("./middlewares");
 const { welcome } = require("./controllers");
 const app = express();
 require("dotenv").config();
+const threshold = 0.6;
+let model;
 
 const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
@@ -56,6 +59,17 @@ app.use("/mobile-api", (req, res) => {
 	});
 });
 
+app.post("/prediction", async (req, res, next) => {
+	try {
+		const sentence = req.body.sentence;
+		const predictions = await model.classify(sentence);
+		const ret = predictions.map((item) => item.results[0].match);
+		res.json(ret);
+	} catch (error) {
+		res.json({ error: error.message });
+	}
+});
+
 app.get("/health", (req, res) => {
 	res.status(200).json({ status: "OK", message: "Server is healthy" });
 });
@@ -67,10 +81,11 @@ app.use((err, req, res, next) => {
 // listen for requests
 app.listen(PORT, () => {
 	db.sequelize
-		.sync({ alter: true })
+		.sync({ alter: !true })
 		.then(async () => {
 			try {
 				await initializeDB();
+				model = await tox.load(threshold);
 			} catch (error) {
 				console.log(error.message);
 			}

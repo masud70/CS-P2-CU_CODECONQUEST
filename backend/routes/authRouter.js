@@ -42,6 +42,19 @@ router.post("/login", validateCaptcha, async (req, res, next) => {
 	}
 });
 
+// For user login
+router.post("/mobile-login", async (req, res, next) => {
+	try {
+		const data = req.body;
+
+		const result = await getLogin(data);
+
+		res.json(result);
+	} catch (error) {
+		next(error.messsage);
+	}
+});
+
 // For user logout
 router.get("/logout", checkLogin, async (req, res) => {
 	try {
